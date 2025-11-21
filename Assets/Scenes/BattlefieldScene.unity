@@ -677,6 +677,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerCamera: {fileID: 1669807847}
   rtsCamera: {fileID: 2011204994}
+  playerController: {fileID: 1669807844}
+  rtsController: {fileID: 2011204995}
+  switchToRTS_Threshold: 25
+  switchToGeneral_Threshold: 16
   currentMode: 0
 --- !u!4 &589815871
 Transform:
@@ -1284,22 +1288,21 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1669807843}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4d70de042d619f14f9b0eff8dea53b02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  generalCam: {fileID: 1669807847}
-  rtsCam: {fileID: 2011204994}
+  generalCam: {fileID: 0}
   target: {fileID: 1099247120}
-  offset: {x: 0, y: 3, z: -5}
+  offset: {x: 0, y: 5, z: -10}
   rotateSpeed: 80
   zoomSpeed: 10
-  minZoom: 4
-  maxZoom: 25
+  minZoom: 5
+  maxZoom: 30
   smooth: 10
-  rtsZoomThreshold: 18
-  modeSwitchHysteresis: 2
+  rtsZoomThreshold: 25
+  modeSwitchHysteresis: 1
 --- !u!114 &1669807845
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1655,7 +1658,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!20 &2011204994
 Camera:
   m_ObjectHideFlags: 0
@@ -1714,23 +1717,18 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2011204993}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0cb35faeb1476ef41aa22a8c4a451c2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  panSpeed: 12
+  moveSpeed: 35
   dragSpeed: 1.5
-  edgeScrollSpeed: 12
+  edgeSpeed: 35
   edgeThickness: 20
   zoomSpeed: 60
   minHeight: 15
   maxHeight: 120
-  pitchAtMin: 45
-  pitchAtMax: 75
-  xLimits: {x: -100, y: 100}
-  zLimits: {x: -100, y: 100}
-  borderPadding: 5
 --- !u!114 &2011204996
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1784,7 +1782,7 @@ Transform:
   m_GameObject: {fileID: 2011204993}
   serializedVersion: 2
   m_LocalRotation: {x: 0.38268343, y: -0, z: -0, w: 0.92387956}
-  m_LocalPosition: {x: 334.724, y: 357.3415, z: 89.456665}
+  m_LocalPosition: {x: 334.724, y: 70, z: 89.456665}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -2,27 +2,16 @@ using UnityEngine;
 
 public class RTSCameraController : MonoBehaviour
 {
-    [Header("Pan")]
-    public float panSpeed = 25f;
-
-    [Header("Mouse Drag")]
+    [Header("Movement")]
+    public float moveSpeed = 35f;
     public float dragSpeed = 3f;
-
-    [Header("Edge Scrolling")]
-    public float edgeScrollSpeed = 25f;
-    public int edgeThickness = 20;
+    public float edgeSpeed = 35f;
+    public float edgeThickness = 20f;
 
     [Header("Zoom")]
-    public float zoomSpeed = 60f;
-    public float minHeight = 10f;
+    public float zoomSpeed = 80f;
+    public float minHeight = 20f;
     public float maxHeight = 120f;
-    public float pitchAtMin = 45f;
-    public float pitchAtMax = 75f;
-
-    [Header("Bounds")]
-    public Vector2 xLimits = new Vector2(0f, 100f);
-    public Vector2 zLimits = new Vector2(0f, 100f);
-    public float borderPadding = 5f;
 
     private Camera cam;
     private Vector3 lastMousePos;
@@ -30,70 +19,55 @@ public class RTSCameraController : MonoBehaviour
     void Awake()
     {
         cam = GetComponent<Camera>();
-        if (cam == null)
-        {
-            Debug.LogError("RTSCameraController requires a Camera component!");
-        }
     }
 
-    void Start()
+    // Called ONLY when ModeController switches to RTS mode
+    public void OnActivated()
     {
-        
-        if (Terrain.activeTerrain != null)
-        {
-            var size = Terrain.activeTerrain.terrainData.size;
-            xLimits = new Vector2(borderPadding, size.x - borderPadding);
-            zLimits = new Vector2(borderPadding, size.z - borderPadding);
-        }
-    }
-
-
-    // Called by ModeController
-    public void ActivateRTS()
-    {
-        if (cam) cam.enabled = true;
         enabled = true;
+        cam.enabled = true;
+
+        lastMousePos = Vector3.zero;
+
+        // Make sure ModeController receives correct initial height
+        ModeController.Instance.ReportZoom(transform.position.y);
+
+        // Unlock cursor for RTS
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }
 
-    // Called by ModeController
-    public void DeactivateRTS()
-    {
-        if (cam) cam.enabled = false;
-        enabled = false;
-    }
-
     void Update()
     {
-        // Prevent movement when camera is off
-        if (!cam || !cam.enabled) return;
+        // ❌ DO NOT RUN IF NOT ACTIVE CAMERA
+        if (!cam.enabled) return;
+        if (!enabled) return;
 
-        // Prevent movement if NOT in RTS mode
-        if (ModeController.Instance == null ||
-            ModeController.Instance.currentMode != ControlMode.RTS)
-        {
-            lastMousePos = Vector3.zero;
-            return;
-        }
+        // ❌ DO NOT RUN IN GENERAL MODE
+        if (ModeController.Instance.currentMode != ControlMode.RTS) return;
 
-        Vector3 forward = transform.forward; forward.y = 0f; forward.Normalize();
-        Vector3 right = transform.right; right.y = 0f; right.Normalize();
+        Vector3 pos = transform.position;
 
-        Vector3 next = transform.position;
-
-        // === WASD movement ===
+        // ============================================================
+        //                WASD MOVEMENT
+        // ============================================================
         float h = Input.GetAxisRaw("Horizontal");
         float v = Input.GetAxisRaw("Vertical");
-        next += (forward * v + right * h) * panSpeed * Time.deltaTime;
 
-        // === Middle mouse drag ===
+        Vector3 forward = transform.forward; forward.y = 0f; forward.Normalize();
+        Vector3 right = transform.right;     right.y = 0f;     right.Normalize();
+
+        pos += (forward * v + right * h) * moveSpeed * Time.deltaTime;
+
+        // ============================================================
+        //                MIDDLE MOUSE DRAG
+        // ============================================================
         if (Input.GetMouseButton(2))
         {
             if (lastMousePos != Vector3.zero)
             {
                 Vector3 delta = Input.mousePosition - lastMousePos;
-                next -= (right * delta.x + forward * delta.y) * dragSpeed * Time.deltaTime;
+                pos -= (right * delta.x + forward * delta.y) * dragSpeed * Time.deltaTime;
             }
             lastMousePos = Input.mousePosition;
         }
@@ -102,37 +76,37 @@ public class RTSCameraController : MonoBehaviour
             lastMousePos = Vector3.zero;
         }
 
-        // === Edge scrolling ===
-        Vector3 mousePos = Input.mousePosition;
-        if (mousePos.x <= edgeThickness)
-            next -= right * edgeScrollSpeed * Time.deltaTime;
-        else if (mousePos.x >= Screen.width - edgeThickness)
-            next += right * edgeScrollSpeed * Time.deltaTime;
+        // ============================================================
+        //                EDGE SCROLLING
+        // ============================================================
+        Vector3 mouse = Input.mousePosition;
 
-        if (mousePos.y <= edgeThickness)
-            next -= forward * edgeScrollSpeed * Time.deltaTime;
-        else if (mousePos.y >= Screen.height - edgeThickness)
-            next += forward * edgeScrollSpeed * Time.deltaTime;
+        if (mouse.x <= edgeThickness)
+            pos -= right * edgeSpeed * Time.deltaTime;
+        else if (mouse.x >= Screen.width - edgeThickness)
+            pos += right * edgeSpeed * Time.deltaTime;
 
-        // === Zoom ===
+        if (mouse.y <= edgeThickness)
+            pos -= forward * edgeSpeed * Time.deltaTime;
+        else if (mouse.y >= Screen.height - edgeThickness)
+            pos += forward * edgeSpeed * Time.deltaTime;
+
+        // ============================================================
+        //                ZOOM (height based)
+        // ============================================================
         float scroll = Input.GetAxis("Mouse ScrollWheel");
         if (Mathf.Abs(scroll) > 0.0001f)
         {
-            float targetY = Mathf.Clamp(next.y - scroll * zoomSpeed, minHeight, maxHeight);
-            next.y = targetY;
-
-            float t = Mathf.InverseLerp(minHeight, maxHeight, targetY);
-            float pitch = Mathf.Lerp(pitchAtMin, pitchAtMax, t);
-
-            Vector3 euler = transform.rotation.eulerAngles;
-            euler.x = pitch;
-            transform.rotation = Quaternion.Euler(euler);
+            pos.y -= scroll * zoomSpeed;
+            pos.y = Mathf.Clamp(pos.y, minHeight, maxHeight);
         }
 
-        // === Apply battlefield bounds ===
-        next.x = Mathf.Clamp(next.x, xLimits.x, xLimits.y);
-        next.z = Mathf.Clamp(next.z, zLimits.x, zLimits.y);
+        // ============================================================
+        //           REPORT HEIGHT TO MODE CONTROLLER
+        // (Used for switching back to General mode)
+        // ============================================================
+        ModeController.Instance.ReportZoom(pos.y);
 
-        transform.position = next;
+        transform.position = pos;
     }
 }

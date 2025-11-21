@@ -1,25 +1,24 @@
 ﻿using UnityEngine;
 
-public enum ControlMode
-{
-    General,
-    RTS,
-    Neutral
-}
-
 public class ModeController : MonoBehaviour
 {
     public static ModeController Instance { get; private set; }
 
-    [Header("Battle Cameras")]
+    [Header("Camera references (assign in inspector)")]
     public Camera playerCamera;
     public Camera rtsCamera;
 
-    private RTSCameraController rtsController;
-    private Player3PCamera generalController;
+    [Header("Controller scripts (assign in inspector)")]
+    public Player3PCamera playerController;
+    public RTSCameraController rtsController;
 
-    [Header("Current Mode (read-only)")]
-    public ControlMode currentMode = ControlMode.Neutral;
+    [Header("Zoom thresholds (general <-> rts)")]
+    public float switchToRTS_Threshold = 30f;
+    public float switchToGeneral_Threshold = 20f;
+
+    [HideInInspector] public ControlMode currentMode = ControlMode.General;
+
+    private float lastReportedZoom = 0f;
 
     void Awake()
     {
@@ -28,180 +27,150 @@ public class ModeController : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-
         Instance = this;
-
-        Debug.Log("<color=yellow>[ModeController] Awake()</color>");
-
-        BindBattleCameras();
     }
 
-    void OnEnable()
+    void Start()
     {
-        BindBattleCameras();
+        TryAutoBind();
+        SetMode(ControlMode.General, instant: true);
     }
 
-    /// <summary>
-    /// Safely binds ONLY Battlefield cameras.
-    /// Never binds WorldMap cameras.
-    /// </summary>
-    public void BindBattleCameras()
+    void TryAutoBind()
     {
-        if (!BattleRootExists())
-        {
-            // We are in WorldMap or loading state — clear camera refs
-            playerCamera = null;
-            rtsCamera = null;
-            rtsController = null;
-            generalController = null;
-            return;
-        }
-
-        // Find cameras
         if (playerCamera == null)
             playerCamera = GameObject.Find("PlayerCamera")?.GetComponent<Camera>();
 
         if (rtsCamera == null)
             rtsCamera = GameObject.Find("RTSCamera")?.GetComponent<Camera>();
 
-        // Bind controllers
-        if (playerCamera != null)
-            generalController = playerCamera.GetComponent<Player3PCamera>();
+        if (playerController == null && playerCamera != null)
+            playerController = playerCamera.GetComponent<Player3PCamera>();
 
-        if (rtsCamera != null)
+        if (rtsController == null && rtsCamera != null)
             rtsController = rtsCamera.GetComponent<RTSCameraController>();
-
-        Debug.Log($"<color=cyan>[ModeController] Bound Cameras → Player={playerCamera != null}  RTS={rtsCamera != null}</color>");
     }
 
-    private bool BattleRootExists()
+    // -------------------------------------------------------
+    //     Zoom-driven switching
+    // -------------------------------------------------------
+    public void ReportZoom(float zoomValue)
     {
-        return GameObject.Find("BattleCameraRoot") != null;
+        lastReportedZoom = zoomValue;
+        Debug.Log("[ModeController] Zoom reported = " + zoomValue);
+
+        if (currentMode == ControlMode.General)
+        {
+            if (zoomValue > switchToRTS_Threshold)
+                SetMode(ControlMode.RTS);
+        }
+        else
+        {
+            if (zoomValue < switchToGeneral_Threshold)
+                SetMode(ControlMode.General);
+        }
     }
 
-    /// <summary>
-    /// Public API: Switch mode (called by input system or game logic)
-    /// </summary>
-    public void SetMode(ControlMode mode)
+    // -------------------------------------------------------
+    //     Main mode switch entry
+    // -------------------------------------------------------
+    public void SetMode(ControlMode mode, bool instant = false)
     {
-        if (currentMode == mode)
-            return;
+        if (currentMode == mode) return;
 
         currentMode = mode;
-        ApplyCameraState(mode, align: true);
 
-        Debug.Log("<color=green>[ModeController] Switched to mode: " + currentMode + "</color>");
+        if (mode == ControlMode.General)
+            ActivateGeneralMode(instant);
+        else
+            ActivateRTSMode(instant);
     }
 
-    /// <summary>
-    /// Actually switches camera states.
-    /// </summary>
-    public void ApplyCameraState(ControlMode mode, bool align)
-{
-    BindBattleCameras();
-
-    if (playerCamera == null || rtsCamera == null)
+    // -------------------------------------------------------
+    //     GENERAL MODE
+    // -------------------------------------------------------
+    private void ActivateGeneralMode(bool instant)
     {
-        Debug.LogWarning("[ModeController] Cameras not bound yet — ignoring mode switch");
-        return;
-    }
+        TryAutoBind();
 
-    // --- ENSURE BOTH CAMERA GAMEOBJECTS ARE ACTIVE ---
-    playerCamera.gameObject.SetActive(true);
-    rtsCamera.gameObject.SetActive(true);
-
-    // ==========================
-    // GENERAL MODE
-    // ==========================
-    if (mode == ControlMode.General)
-    {
-        if (align)
+        // Sync positions just once if needed
+        if (instant)
         {
             playerCamera.transform.position = rtsCamera.transform.position;
             playerCamera.transform.rotation = rtsCamera.transform.rotation;
         }
 
-        playerCamera.enabled = true;
-
-        if (rtsController != null)
-            rtsController.DeactivateRTS();
-
+        // Always disable both first
+        playerCamera.enabled = false;
         rtsCamera.enabled = false;
+        playerController.enabled = false;
+        rtsController.enabled = false;
 
+        // Enable correct
+        playerCamera.enabled = true;
+        playerController.enabled = true;
+
+        // Cursor lock for 3rd person
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
-        Debug.Log("<color=orange>[ModeController] GENERAL camera active</color>");
-        return;
+        // Notify script
+        playerController.OnActivated();
+
+        Debug.Log("[ModeController] Switched to GENERAL mode");
     }
 
-    // ==========================
-    // RTS MODE
-    // ==========================
-    if (mode == ControlMode.RTS)
+    // -------------------------------------------------------
+    //     RTS MODE
+    // -------------------------------------------------------
+    private void ActivateRTSMode(bool instant)
     {
-        if (align)
+        TryAutoBind();
+
+        if (instant)
         {
             rtsCamera.transform.position = playerCamera.transform.position;
             rtsCamera.transform.rotation = playerCamera.transform.rotation;
         }
 
+        // Always disable both first
         playerCamera.enabled = false;
+        rtsCamera.enabled = false;
+        playerController.enabled = false;
+        rtsController.enabled = false;
 
-        if (rtsController != null)
-            rtsController.ActivateRTS();
-
+        // Enable correct
         rtsCamera.enabled = true;
+        rtsController.enabled = true;
 
+        // RTS cursor
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
-        Debug.Log("<color=orange>[ModeController] RTS camera active</color>");
-        return;
+        rtsController.OnActivated();
+
+        Debug.Log("[ModeController] Switched to RTS mode");
     }
 
-    // ==========================
-    // NEUTRAL
-    // ==========================
-    playerCamera.enabled = false;
-    rtsCamera.enabled = false;
-
-    if (rtsController != null)
-        rtsController.DeactivateRTS();
-
-    Cursor.lockState = CursorLockMode.None;
-    Cursor.visible = true;
-
-    Debug.Log("<color=grey>[ModeController] Neutral mode</color>");
-}
-
+    // -------------------------------------------------------
+    // Compatibility helpers
+    // -------------------------------------------------------
+    public void ApplyCameraState(ControlMode mode, bool align = true)
+    {
+        SetMode(mode, align);
+    }
 
     public void ResetMode()
     {
-        currentMode = ControlMode.Neutral;
-        ApplyCameraState(currentMode, align: false);
+        SetMode(ControlMode.General, instant: true);
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        Debug.Log("[ModeController] ResetMode() called.");
     }
-    
-    void Update()
+
+    public void SetTarget(Transform t)
     {
-        // TEMP DEBUG INPUT
-        if (Input.GetKeyDown(KeyCode.F1))
-            
-        {
-            Debug.Log("F1 → Switch to General mode");
-            SetMode(ControlMode.General);
-        }
-
-        if (Input.GetKeyDown(KeyCode.F2))
-        {
-            Debug.Log("F2 → Switch to RTS mode");
-            SetMode(ControlMode.RTS);
-        }
-
-        if (Input.GetKeyDown(KeyCode.F3))
-        {
-            Debug.Log("F3 → Switch to Neutral mode");
-            SetMode(ControlMode.Neutral);
-        }
+        if (playerController != null)
+            playerController.target = t;
     }
 }

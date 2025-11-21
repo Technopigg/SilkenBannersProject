@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 
+[RequireComponent(typeof(Camera))]
 public class Player3PCamera : MonoBehaviour
 {
     [Header("References")]
-    public Camera generalCam;   // THIS camera's Camera component
-    public Camera rtsCam;       // The RTS camera (separate object)
-    public Transform target;    // General / Player unit
+    public Camera generalCam;   // This object's Camera (auto-assigned)
+    public Transform target;    // Assigned by BattleSceneController
 
     [Header("General Camera Settings")]
     public Vector3 offset = new Vector3(0f, 5f, -10f);
@@ -15,13 +15,8 @@ public class Player3PCamera : MonoBehaviour
     public float maxZoom = 30f;
     public float smooth = 10f;
 
-    [Header("RTS Switching")]
-    public float rtsZoomThreshold = 25f;
-    public float modeSwitchHysteresis = 1f;
-
     private float yaw;
     private float currentZoom;
-
 
     void Awake()
     {
@@ -30,6 +25,7 @@ public class Player3PCamera : MonoBehaviour
 
         currentZoom = offset.magnitude;
 
+        // Initialize position if target exists
         if (target != null)
         {
             transform.position = target.position + offset;
@@ -37,37 +33,41 @@ public class Player3PCamera : MonoBehaviour
         }
     }
 
-    void OnEnable()
+    // Called by ModeController when switching BACK to General mode
+    public void OnActivated()
     {
+        enabled = true;
+        generalCam.enabled = true;
+
         if (target != null)
         {
             transform.position = target.position + offset;
             transform.LookAt(target);
         }
 
-  
-        if (ModeController.Instance != null &&
-            ModeController.Instance.currentMode != ControlMode.General)
-        {
-            generalCam.enabled = false;
-        }
+        // lock cursor
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     void LateUpdate()
     {
-        if (!generalCam.enabled) return;
+        // 🚨 CRITICAL FIX: DO NOT RUN WHILE IN RTS MODE
+        if (ModeController.Instance != null &&
+            ModeController.Instance.currentMode != ControlMode.General)
+            return;
+
+        if (!generalCam || !generalCam.enabled) return;
         if (target == null) return;
 
         HandleOrbit();
         HandleZoom();
         ApplyCameraPosition();
-        CheckForRTSSwitch();
+
+        // Report zoom for hysteresis switching (ModeController handles switching)
+        ReportZoomToModeController();
     }
 
-
-    //────────────────────────────────────────────────────────────
-    //  General-mode orbit + rotation
-    //────────────────────────────────────────────────────────────
     void HandleOrbit()
     {
         if (Input.GetMouseButton(1))
@@ -87,7 +87,6 @@ public class Player3PCamera : MonoBehaviour
     {
         Vector3 baseOffset = new Vector3(0f, offset.y, offset.z).normalized * currentZoom;
         Quaternion orbit = Quaternion.Euler(0f, yaw, 0f);
-
         Vector3 desiredPos = target.position + orbit * baseOffset;
 
         transform.position = Vector3.Lerp(transform.position, desiredPos, smooth * Time.deltaTime);
@@ -99,55 +98,25 @@ public class Player3PCamera : MonoBehaviour
         );
     }
 
+    // 🚨 We removed CheckForRTSSwitch() COMPLETELY.
+    // ModeController is now the ONLY system that triggers switching.
 
-    //────────────────────────────────────────────────────────────
-    //  Switching to RTS mode by zoom threshold
-    //────────────────────────────────────────────────────────────
-    void CheckForRTSSwitch()
+    void ReportZoomToModeController()
     {
-        if (ModeController.Instance == null) return;
-
-        // Switch TO RTS mode
-        if (currentZoom > rtsZoomThreshold + modeSwitchHysteresis &&
-            ModeController.Instance.currentMode != ControlMode.RTS)
-        {
-            ModeController.Instance.SetMode(ControlMode.RTS);
-            DisableGeneralCamera();
-        }
-
-        // Switch BACK to General mode
-        if (currentZoom < rtsZoomThreshold - modeSwitchHysteresis &&
-            ModeController.Instance.currentMode != ControlMode.General)
-        {
-            ModeController.Instance.SetMode(ControlMode.General);
-            EnableGeneralCamera();
-        }
+        if (ModeController.Instance != null)
+            ModeController.Instance.ReportZoom(currentZoom);
     }
 
-
-    //────────────────────────────────────────────────────────────
-    //  Camera activation helpers
-    //────────────────────────────────────────────────────────────
-    void DisableGeneralCamera()
-    {
-        generalCam.enabled = false;
-    }
-
-    void EnableGeneralCamera()
-    {
-        generalCam.enabled = true;
-    }
-
-
-    //────────────────────────────────────────────────────────────
-    //  External API for the battle system
-    //────────────────────────────────────────────────────────────
     public void SetTarget(Transform newTarget)
     {
         target = newTarget;
         yaw = 0f;
-        transform.position = target.position + offset;
-        transform.LookAt(target);
+
+        if (target != null)
+        {
+            transform.position = target.position + offset;
+            transform.LookAt(target);
+        }
 
         Debug.Log("Player3PCamera: Target explicitly set via SetTarget().");
     }

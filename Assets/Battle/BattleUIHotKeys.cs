@@ -19,10 +19,12 @@ public class BattleUIHotkeys : MonoBehaviour
             {
                 if (ModeController.Instance != null)
                 {
-                    ModeController.Instance.ResetMode();
+                    ModeController.Instance.ResetMode();  // now exists and is correct
                 }
+
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
+
                 controller.ExitToWorldMapTemporary();
             });
         }

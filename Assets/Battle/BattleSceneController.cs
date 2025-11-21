@@ -45,8 +45,11 @@ public class BattleSceneController : MonoBehaviour
             Player3PCamera cam = FindObjectOfType<Player3PCamera>();
             if (cam != null)
             {
-                cam.SetTarget(spawner.PlayerGeneral.transform);
-                Debug.Log("BattleSceneController: Camera target set to Player General.");
+                // NEW SYSTEM: assign the target directly
+                cam.target = spawner.PlayerGeneral.transform;
+                cam.OnActivated();
+
+                Debug.Log("BattleSceneController: Camera target assigned to Player General.");
             }
             else
             {
@@ -60,7 +63,7 @@ public class BattleSceneController : MonoBehaviour
     }
 
     // ─────────────────────────────────────────────────────────────────────
-    // TEMPORARY EXIT — Handled ENTIRELY by BattleManager now
+    // TEMP EXIT — handled by BattleManager
     // ─────────────────────────────────────────────────────────────────────
     public void ExitToWorldMapTemporary()
     {
@@ -105,9 +108,7 @@ public class BattleSceneController : MonoBehaviour
         if (battlefield.IsValid() && battlefield.isLoaded)
         {
             if (spawner != null)
-            {
                 spawner.SaveBattlefieldStateNow();
-            }
 
             SceneManager.UnloadSceneAsync(battlefield);
             Debug.Log("BattleSceneController: Unloaded BattlefieldScene.");
