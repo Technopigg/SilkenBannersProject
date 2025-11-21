@@ -13,31 +13,32 @@ public class ArmyManager : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
                 ArmyToken token = hit.collider.GetComponentInParent<ArmyToken>();
+
                 if (token != null)
                 {
-                    // Deselect previous
+                    // Deselect previous (but DO NOT clear UI here)
                     if (selectedToken != null)
-                    {
                         selectedToken.SetSelected(false);
-                        armyUI.Clear();
-                    }
 
                     // Select new
                     selectedToken = token;
                     selectedToken.SetSelected(true);
-                    armyUI.ShowArmy(selectedToken);
+
+                    armyUI.ShowArmy(selectedToken); // load new army
                 }
                 else
                 {
-                    // Clicked something that's NOT an ArmyToken → deselect
+                    // Clicked somewhere that is NOT a token → full deselect
                     if (selectedToken != null)
                     {
                         selectedToken.SetSelected(false);
                         selectedToken = null;
-                        armyUI.Clear();
+
+                        armyUI.Clear();  // HERE is where clear stays
                     }
                 }
             }
@@ -48,7 +49,8 @@ public class ArmyManager : MonoBehaviour
                 {
                     selectedToken.SetSelected(false);
                     selectedToken = null;
-                    armyUI.Clear();
+
+                    armyUI.Clear(); // same as above
                 }
             }
         }
