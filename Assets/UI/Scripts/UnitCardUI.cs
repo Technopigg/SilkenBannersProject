@@ -6,8 +6,7 @@ public class UnitCardUI : MonoBehaviour
 {
     public Image icon;
     public TextMeshProUGUI countText;
-
-    // A mapping from text type -> sprite
+    
     public Sprite spearmanIcon;
     public Sprite archerIcon;
     public Sprite cavalryIcon;
@@ -16,8 +15,7 @@ public class UnitCardUI : MonoBehaviour
     public void Set(string type, int count)
     {
         countText.text = count.ToString();
-
-        // Choose icon based on string
+        
         switch (type.ToLower())
         {
             case "spearman":

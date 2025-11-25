@@ -6,10 +6,10 @@ using System.Collections.Generic;
 public class ArmyUI : MonoBehaviour
 {
     [Header("UI References")]
-    public GameObject bannerRoot;            // The whole banner (set active when army selected)
-    public TextMeshProUGUI ownerText;        // Displays owner
-    public Transform unitCardContainer;      // Where cards spawn
-    public GameObject unitCardPrefab;        // Prefab for each card
+    public GameObject bannerRoot;           
+    public TextMeshProUGUI ownerText;       
+    public Transform unitCardContainer;      
+    public GameObject unitCardPrefab;        
 
     private readonly List<GameObject> spawnedCards = new List<GameObject>();
 
@@ -20,25 +20,17 @@ public class ArmyUI : MonoBehaviour
             Clear();
             return;
         }
-
         bannerRoot.SetActive(true);
-
-        // Set owner name
         ownerText.text = token.owner;
-
-        // Clear previous cards
         foreach (var c in spawnedCards)
             Destroy(c);
-
         spawnedCards.Clear();
-
-        // Spawn a card for each unit in composition
         foreach (ArmyUnit unit in token.composition)
         {
             GameObject card = Instantiate(unitCardPrefab, unitCardContainer);
             spawnedCards.Add(card);
 
-            // Fill the UI elements on the card
+  
             UnitCardUI cardUI = card.GetComponent<UnitCardUI>();
 
             if (cardUI != null)
