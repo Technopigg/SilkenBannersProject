@@ -1,118 +1,109 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\",
+  "WorkspaceRootPath": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{F641F016-D85F-7DC1-E841-4D381E783DDA}|Assembly-CSharp.csproj|c:\\users\\alber\\documents\\unity\\kessenfanproject\\assets\\battle\\player3pcamera.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{F641F016-D85F-7DC1-E841-4D381E783DDA}|Assembly-CSharp.csproj|c:\\users\\alber\\documents\\unity\\kessenfanproject\\kessenfanproject\\assets\\animations\\bot\\thirdpersonmovement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F641F016-D85F-7DC1-E841-4D381E783DDA}|Assembly-CSharp.csproj|solutionrelative:assets\\animations\\bot\\thirdpersonmovement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F641F016-D85F-7DC1-E841-4D381E783DDA}|Assembly-CSharp.csproj|c:\\users\\alber\\documents\\unity\\kessenfanproject\\kessenfanproject\\assets\\battle\\player3pcamera.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F641F016-D85F-7DC1-E841-4D381E783DDA}|Assembly-CSharp.csproj|solutionrelative:assets\\battle\\player3pcamera.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F641F016-D85F-7DC1-E841-4D381E783DDA}|Assembly-CSharp.csproj|c:\\users\\alber\\documents\\unity\\kessenfanproject\\assets\\battle\\modecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{F641F016-D85F-7DC1-E841-4D381E783DDA}|Assembly-CSharp.csproj|C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\assets\\battle\\modecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F641F016-D85F-7DC1-E841-4D381E783DDA}|Assembly-CSharp.csproj|solutionrelative:assets\\battle\\modecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F641F016-D85F-7DC1-E841-4D381E783DDA}|Assembly-CSharp.csproj|C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\assets\\battle\\battlescenecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{F641F016-D85F-7DC1-E841-4D381E783DDA}|Assembly-CSharp.csproj|C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\assets\\battle\\battlescenecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F641F016-D85F-7DC1-E841-4D381E783DDA}|Assembly-CSharp.csproj|solutionrelative:assets\\battle\\battlescenecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F641F016-D85F-7DC1-E841-4D381E783DDA}|Assembly-CSharp.csproj|C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\assets\\bootstrap\\debugscenestate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{F641F016-D85F-7DC1-E841-4D381E783DDA}|Assembly-CSharp.csproj|C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\assets\\bootstrap\\debugscenestate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F641F016-D85F-7DC1-E841-4D381E783DDA}|Assembly-CSharp.csproj|solutionrelative:assets\\bootstrap\\debugscenestate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Library\\PackageCache\\com.unity.visualscripting@1.9.4\\Editor\\VisualScripting.Flow\\Options\\UnitBase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\Library\\PackageCache\\com.unity.visualscripting@1.9.4\\Editor\\VisualScripting.Flow\\Options\\UnitBase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Library\\PackageCache\\com.unity.visualscripting@1.9.4\\Editor\\VisualScripting.Flow\\Options\\UnitBase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\Bootstrap\\NewBehaviourScript.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\Bootstrap\\NewBehaviourScript.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\Bootstrap\\NewBehaviourScript.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F641F016-D85F-7DC1-E841-4D381E783DDA}|Assembly-CSharp.csproj|C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\assets\\battle\\battleuihotkeys.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{F641F016-D85F-7DC1-E841-4D381E783DDA}|Assembly-CSharp.csproj|C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\assets\\battle\\battleuihotkeys.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F641F016-D85F-7DC1-E841-4D381E783DDA}|Assembly-CSharp.csproj|solutionrelative:assets\\battle\\battleuihotkeys.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F641F016-D85F-7DC1-E841-4D381E783DDA}|Assembly-CSharp.csproj|C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\assets\\armies\\armytoken.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{F641F016-D85F-7DC1-E841-4D381E783DDA}|Assembly-CSharp.csproj|C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\assets\\armies\\armytoken.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F641F016-D85F-7DC1-E841-4D381E783DDA}|Assembly-CSharp.csproj|solutionrelative:assets\\armies\\armytoken.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F641F016-D85F-7DC1-E841-4D381E783DDA}|Assembly-CSharp.csproj|C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\assets\\battle\\battlemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{F641F016-D85F-7DC1-E841-4D381E783DDA}|Assembly-CSharp.csproj|C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\assets\\battle\\battlemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F641F016-D85F-7DC1-E841-4D381E783DDA}|Assembly-CSharp.csproj|solutionrelative:assets\\battle\\battlemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F641F016-D85F-7DC1-E841-4D381E783DDA}|Assembly-CSharp.csproj|C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\assets\\battle\\battlefieldstate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{F641F016-D85F-7DC1-E841-4D381E783DDA}|Assembly-CSharp.csproj|C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\assets\\battle\\battlefieldstate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F641F016-D85F-7DC1-E841-4D381E783DDA}|Assembly-CSharp.csproj|solutionrelative:assets\\battle\\battlefieldstate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F641F016-D85F-7DC1-E841-4D381E783DDA}|Assembly-CSharp.csproj|C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\assets\\armies\\armyunit.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{F641F016-D85F-7DC1-E841-4D381E783DDA}|Assembly-CSharp.csproj|C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\assets\\armies\\armyunit.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F641F016-D85F-7DC1-E841-4D381E783DDA}|Assembly-CSharp.csproj|solutionrelative:assets\\armies\\armyunit.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F641F016-D85F-7DC1-E841-4D381E783DDA}|Assembly-CSharp.csproj|C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\assets\\armies\\armymanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{F641F016-D85F-7DC1-E841-4D381E783DDA}|Assembly-CSharp.csproj|C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\assets\\armies\\armymanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F641F016-D85F-7DC1-E841-4D381E783DDA}|Assembly-CSharp.csproj|solutionrelative:assets\\armies\\armymanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F641F016-D85F-7DC1-E841-4D381E783DDA}|Assembly-CSharp.csproj|C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\assets\\bootstrap\\bootstrap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{F641F016-D85F-7DC1-E841-4D381E783DDA}|Assembly-CSharp.csproj|C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\assets\\bootstrap\\bootstrap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F641F016-D85F-7DC1-E841-4D381E783DDA}|Assembly-CSharp.csproj|solutionrelative:assets\\bootstrap\\bootstrap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F641F016-D85F-7DC1-E841-4D381E783DDA}|Assembly-CSharp.csproj|C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\assets\\armies\\encounterdetection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{F641F016-D85F-7DC1-E841-4D381E783DDA}|Assembly-CSharp.csproj|C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\assets\\armies\\encounterdetection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F641F016-D85F-7DC1-E841-4D381E783DDA}|Assembly-CSharp.csproj|solutionrelative:assets\\armies\\encounterdetection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F641F016-D85F-7DC1-E841-4D381E783DDA}|Assembly-CSharp.csproj|C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\assets\\devconsole.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{F641F016-D85F-7DC1-E841-4D381E783DDA}|Assembly-CSharp.csproj|C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\assets\\devconsole.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F641F016-D85F-7DC1-E841-4D381E783DDA}|Assembly-CSharp.csproj|solutionrelative:assets\\devconsole.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F641F016-D85F-7DC1-E841-4D381E783DDA}|Assembly-CSharp.csproj|C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\assets\\ui\\armyui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{F641F016-D85F-7DC1-E841-4D381E783DDA}|Assembly-CSharp.csproj|C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\assets\\ui\\armyui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F641F016-D85F-7DC1-E841-4D381E783DDA}|Assembly-CSharp.csproj|solutionrelative:assets\\ui\\armyui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\Armies\\Squad.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\Armies\\Squad.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\Armies\\Squad.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\Battle\\WorldMapBattleManager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\Battle\\WorldMapBattleManager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\Battle\\WorldMapBattleManager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\RTSCameraController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\RTSCameraController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\RTSCameraController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\Player3PMovement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\Player3PMovement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\Player3PMovement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\Armies\\TestTrigger.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\Armies\\TestTrigger.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\Armies\\TestTrigger.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\DragSelection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\DragSelection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\DragSelection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\UnitSelection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\UnitSelection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\UnitSelection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\UnitMovement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\UnitMovement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\UnitMovement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\RTSSelectionManager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\RTSSelectionManager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\RTSSelectionManager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\ModeController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\ModeController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\ModeController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\Player3PCamera.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\Player3PCamera.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\Player3PCamera.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\SquadSpawner.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\SquadSpawner.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\SquadSpawner.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -126,11 +117,11 @@
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 11,
               "Title": "ArmyUnit.cs",
-              "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\Armies\\ArmyUnit.cs",
+              "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\Assets\\Armies\\ArmyUnit.cs",
               "RelativeDocumentMoniker": "Assets\\Armies\\ArmyUnit.cs",
-              "ToolTip": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\Armies\\ArmyUnit.cs",
+              "ToolTip": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\Assets\\Armies\\ArmyUnit.cs",
               "RelativeToolTip": "Assets\\Armies\\ArmyUnit.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -144,10 +135,23 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "ThirdPersonMovement.cs",
+              "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\Assets\\Animations\\Bot\\ThirdPersonMovement.cs",
+              "RelativeDocumentMoniker": "Assets\\Animations\\Bot\\ThirdPersonMovement.cs",
+              "ToolTip": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\Assets\\Animations\\Bot\\ThirdPersonMovement.cs",
+              "RelativeToolTip": "Assets\\Animations\\Bot\\ThirdPersonMovement.cs",
+              "ViewState": "AgIAABgAAAAAAAAAAAAowDYAAAAvAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-25T17:27:57.059Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "Player3PCamera.cs",
-              "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\Battle\\Player3PCamera.cs",
+              "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\Assets\\Battle\\Player3PCamera.cs",
               "RelativeDocumentMoniker": "Assets\\Battle\\Player3PCamera.cs",
-              "ToolTip": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\Battle\\Player3PCamera.cs",
+              "ToolTip": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\Assets\\Battle\\Player3PCamera.cs",
               "RelativeToolTip": "Assets\\Battle\\Player3PCamera.cs",
               "ViewState": "AgIAAGMAAAAAAAAAAAAIwJcAAABMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -156,24 +160,23 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "ModeController.cs",
-              "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\Battle\\ModeController.cs",
+              "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\Assets\\Battle\\ModeController.cs",
               "RelativeDocumentMoniker": "Assets\\Battle\\ModeController.cs",
-              "ToolTip": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\Battle\\ModeController.cs",
+              "ToolTip": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\Assets\\Battle\\ModeController.cs",
               "RelativeToolTip": "Assets\\Battle\\ModeController.cs",
               "ViewState": "AgIAAKoAAAAAAAAAAAAQwL4AAAA1AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-19T19:19:01.43Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-19T19:19:01.43Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "DebugSceneState.cs",
-              "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\Bootstrap\\DebugSceneState.cs",
+              "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\Assets\\Bootstrap\\DebugSceneState.cs",
               "RelativeDocumentMoniker": "Assets\\Bootstrap\\DebugSceneState.cs",
-              "ToolTip": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\Bootstrap\\DebugSceneState.cs",
+              "ToolTip": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\Assets\\Bootstrap\\DebugSceneState.cs",
               "RelativeToolTip": "Assets\\Bootstrap\\DebugSceneState.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAABTAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -181,22 +184,22 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "NewBehaviourScript.cs",
               "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\Bootstrap\\NewBehaviourScript.cs",
-              "RelativeDocumentMoniker": "Assets\\Bootstrap\\NewBehaviourScript.cs",
+              "RelativeDocumentMoniker": "..\\Assets\\Bootstrap\\NewBehaviourScript.cs",
               "ToolTip": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\Bootstrap\\NewBehaviourScript.cs",
-              "RelativeToolTip": "Assets\\Bootstrap\\NewBehaviourScript.cs",
+              "RelativeToolTip": "..\\Assets\\Bootstrap\\NewBehaviourScript.cs",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-19T13:10:00.884Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "BattlefieldState.cs",
-              "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\Battle\\BattlefieldState.cs",
+              "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\Assets\\Battle\\BattlefieldState.cs",
               "RelativeDocumentMoniker": "Assets\\Battle\\BattlefieldState.cs",
-              "ToolTip": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\Battle\\BattlefieldState.cs",
+              "ToolTip": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\Assets\\Battle\\BattlefieldState.cs",
               "RelativeToolTip": "Assets\\Battle\\BattlefieldState.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAXAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -204,11 +207,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 13,
               "Title": "Bootstrap.cs",
-              "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\Bootstrap\\Bootstrap.cs",
+              "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\Assets\\Bootstrap\\Bootstrap.cs",
               "RelativeDocumentMoniker": "Assets\\Bootstrap\\Bootstrap.cs",
-              "ToolTip": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\Bootstrap\\Bootstrap.cs",
+              "ToolTip": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\Assets\\Bootstrap\\Bootstrap.cs",
               "RelativeToolTip": "Assets\\Bootstrap\\Bootstrap.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAA/AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -216,11 +219,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "UnitBase.cs",
-              "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Library\\PackageCache\\com.unity.visualscripting@1.9.4\\Editor\\VisualScripting.Flow\\Options\\UnitBase.cs",
+              "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\Library\\PackageCache\\com.unity.visualscripting@1.9.4\\Editor\\VisualScripting.Flow\\Options\\UnitBase.cs",
               "RelativeDocumentMoniker": "Library\\PackageCache\\com.unity.visualscripting@1.9.4\\Editor\\VisualScripting.Flow\\Options\\UnitBase.cs",
-              "ToolTip": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Library\\PackageCache\\com.unity.visualscripting@1.9.4\\Editor\\VisualScripting.Flow\\Options\\UnitBase.cs",
+              "ToolTip": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\Library\\PackageCache\\com.unity.visualscripting@1.9.4\\Editor\\VisualScripting.Flow\\Options\\UnitBase.cs",
               "RelativeToolTip": "Library\\PackageCache\\com.unity.visualscripting@1.9.4\\Editor\\VisualScripting.Flow\\Options\\UnitBase.cs",
               "ViewState": "AgIAAGwAAAAAAAAAAAAQwIIAAABEAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -228,11 +231,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "BattleUIHotKeys.cs",
-              "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\Battle\\BattleUIHotKeys.cs",
+              "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\Assets\\Battle\\BattleUIHotKeys.cs",
               "RelativeDocumentMoniker": "Assets\\Battle\\BattleUIHotKeys.cs",
-              "ToolTip": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\Battle\\BattleUIHotKeys.cs",
+              "ToolTip": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\Assets\\Battle\\BattleUIHotKeys.cs",
               "RelativeToolTip": "Assets\\Battle\\BattleUIHotKeys.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAACEAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -240,11 +243,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "BattleSceneController.cs",
-              "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\Battle\\BattleSceneController.cs",
+              "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\Assets\\Battle\\BattleSceneController.cs",
               "RelativeDocumentMoniker": "Assets\\Battle\\BattleSceneController.cs",
-              "ToolTip": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\Battle\\BattleSceneController.cs",
+              "ToolTip": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\Assets\\Battle\\BattleSceneController.cs",
               "RelativeToolTip": "Assets\\Battle\\BattleSceneController.cs",
               "ViewState": "AgIAABsAAAAAAAAAAAAAADAAAABZAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -252,23 +255,23 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 18,
               "Title": "WorldMapBattleManager.cs",
               "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\Battle\\WorldMapBattleManager.cs",
-              "RelativeDocumentMoniker": "Assets\\Battle\\WorldMapBattleManager.cs",
+              "RelativeDocumentMoniker": "..\\Assets\\Battle\\WorldMapBattleManager.cs",
               "ToolTip": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\Battle\\WorldMapBattleManager.cs",
-              "RelativeToolTip": "Assets\\Battle\\WorldMapBattleManager.cs",
+              "RelativeToolTip": "..\\Assets\\Battle\\WorldMapBattleManager.cs",
               "ViewState": "AgIAABgAAAAAAAAAAAAQwE8AAAA/AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-17T19:35:48.998Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 15,
               "Title": "DevConsole.cs",
-              "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\DevConsole.cs",
+              "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\Assets\\DevConsole.cs",
               "RelativeDocumentMoniker": "Assets\\DevConsole.cs",
-              "ToolTip": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\DevConsole.cs",
+              "ToolTip": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\Assets\\DevConsole.cs",
               "RelativeToolTip": "Assets\\DevConsole.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAACMAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -276,11 +279,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 9,
               "Title": "BattleManager.cs",
-              "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\Battle\\BattleManager.cs",
+              "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\Assets\\Battle\\BattleManager.cs",
               "RelativeDocumentMoniker": "Assets\\Battle\\BattleManager.cs",
-              "ToolTip": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\Battle\\BattleManager.cs",
+              "ToolTip": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\Assets\\Battle\\BattleManager.cs",
               "RelativeToolTip": "Assets\\Battle\\BattleManager.cs",
               "ViewState": "AgIAAHAAAAAAAAAAAAAAAGAAAAA8AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -288,23 +291,23 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
+              "DocumentIndex": 21,
               "Title": "TestTrigger.cs",
               "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\Armies\\TestTrigger.cs",
-              "RelativeDocumentMoniker": "Assets\\Armies\\TestTrigger.cs",
+              "RelativeDocumentMoniker": "..\\Assets\\Armies\\TestTrigger.cs",
               "ToolTip": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\Armies\\TestTrigger.cs",
-              "RelativeToolTip": "Assets\\Armies\\TestTrigger.cs",
+              "RelativeToolTip": "..\\Assets\\Armies\\TestTrigger.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-17T16:48:31.132Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 14,
               "Title": "EncounterDetection.cs",
-              "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\Armies\\EncounterDetection.cs",
+              "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\Assets\\Armies\\EncounterDetection.cs",
               "RelativeDocumentMoniker": "Assets\\Armies\\EncounterDetection.cs",
-              "ToolTip": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\Armies\\EncounterDetection.cs",
+              "ToolTip": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\Assets\\Armies\\EncounterDetection.cs",
               "RelativeToolTip": "Assets\\Armies\\EncounterDetection.cs",
               "ViewState": "AgIAAAUAAAAAAAAAAAAwwCYAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -312,23 +315,23 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 17,
               "Title": "Squad.cs",
               "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\Armies\\Squad.cs",
-              "RelativeDocumentMoniker": "Assets\\Armies\\Squad.cs",
+              "RelativeDocumentMoniker": "..\\Assets\\Armies\\Squad.cs",
               "ToolTip": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\Armies\\Squad.cs",
-              "RelativeToolTip": "Assets\\Armies\\Squad.cs",
+              "RelativeToolTip": "..\\Assets\\Armies\\Squad.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-17T16:24:56.129Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 16,
               "Title": "ArmyUI.cs",
-              "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\UI\\ArmyUI.cs",
+              "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\Assets\\UI\\ArmyUI.cs",
               "RelativeDocumentMoniker": "Assets\\UI\\ArmyUI.cs",
-              "ToolTip": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\UI\\ArmyUI.cs",
+              "ToolTip": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\Assets\\UI\\ArmyUI.cs",
               "RelativeToolTip": "Assets\\UI\\ArmyUI.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAACkAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -336,11 +339,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 12,
               "Title": "ArmyManager.cs",
-              "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\Armies\\ArmyManager.cs",
+              "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\Assets\\Armies\\ArmyManager.cs",
               "RelativeDocumentMoniker": "Assets\\Armies\\ArmyManager.cs",
-              "ToolTip": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\Armies\\ArmyManager.cs",
+              "ToolTip": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\Assets\\Armies\\ArmyManager.cs",
               "RelativeToolTip": "Assets\\Armies\\ArmyManager.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -348,11 +351,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "ArmyToken.cs",
-              "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\Armies\\ArmyToken.cs",
+              "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\Assets\\Armies\\ArmyToken.cs",
               "RelativeDocumentMoniker": "Assets\\Armies\\ArmyToken.cs",
-              "ToolTip": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\Armies\\ArmyToken.cs",
+              "ToolTip": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\Assets\\Armies\\ArmyToken.cs",
               "RelativeToolTip": "Assets\\Armies\\ArmyToken.cs",
               "ViewState": "AgIAAIYAAAAAAAAAAAAgwKIAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -360,108 +363,108 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 21,
+              "DocumentIndex": 22,
               "Title": "DragSelection.cs",
               "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\DragSelection.cs",
-              "RelativeDocumentMoniker": "Assets\\DragSelection.cs",
+              "RelativeDocumentMoniker": "..\\Assets\\DragSelection.cs",
               "ToolTip": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\DragSelection.cs",
-              "RelativeToolTip": "Assets\\DragSelection.cs",
+              "RelativeToolTip": "..\\Assets\\DragSelection.cs",
               "ViewState": "AgIAAIMAAAAAAAAAAADwv6UAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-15T19:18:15.564Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 22,
+              "DocumentIndex": 23,
               "Title": "UnitSelection.cs",
               "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\UnitSelection.cs",
-              "RelativeDocumentMoniker": "Assets\\UnitSelection.cs",
+              "RelativeDocumentMoniker": "..\\Assets\\UnitSelection.cs",
               "ToolTip": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\UnitSelection.cs",
-              "RelativeToolTip": "Assets\\UnitSelection.cs",
+              "RelativeToolTip": "..\\Assets\\UnitSelection.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABwAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-15T16:44:19.292Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 23,
+              "DocumentIndex": 24,
               "Title": "UnitMovement.cs",
               "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\UnitMovement.cs",
-              "RelativeDocumentMoniker": "Assets\\UnitMovement.cs",
+              "RelativeDocumentMoniker": "..\\Assets\\UnitMovement.cs",
               "ToolTip": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\UnitMovement.cs",
-              "RelativeToolTip": "Assets\\UnitMovement.cs",
+              "RelativeToolTip": "..\\Assets\\UnitMovement.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-15T16:17:29.553Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 24,
+              "DocumentIndex": 25,
               "Title": "RTSSelectionManager.cs",
               "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\RTSSelectionManager.cs",
-              "RelativeDocumentMoniker": "Assets\\RTSSelectionManager.cs",
+              "RelativeDocumentMoniker": "..\\Assets\\RTSSelectionManager.cs",
               "ToolTip": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\RTSSelectionManager.cs",
-              "RelativeToolTip": "Assets\\RTSSelectionManager.cs",
+              "RelativeToolTip": "..\\Assets\\RTSSelectionManager.cs",
               "ViewState": "AgIAAAIAAAAAAAAAAAAxwDYAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-15T16:11:43.604Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
+              "DocumentIndex": 19,
               "Title": "RTSCameraController.cs",
               "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\RTSCameraController.cs",
-              "RelativeDocumentMoniker": "Assets\\RTSCameraController.cs",
+              "RelativeDocumentMoniker": "..\\Assets\\RTSCameraController.cs",
               "ToolTip": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\RTSCameraController.cs",
-              "RelativeToolTip": "Assets\\RTSCameraController.cs",
+              "RelativeToolTip": "..\\Assets\\RTSCameraController.cs",
               "ViewState": "AgIAADMAAAAAAAAAAAAkwGsAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-15T15:00:01.923Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 25,
+              "DocumentIndex": 26,
               "Title": "ModeController.cs",
               "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\ModeController.cs",
-              "RelativeDocumentMoniker": "Assets\\ModeController.cs",
+              "RelativeDocumentMoniker": "..\\Assets\\ModeController.cs",
               "ToolTip": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\ModeController.cs",
-              "RelativeToolTip": "Assets\\ModeController.cs",
+              "RelativeToolTip": "..\\Assets\\ModeController.cs",
               "ViewState": "AgIAAGsAAAAAAAAAAAAgwIYAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-15T14:56:36.404Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 26,
+              "DocumentIndex": 27,
               "Title": "Player3PCamera.cs",
               "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\Player3PCamera.cs",
-              "RelativeDocumentMoniker": "Assets\\Player3PCamera.cs",
+              "RelativeDocumentMoniker": "..\\Assets\\Player3PCamera.cs",
               "ToolTip": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\Player3PCamera.cs",
-              "RelativeToolTip": "Assets\\Player3PCamera.cs",
+              "RelativeToolTip": "..\\Assets\\Player3PCamera.cs",
               "ViewState": "AgIAADwAAAAAAAAAAAAgwFMAAABCAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-15T14:25:06.388Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 19,
+              "DocumentIndex": 20,
               "Title": "Player3PMovement.cs",
               "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\Player3PMovement.cs",
-              "RelativeDocumentMoniker": "Assets\\Player3PMovement.cs",
+              "RelativeDocumentMoniker": "..\\Assets\\Player3PMovement.cs",
               "ToolTip": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\Player3PMovement.cs",
-              "RelativeToolTip": "Assets\\Player3PMovement.cs",
+              "RelativeToolTip": "..\\Assets\\Player3PMovement.cs",
               "ViewState": "AgIAABQAAAAAAAAAAAAgwEAAAABcAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-15T14:22:46.716Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 27,
+              "DocumentIndex": 28,
               "Title": "SquadSpawner.cs",
               "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\SquadSpawner.cs",
-              "RelativeDocumentMoniker": "Assets\\SquadSpawner.cs",
+              "RelativeDocumentMoniker": "..\\Assets\\SquadSpawner.cs",
               "ToolTip": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\SquadSpawner.cs",
-              "RelativeToolTip": "Assets\\SquadSpawner.cs",
+              "RelativeToolTip": "..\\Assets\\SquadSpawner.cs",
               "ViewState": "AgIAAMkAAAAAAAAAAAAqwNgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-15T13:51:17.871Z"
