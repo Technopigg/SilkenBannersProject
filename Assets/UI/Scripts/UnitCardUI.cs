@@ -12,7 +12,7 @@ public class UnitCardUI : MonoBehaviour
     public Sprite cavalryIcon;
     public Sprite generalIcon;
 
-    private UnitCardTooltip tooltip;   
+    private UnitCardTooltip tooltip;    
 
     private void Awake()
     {
