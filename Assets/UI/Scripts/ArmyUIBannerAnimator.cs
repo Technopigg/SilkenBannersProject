@@ -3,34 +3,40 @@ using DG.Tweening;
 
 public class ArmyUIBannerAnimator : MonoBehaviour
 {
-    public RectTransform banner;          
-    public float hiddenY = -150f;         
-    public float shownY = 0f;             
-    public float slideDuration = 0.5f;    
+    [Header("Assign the Banner RectTransform")]
+    public RectTransform banner;
 
-    private Tween currentTween;
+    [Header("Positions")]
+    public float openPosY = 228f;      
+    public float closedPosY = -142f;   
 
-    private void Start()
+    [Header("Animation")]
+    public float duration = 0.35f;
+    public Ease ease = Ease.OutQuart;
+
+    private bool isOpen = false;
+
+    public void ToggleBanner()
     {
-        
-        Vector2 pos = banner.anchoredPosition;
-        pos.y = hiddenY;
-        banner.anchoredPosition = pos;
+        if (isOpen)
+            CloseBanner();
+        else
+            OpenBanner();
     }
 
-    public void ShowBanner()
+    public void OpenBanner()
     {
-        if (currentTween != null) currentTween.Kill();
+        banner.DOAnchorPosY(openPosY, duration)
+            .SetEase(ease);
 
-        currentTween = banner.DOAnchorPosY(shownY, slideDuration)
-            .SetEase(Ease.OutCubic);
+        isOpen = true;
     }
 
-    public void HideBanner()
+    public void CloseBanner()
     {
-        if (currentTween != null) currentTween.Kill();
+        banner.DOAnchorPosY(closedPosY, duration)
+            .SetEase(ease);
 
-        currentTween = banner.DOAnchorPosY(hiddenY, slideDuration)
-            .SetEase(Ease.InCubic);
+        isOpen = false;
     }
 }

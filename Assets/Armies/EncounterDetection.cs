@@ -14,14 +14,9 @@ public class EncounterDetection : MonoBehaviour
         ArmyToken otherToken = other.GetComponent<ArmyToken>();
         if (otherToken == null || otherToken == armyToken)
             return;
-
         Debug.Log($"Encounter: {armyToken.name} vs {otherToken.name}");
-
-        // stop both armies in place
         armyToken.SetTarget(armyToken.transform.position);
         otherToken.SetTarget(otherToken.transform.position);
-
-        // Tell the NEW battle manager to create & store engagement
         BattleManager.Instance.CreateEngagementAndStart(armyToken, otherToken);
     }
 }

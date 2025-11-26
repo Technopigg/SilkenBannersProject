@@ -9,7 +9,7 @@ public class ArmyManager : MonoBehaviour
 
     void Update()
     {
-        // --- Left-click: select OR deselect ---
+
         if (Input.GetMouseButtonDown(0))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -20,42 +20,40 @@ public class ArmyManager : MonoBehaviour
 
                 if (token != null)
                 {
-                    // Deselect previous (but DO NOT clear UI here)
+                 
                     if (selectedToken != null)
                         selectedToken.SetSelected(false);
 
-                    // Select new
                     selectedToken = token;
                     selectedToken.SetSelected(true);
 
-                    armyUI.ShowArmy(selectedToken); // load new army
+                    armyUI.ShowArmy(selectedToken); 
                 }
                 else
                 {
-                    // Clicked somewhere that is NOT a token → full deselect
+                
                     if (selectedToken != null)
                     {
                         selectedToken.SetSelected(false);
                         selectedToken = null;
 
-                        armyUI.Clear();  // HERE is where clear stays
+                        armyUI.Clear(); 
                     }
                 }
             }
             else
             {
-                // Raycast hit nothing → deselect
+          
                 if (selectedToken != null)
                 {
                     selectedToken.SetSelected(false);
                     selectedToken = null;
 
-                    armyUI.Clear(); // same as above
+                    armyUI.Clear(); 
                 }
             }
         }
-
-        // --- Right-click: move selected token ---
+        
         if (Input.GetMouseButtonDown(1) && selectedToken != null)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);

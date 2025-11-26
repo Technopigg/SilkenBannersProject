@@ -78,7 +78,6 @@ public class ArmyToken : MonoBehaviour
             return;
         }
 
-        // ensure this token belongs to the active engagement
         if (engagement.player == this || engagement.enemy == this)
         {
             Debug.Log($"{name}: Resuming active battle...");
