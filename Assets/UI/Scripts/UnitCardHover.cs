@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 using System.Collections;
 
 public class UnitCardHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
@@ -9,7 +8,7 @@ public class UnitCardHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     [SerializeField] private float animationSpeed = 10f;
 
     private Vector3 originalScale;
-    private bool isHovered = false;
+    private bool isHovered;
 
     private void Awake()
     {
