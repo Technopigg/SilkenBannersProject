@@ -1,0 +1,19 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UnitCommandPanel.uss?fileID=7433441132597879392&amp;guid=5b26006577b030e449122f57ed8f435d&amp;type=3#UnitCommandPanel" />
+    <ui:VisualElement name="UnitCommandPanel" style="flex-grow: 0; flex-direction: column; flex-wrap: nowrap; background-image: url(&quot;project://database/Assets/UIPanel1024x512.png?fileID=2800000&amp;guid=b501b1bc78055fa47a393815886b9fd3&amp;type=3#UIPanel1024x512&quot;); -unity-background-scale-mode: stretch-to-fill; -unity-slice-left: 90; -unity-slice-top: 70; -unity-slice-right: 84; -unity-slice-bottom: 68; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 90px; padding-right: 84px; padding-bottom: 70px; padding-left: 68px; width: 500px; height: 350px; flex-shrink: 0; align-items: flex-start; position: absolute; top: 310px; left: 115px;">
+        <ui:VisualElement name="GridContainer" style="flex-grow: 1; flex-direction: row; flex-wrap: wrap; justify-content: flex-end; align-items: center; padding-top: 0; padding-right: 91px; padding-bottom: 0; padding-left: 68px; width: 527px; align-self: center; height: 275px; -unity-background-scale-mode: stretch-to-fill;">
+            <ui:Button text="Button" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Slot1" class="button" />
+            <ui:Button text="Button" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Slot2" class="button" />
+            <ui:Button text="Button" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Slot3" class="button" />
+            <ui:Button text="Button" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Slot4" class="button" />
+            <ui:Button text="Button" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Slot8" class="button" />
+            <ui:Button text="Button" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Slot5" class="button" />
+            <ui:Button text="Button" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Slot6" class="button" />
+            <ui:Button text="Button" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Slot7" class="button" />
+            <ui:Button text="Button" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Slot9" class="button" />
+            <ui:Button text="Button" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Slot10" class="button" />
+            <ui:Button text="Button" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Slot11" class="button" />
+            <ui:Button text="Button" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Slot12" class="button" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

@@ -1,10 +1,10 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/MainMenuStyle.uss?fileID=7433441132597879392&amp;guid=0d7c83d31c34643418111a6220678865&amp;type=3#MainMenuStyle" />
-    <ui:VisualElement name="MainMenuPanel" style="flex-grow: 1; font-size: 11px; align-items: flex-start; justify-content: center;">
+    <ui:VisualElement name="MainMenuPanel" picking-mode="Ignore" style="flex-grow: 1; font-size: 11px; align-items: flex-start; justify-content: center;">
         <ui:Button text="RETURN" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ReturnButton" class="button" style="-unity-text-align: middle-center;" />
         <ui:Button text="SAVE " parse-escape-sequences="true" display-tooltip-when-elided="true" name="SaveButton" class="button" />
-        <ui:Button text="SETTINGS" parse-escape-sequences="true" display-tooltip-when-elided="true" name="SettingsButton" class="button" style="background-image: url(&quot;project://database/Assets/UiButtonSpriteSmall.png?fileID=21300000&amp;guid=fa9e0f56f4298c744a523db312247120&amp;type=3#UiButtonSpriteSmall&quot;);" />
         <ui:Button text="LOAD" parse-escape-sequences="true" display-tooltip-when-elided="true" name="LoadButton" class="button" />
+        <ui:Button text="SETTINGS" parse-escape-sequences="true" display-tooltip-when-elided="true" name="SettingsButton" class="button" style="background-image: url(&quot;project://database/Assets/UiButtonSpriteSmall.png?fileID=21300000&amp;guid=fa9e0f56f4298c744a523db312247120&amp;type=3#UiButtonSpriteSmall&quot;);" />
         <ui:Button text="EXIT TO &#10;MAIN MENU" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ExitToMainMenuButton" enable-rich-text="true" class="button" />
         <ui:Button text="EXIT TO&#10;WINDOWS" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ExitToWindowsButton" enable-rich-text="true" class="button" />
     </ui:VisualElement>

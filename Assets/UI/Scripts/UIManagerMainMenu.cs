@@ -13,13 +13,11 @@ public class UIManagerMainMenu : MonoBehaviour
     {
         root = GetComponent<UIDocument>().rootVisualElement;
 
-        // These must match the names in UI Builder
         mainMenuPanel = root.Q<VisualElement>("MainMenuPanel");
         questsPanel = root.Q<VisualElement>("QuestsPanel");
         diplomacyPanel = root.Q<VisualElement>("DiplomacyPanel");
 
         CheckForNulls();
-
         HideAll();
     }
 
@@ -49,22 +47,38 @@ public class UIManagerMainMenu : MonoBehaviour
 
     public void ShowMainMenu()
     {
+        // TOGGLE FIX: Check resolvedStyle instead of style
+        if (mainMenuPanel.resolvedStyle.display == DisplayStyle.Flex)
+        {
+            HideAll();
+            return;
+        }
+
         HideAll();
-        if (mainMenuPanel != null)
-            mainMenuPanel.style.display = DisplayStyle.Flex;
+        mainMenuPanel.style.display = DisplayStyle.Flex;
     }
 
     public void ShowQuests()
     {
+        if (questsPanel.resolvedStyle.display == DisplayStyle.Flex)
+        {
+            HideAll();
+            return;
+        }
+
         HideAll();
-        if (questsPanel != null)
-            questsPanel.style.display = DisplayStyle.Flex;
+        questsPanel.style.display = DisplayStyle.Flex;
     }
 
     public void ShowDiplomacy()
     {
+        if (diplomacyPanel.resolvedStyle.display == DisplayStyle.Flex)
+        {
+            HideAll();
+            return;
+        }
+
         HideAll();
-        if (diplomacyPanel != null)
-            diplomacyPanel.style.display = DisplayStyle.Flex;
+        diplomacyPanel.style.display = DisplayStyle.Flex;
     }
 }

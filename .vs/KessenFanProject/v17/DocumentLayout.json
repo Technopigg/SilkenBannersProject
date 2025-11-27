@@ -7,7 +7,7 @@
       "RelativeMoniker": "D:0:0:{F641F016-D85F-7DC1-E841-4D381E783DDA}|Assembly-CSharp.csproj|solutionrelative:assets\\ui\\mainmenustyle.uss||{3B902123-F8A7-4915-9F01-361F908088D0}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F641F016-D85F-7DC1-E841-4D381E783DDA}|Assembly-CSharp.csproj|c:\\users\\alber\\documents\\unity\\kessenfanproject\\kessenfanproject\\assets\\ui\\scripts\\armyuibanneranimator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{F641F016-D85F-7DC1-E841-4D381E783DDA}|Assembly-CSharp.csproj|C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\assets\\ui\\scripts\\armyuibanneranimator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F641F016-D85F-7DC1-E841-4D381E783DDA}|Assembly-CSharp.csproj|solutionrelative:assets\\ui\\scripts\\armyuibanneranimator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -151,7 +151,7 @@
               "RelativeDocumentMoniker": "Assets\\UI\\MainMenuStyle.uss",
               "ToolTip": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\Assets\\UI\\MainMenuStyle.uss",
               "RelativeToolTip": "Assets\\UI\\MainMenuStyle.uss",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB8AAAATAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
               "WhenOpened": "2025-11-27T18:03:28.581Z",
               "EditorCaption": ""
@@ -166,8 +166,7 @@
               "RelativeToolTip": "Assets\\UI\\Scripts\\ArmyUIBannerAnimator.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAAZAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-26T17:58:39.787Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-26T17:58:39.787Z"
             },
             {
               "$type": "Document",
