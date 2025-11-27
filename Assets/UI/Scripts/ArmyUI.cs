@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class ArmyUI : MonoBehaviour
 {
     [Header("UI References")]
-    public ArmyUIBannerAnimator bannerAnimator;  // ⬅ Add this
+    public ArmyUIBannerAnimator bannerAnimator;  
     public TextMeshProUGUI ownerText;
     public Transform unitCardContainer;
     public GameObject unitCardPrefab;
@@ -19,8 +19,7 @@ public class ArmyUI : MonoBehaviour
             Clear();
             return;
         }
-
-        // --- animate open ---
+        
         bannerAnimator.OpenBanner();
 
         ownerText.text = token.owner;
