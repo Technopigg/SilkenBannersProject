@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{F641F016-D85F-7DC1-E841-4D381E783DDA}|Assembly-CSharp.csproj|c:\\users\\alber\\documents\\unity\\kessenfanproject\\kessenfanproject\\assets\\ui\\unitcommandpanel.uss||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{F641F016-D85F-7DC1-E841-4D381E783DDA}|Assembly-CSharp.csproj|solutionrelative:assets\\ui\\unitcommandpanel.uss||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{F641F016-D85F-7DC1-E841-4D381E783DDA}|Assembly-CSharp.csproj|c:\\users\\alber\\documents\\unity\\kessenfanproject\\kessenfanproject\\assets\\ui\\mainmenustyle.uss||{3B902123-F8A7-4915-9F01-361F908088D0}",
       "RelativeMoniker": "D:0:0:{F641F016-D85F-7DC1-E841-4D381E783DDA}|Assembly-CSharp.csproj|solutionrelative:assets\\ui\\mainmenustyle.uss||{3B902123-F8A7-4915-9F01-361F908088D0}"
     },
@@ -128,7 +132,7 @@
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 16,
               "Title": "ArmyUnit.cs",
               "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\Assets\\Armies\\ArmyUnit.cs",
               "RelativeDocumentMoniker": "Assets\\Armies\\ArmyUnit.cs",
@@ -146,6 +150,19 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "UnitCommandPanel.uss",
+              "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\Assets\\UI\\UnitCommandPanel.uss",
+              "RelativeDocumentMoniker": "Assets\\UI\\UnitCommandPanel.uss",
+              "ToolTip": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\Assets\\UI\\UnitCommandPanel.uss",
+              "RelativeToolTip": "Assets\\UI\\UnitCommandPanel.uss",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2025-11-28T13:04:23.103Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "MainMenuStyle.uss",
               "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\Assets\\UI\\MainMenuStyle.uss",
               "RelativeDocumentMoniker": "Assets\\UI\\MainMenuStyle.uss",
@@ -158,7 +175,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "ArmyUIBannerAnimator.cs",
               "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\Assets\\UI\\Scripts\\ArmyUIBannerAnimator.cs",
               "RelativeDocumentMoniker": "Assets\\UI\\Scripts\\ArmyUIBannerAnimator.cs",
@@ -170,7 +187,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "TooltipController.cs",
               "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\Assets\\UI\\Scripts\\TooltipController.cs",
               "RelativeDocumentMoniker": "Assets\\UI\\Scripts\\TooltipController.cs",
@@ -182,7 +199,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "UnitCardHover.cs",
               "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\Assets\\UI\\Scripts\\UnitCardHover.cs",
               "RelativeDocumentMoniker": "Assets\\UI\\Scripts\\UnitCardHover.cs",
@@ -194,7 +211,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "Player3PCamera.cs",
               "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\Assets\\Battle\\Player3PCamera.cs",
               "RelativeDocumentMoniker": "Assets\\Battle\\Player3PCamera.cs",
@@ -206,7 +223,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "ModeController.cs",
               "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\Assets\\Battle\\ModeController.cs",
               "RelativeDocumentMoniker": "Assets\\Battle\\ModeController.cs",
@@ -218,7 +235,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 9,
               "Title": "DebugSceneState.cs",
               "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\Assets\\Bootstrap\\DebugSceneState.cs",
               "RelativeDocumentMoniker": "Assets\\Bootstrap\\DebugSceneState.cs",
@@ -230,7 +247,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 11,
               "Title": "NewBehaviourScript.cs",
               "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\Bootstrap\\NewBehaviourScript.cs",
               "RelativeDocumentMoniker": "..\\Assets\\Bootstrap\\NewBehaviourScript.cs",
@@ -241,7 +258,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 15,
               "Title": "BattlefieldState.cs",
               "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\Assets\\Battle\\BattlefieldState.cs",
               "RelativeDocumentMoniker": "Assets\\Battle\\BattlefieldState.cs",
@@ -253,7 +270,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "Bootstrap.cs",
               "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\Assets\\Bootstrap\\Bootstrap.cs",
               "RelativeDocumentMoniker": "Assets\\Bootstrap\\Bootstrap.cs",
@@ -265,7 +282,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "UnitBase.cs",
               "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\Library\\PackageCache\\com.unity.visualscripting@1.9.4\\Editor\\VisualScripting.Flow\\Options\\UnitBase.cs",
               "RelativeDocumentMoniker": "Library\\PackageCache\\com.unity.visualscripting@1.9.4\\Editor\\VisualScripting.Flow\\Options\\UnitBase.cs",
@@ -277,7 +294,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 12,
               "Title": "BattleUIHotKeys.cs",
               "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\Assets\\Battle\\BattleUIHotKeys.cs",
               "RelativeDocumentMoniker": "Assets\\Battle\\BattleUIHotKeys.cs",
@@ -289,7 +306,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "BattleSceneController.cs",
               "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\Assets\\Battle\\BattleSceneController.cs",
               "RelativeDocumentMoniker": "Assets\\Battle\\BattleSceneController.cs",
@@ -301,7 +318,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
+              "DocumentIndex": 21,
               "Title": "WorldMapBattleManager.cs",
               "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\Battle\\WorldMapBattleManager.cs",
               "RelativeDocumentMoniker": "..\\Assets\\Battle\\WorldMapBattleManager.cs",
@@ -313,7 +330,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
+              "DocumentIndex": 19,
               "Title": "DevConsole.cs",
               "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\Assets\\DevConsole.cs",
               "RelativeDocumentMoniker": "Assets\\DevConsole.cs",
@@ -325,7 +342,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 14,
               "Title": "BattleManager.cs",
               "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\Assets\\Battle\\BattleManager.cs",
               "RelativeDocumentMoniker": "Assets\\Battle\\BattleManager.cs",
@@ -337,7 +354,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 23,
+              "DocumentIndex": 24,
               "Title": "TestTrigger.cs",
               "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\Armies\\TestTrigger.cs",
               "RelativeDocumentMoniker": "..\\Assets\\Armies\\TestTrigger.cs",
@@ -349,7 +366,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 18,
               "Title": "EncounterDetection.cs",
               "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\Assets\\Armies\\EncounterDetection.cs",
               "RelativeDocumentMoniker": "Assets\\Armies\\EncounterDetection.cs",
@@ -361,7 +378,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 19,
+              "DocumentIndex": 20,
               "Title": "Squad.cs",
               "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\Armies\\Squad.cs",
               "RelativeDocumentMoniker": "..\\Assets\\Armies\\Squad.cs",
@@ -373,7 +390,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 31,
+              "DocumentIndex": 32,
               "Title": "ArmyUI.cs",
               "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\UI\\ArmyUI.cs",
               "RelativeDocumentMoniker": "..\\Assets\\UI\\ArmyUI.cs",
@@ -385,7 +402,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 17,
               "Title": "ArmyManager.cs",
               "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\Assets\\Armies\\ArmyManager.cs",
               "RelativeDocumentMoniker": "Assets\\Armies\\ArmyManager.cs",
@@ -397,7 +414,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 13,
               "Title": "ArmyToken.cs",
               "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\KessenFanProject\\Assets\\Armies\\ArmyToken.cs",
               "RelativeDocumentMoniker": "Assets\\Armies\\ArmyToken.cs",
@@ -409,7 +426,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 24,
+              "DocumentIndex": 25,
               "Title": "DragSelection.cs",
               "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\DragSelection.cs",
               "RelativeDocumentMoniker": "..\\Assets\\DragSelection.cs",
@@ -421,7 +438,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 25,
+              "DocumentIndex": 26,
               "Title": "UnitSelection.cs",
               "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\UnitSelection.cs",
               "RelativeDocumentMoniker": "..\\Assets\\UnitSelection.cs",
@@ -433,7 +450,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 26,
+              "DocumentIndex": 27,
               "Title": "UnitMovement.cs",
               "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\UnitMovement.cs",
               "RelativeDocumentMoniker": "..\\Assets\\UnitMovement.cs",
@@ -445,7 +462,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 27,
+              "DocumentIndex": 28,
               "Title": "RTSSelectionManager.cs",
               "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\RTSSelectionManager.cs",
               "RelativeDocumentMoniker": "..\\Assets\\RTSSelectionManager.cs",
@@ -457,7 +474,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 21,
+              "DocumentIndex": 22,
               "Title": "RTSCameraController.cs",
               "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\RTSCameraController.cs",
               "RelativeDocumentMoniker": "..\\Assets\\RTSCameraController.cs",
@@ -469,7 +486,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 28,
+              "DocumentIndex": 29,
               "Title": "ModeController.cs",
               "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\ModeController.cs",
               "RelativeDocumentMoniker": "..\\Assets\\ModeController.cs",
@@ -481,7 +498,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 29,
+              "DocumentIndex": 30,
               "Title": "Player3PCamera.cs",
               "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\Player3PCamera.cs",
               "RelativeDocumentMoniker": "..\\Assets\\Player3PCamera.cs",
@@ -493,7 +510,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 22,
+              "DocumentIndex": 23,
               "Title": "Player3PMovement.cs",
               "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\Player3PMovement.cs",
               "RelativeDocumentMoniker": "..\\Assets\\Player3PMovement.cs",
@@ -505,7 +522,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 30,
+              "DocumentIndex": 31,
               "Title": "SquadSpawner.cs",
               "DocumentMoniker": "C:\\Users\\alber\\Documents\\Unity\\KessenFanProject\\Assets\\SquadSpawner.cs",
               "RelativeDocumentMoniker": "..\\Assets\\SquadSpawner.cs",
