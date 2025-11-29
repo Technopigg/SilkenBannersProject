@@ -10,26 +10,26 @@ using System.Collections.Generic;
 public class GeneralPortraitUI : MonoBehaviour
 {
     [Header("UI")]
-    public RawImage portraitImage;            // assign the RawImage in the UI
+    public RawImage portraitImage;           
     public Vector2 renderTextureSize = new Vector2(512, 512);
 
     [Header("Portrait Scene")]
-    public Transform portraitRoot;            // empty GameObject where preview instances live (world-space, disabled from gameplay)
-    public Camera portraitCamera;             // camera that looks at portraitRoot and renders only PortraitLayer
-    public Light portraitLight;               // optional dedicated light for the portrait
+    public Transform portraitRoot;           
+    public Camera portraitCamera;            
+    public Light portraitLight;               
 
     [Header("Layers")]
-    public string portraitLayerName = "Portrait"; // recommended to create in Project Settings > Tags & Layers
+    public string portraitLayerName = "Portrait";
     private int portraitLayerMask;
 
     [Header("Animation")]
-    public string idleStateName = "Idle";     // animation state name to play on the Animator
-    public string animatorLayer = "Base Layer"; // optional
+    public string idleStateName = "Idle";    
+    public string animatorLayer = "Base Layer";
 
     [Header("Model Offset")]
-    public Vector3 modelPositionOffset = Vector3.zero;   // tweak to center model
-    public Vector3 modelRotationEuler = Vector3.zero;    // rotate model so it faces camera nicely
-    public Vector3 modelScale = Vector3.one;             // scale override if needed
+    public Vector3 modelPositionOffset = Vector3.zero;  
+    public Vector3 modelRotationEuler = Vector3.zero;   
+    public Vector3 modelScale = Vector3.one;            
 
     private RenderTexture rt;
     private GameObject currentInstance;
@@ -50,12 +50,11 @@ public class GeneralPortraitUI : MonoBehaviour
             Debug.LogWarning($"GeneralPortraitUI: layer '{portraitLayerName}' not found. Please create it in Tags & Layers.");
 
         CreateRenderTexture();
-        Hide(); // start hidden
+        Hide(); 
     }
 
     void CreateRenderTexture()
     {
-        // create RT to match requested size (or reuse)
         int w = Mathf.Max(16, (int)renderTextureSize.x);
         int h = Mathf.Max(16, (int)renderTextureSize.y);
 
@@ -69,7 +68,7 @@ public class GeneralPortraitUI : MonoBehaviour
         if (portraitCamera != null)
         {
             portraitCamera.targetTexture = rt;
-            portraitCamera.cullingMask = 1 << portraitLayerMask; // only render the portrait layer
+            portraitCamera.cullingMask = 1 << portraitLayerMask; 
         }
         portraitImage.texture = rt;
     }
@@ -87,37 +86,21 @@ public class GeneralPortraitUI : MonoBehaviour
             return;
         }
 
-        // Create RT if necessary (handles resizing while editor runs)
         CreateRenderTexture();
-
-        // If same prefab already displayed, keep it
         if (currentInstance != null)
         {
-            // optional: check name, reuse if same prefab type
-            // Destroy it and reinstantiate for safety
             DestroyCurrentInstance();
         }
-
-        // instantiate into portraitRoot
         currentInstance = Instantiate(generalPrefab, portraitRoot);
         currentInstance.transform.localPosition = modelPositionOffset;
         currentInstance.transform.localEulerAngles = modelRotationEuler;
         currentInstance.transform.localScale = modelScale;
-
-        // set the layer of instance and all children to portrait layer
         SetLayerRecursively(currentInstance, portraitLayerName);
-
-        // disable gameplay scripts (leave Animator enabled)
         DisableGameplayScripts(currentInstance);
-
-        // if the prefab has Rigidbody / Colliders etc, disable them for preview
         DisablePhysics(currentInstance);
-
-        // Ensure camera looks at the model - user may position camera manually in inspector
-        // If portraitCamera isn't set to look at portraitRoot via inspector, we can optionally set it:
+        
         if (portraitCamera != null)
         {
-            // you can optionally adjust camera transform here - leaving it to inspector gives better control
             portraitCamera.enabled = true;
         }
 
@@ -125,10 +108,7 @@ public class GeneralPortraitUI : MonoBehaviour
         Animator animator = currentInstance.GetComponentInChildren<Animator>();
         if (animator != null)
         {
-            // Allow animator to update in unscaled time to keep UI responsive if game is paused
             animator.updateMode = AnimatorUpdateMode.UnscaledTime;
-
-            // Try Play, wrapped in try/catch to avoid errors if state missing.
             try
             {
                 if (!string.IsNullOrEmpty(idleStateName))
@@ -165,7 +145,6 @@ public class GeneralPortraitUI : MonoBehaviour
     {
         if (currentInstance != null)
         {
-            // Destroy immediately if in editor or playmode
             Destroy(currentInstance);
             currentInstance = null;
         }
@@ -187,13 +166,13 @@ public class GeneralPortraitUI : MonoBehaviour
 
     private void DisableGameplayScripts(GameObject go)
     {
-        // Disable MonoBehaviours except Animator
+    
         var monos = go.GetComponentsInChildren<MonoBehaviour>(true);
         foreach (var m in monos)
         {
             if (m == null) continue;
-            if (m is Animator) continue; // keep animator enabled
-            // optionally keep other components: Renderer, Transform, etc.
+            if (m is Animator) continue; 
+        
             m.enabled = false;
         }
     }

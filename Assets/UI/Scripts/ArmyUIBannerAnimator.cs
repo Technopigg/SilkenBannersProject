@@ -6,8 +6,8 @@ public class ArmyUIBannerAnimator : MonoBehaviour
     [Header("Assign the Banner RectTransform")]
     public RectTransform banner;
 
-    [Header("Optional: Another banner animator to animate together")]
-    public ArmyUIBannerAnimator linkedBanner;   // ← Add this
+    [Header("Optional: Other banners to animate together")]
+    public ArmyUIBannerAnimator[] linkedBanners;   // ← now an array
 
     [Header("Positions")]
     public float openPosY = 228f;
@@ -29,16 +29,13 @@ public class ArmyUIBannerAnimator : MonoBehaviour
 
     public void OpenBanner()
     {
-        banner.DOAnchorPosY(openPosY, duration)
-            .SetEase(ease);
+        banner.DOAnchorPosY(openPosY, duration).SetEase(ease);
 
-        // ALSO animate linked banner
-        if (linkedBanner != null)
+        foreach (var b in linkedBanners)
         {
-            linkedBanner.banner.DOAnchorPosY(linkedBanner.openPosY, linkedBanner.duration)
-                .SetEase(linkedBanner.ease);
-
-            linkedBanner.isOpen = true;
+            if (b == null) continue;
+            b.banner.DOAnchorPosY(b.openPosY, b.duration).SetEase(b.ease);
+            b.isOpen = true;
         }
 
         isOpen = true;
@@ -46,16 +43,13 @@ public class ArmyUIBannerAnimator : MonoBehaviour
 
     public void CloseBanner()
     {
-        banner.DOAnchorPosY(closedPosY, duration)
-            .SetEase(ease);
+        banner.DOAnchorPosY(closedPosY, duration).SetEase(ease);
 
-        // ALSO animate linked banner
-        if (linkedBanner != null)
+        foreach (var b in linkedBanners)
         {
-            linkedBanner.banner.DOAnchorPosY(linkedBanner.closedPosY, linkedBanner.duration)
-                .SetEase(linkedBanner.ease);
-
-            linkedBanner.isOpen = false;
+            if (b == null) continue;
+            b.banner.DOAnchorPosY(b.closedPosY, b.duration).SetEase(b.ease);
+            b.isOpen = false;
         }
 
         isOpen = false;

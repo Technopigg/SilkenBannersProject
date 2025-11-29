@@ -56,8 +56,8 @@ public class Player3PMovement : MonoBehaviour
         if (ModeController.Instance != null &&
             ModeController.Instance.currentMode == ControlMode.RTS)
         {
-            Vector3 vel = rb.velocity;
-            rb.velocity = new Vector3(0f, vel.y, 0f);
+            Vector3 vel = rb.linearVelocity;
+            rb.linearVelocity = new Vector3(0f, vel.y, 0f);
 
             Vector3 pos = rb.position;
             if (Terrain.activeTerrain != null && Terrain.activeTerrain.terrainData != null)
@@ -90,10 +90,10 @@ public class Player3PMovement : MonoBehaviour
         float speed = moveSpeed * (Input.GetKey(KeyCode.LeftShift) ? sprintMultiplier : 1f);
 
         Vector3 targetVel = moveDir * speed;
-        Vector3 currentVel = rb.velocity;
+        Vector3 currentVel = rb.linearVelocity;
         Vector3 desiredVel = new Vector3(targetVel.x, currentVel.y, targetVel.z);
 
-        rb.velocity = Vector3.MoveTowards(currentVel, desiredVel, acceleration * Time.fixedDeltaTime);
+        rb.linearVelocity = Vector3.MoveTowards(currentVel, desiredVel, acceleration * Time.fixedDeltaTime);
 
         if (moveDir != Vector3.zero)
         {
@@ -114,7 +114,7 @@ public class Player3PMovement : MonoBehaviour
         // Guard animator calls
         if (anim != null && anim.runtimeAnimatorController != null)
         {
-            float horizontalSpeed = new Vector3(rb.velocity.x, 0f, rb.velocity.z).magnitude;
+            float horizontalSpeed = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z).magnitude;
             anim.SetFloat("Speed", horizontalSpeed);
         }
     }
