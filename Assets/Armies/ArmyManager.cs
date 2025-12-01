@@ -1,14 +1,18 @@
 ﻿using UnityEngine;
+using UnityEngine.EventSystems; // <<< IMPORTANT
 
 public class ArmyManager : MonoBehaviour
 {
     private ArmyToken selectedToken;
 
     [Header("UI Reference")]
-    public ArmyUI armyUI; // assign in Inspector
+    public ArmyUI armyUI; 
 
     void Update()
     {
+
+        if (EventSystem.current.IsPointerOverGameObject())
+            return;
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -20,18 +24,14 @@ public class ArmyManager : MonoBehaviour
 
                 if (token != null)
                 {
-                 
                     if (selectedToken != null)
                         selectedToken.SetSelected(false);
-
                     selectedToken = token;
                     selectedToken.SetSelected(true);
-
                     armyUI.ShowArmy(selectedToken); 
                 }
                 else
                 {
-                
                     if (selectedToken != null)
                     {
                         selectedToken.SetSelected(false);
@@ -43,17 +43,16 @@ public class ArmyManager : MonoBehaviour
             }
             else
             {
-          
                 if (selectedToken != null)
                 {
                     selectedToken.SetSelected(false);
                     selectedToken = null;
-
                     armyUI.Clear(); 
                 }
             }
         }
-        
+
+
         if (Input.GetMouseButtonDown(1) && selectedToken != null)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
