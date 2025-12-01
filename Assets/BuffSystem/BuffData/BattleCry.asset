@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e82bc199e1da48d496ff9fa895f4553b, type: 3}
   m_Name: BattleCry
   m_EditorClassIdentifier: Assembly-CSharp::BuffData
-  id: 
-  displayName: 
-  description: 
-  icon: {fileID: 0}
-  isDebuff: 0
-  defaultDuration: 5
+  id: BattleCry
+  displayName: Battle Cry
+  description: Unit attack damaged reduced.
+  icon: {fileID: 21300000, guid: b99edea55866aaa44a6042a88d58bc95, type: 3}
+  isDebuff: 1
+  defaultDuration: 100
   maxStacks: 1

@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e82bc199e1da48d496ff9fa895f4553b, type: 3}
   m_Name: Rally
   m_EditorClassIdentifier: Assembly-CSharp::BuffData
-  id: 
-  displayName: 
-  description: 
-  icon: {fileID: 0}
+  id: Rally
+  displayName: Rally
+  description: Unit defence increased.
+  icon: {fileID: 21300000, guid: 1d91d49d48e2b964fb2dead33eb29f79, type: 3}
   isDebuff: 0
-  defaultDuration: 5
+  defaultDuration: 100
   maxStacks: 1
