@@ -69,6 +69,6 @@ public class CharacterPortraitController : MonoBehaviour
     public void PlayIdle()
     {
         if (portraitAnimator == null) return;
-        portraitAnimator.Play("StandingIdle");
+        portraitAnimator.Play("BreathingIdle");
     }
 }
