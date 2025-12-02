@@ -111,7 +111,7 @@ public class Player3PMovement : MonoBehaviour
             }
         }
 
-        // Guard animator calls
+
         if (anim != null && anim.runtimeAnimatorController != null)
         {
             float horizontalSpeed = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z).magnitude;
