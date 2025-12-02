@@ -5,10 +5,10 @@ using System.Collections.Generic;
 public class DragSelection : MonoBehaviour
 {
     [Header("UI")]
-    public RectTransform selectionBox; 
+    public RectTransform selectionBox;
 
     [Header("Settings")]
-    public float dragThreshold = 8f;   
+    public float dragThreshold = 8f;
     public bool additiveWithShift = true;
 
     private Vector2 startPos;
@@ -18,7 +18,6 @@ public class DragSelection : MonoBehaviour
 
     void Awake()
     {
-    
         if (ModeController.Instance != null)
         {
             rtsCamera = ModeController.Instance.rtsCamera;
@@ -32,7 +31,6 @@ public class DragSelection : MonoBehaviour
 
     void Update()
     {
-     
         if (ModeController.Instance == null ||
             ModeController.Instance.currentMode != ControlMode.RTS)
         {
@@ -50,8 +48,7 @@ public class DragSelection : MonoBehaviour
             Debug.LogError("RTS Camera is NULL in DragSelection!");
             return;
         }
-
-        // === Start drag ===
+        
         if (Input.GetMouseButtonDown(0))
         {
             startPos = Input.mousePosition;
@@ -63,7 +60,7 @@ public class DragSelection : MonoBehaviour
                 UpdateSelectionBox();
             }
         }
-        
+
         if (Input.GetMouseButton(0))
         {
             endPos = Input.mousePosition;
@@ -85,11 +82,6 @@ public class DragSelection : MonoBehaviour
             {
                 SelectUnitsInBox(min, max);
             }
-            else
-            {
-                // Small drag: fallback to single-click selection if desired
-                // Example: raycast a single squad here
-            }
 
             if (selectionBox != null)
             {
@@ -104,7 +96,7 @@ public class DragSelection : MonoBehaviour
 
         Vector2 min = Vector2.Min(startPos, endPos);
         Vector2 max = Vector2.Max(startPos, endPos);
-        
+
         Vector2 localMin, localMax;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
             selectionBox.parent as RectTransform, min, null, out localMin);
@@ -120,7 +112,6 @@ public class DragSelection : MonoBehaviour
 
     void SelectUnitsInBox(Vector2 min, Vector2 max)
     {
- 
         if (ModeController.Instance != null)
             rtsCamera = ModeController.Instance.rtsCamera;
 
@@ -132,7 +123,7 @@ public class DragSelection : MonoBehaviour
 
         bool additive = additiveWithShift &&
                         (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift));
-        
+
         if (!additive)
         {
             foreach (Squad s in FindObjectsOfType<Squad>())
@@ -145,27 +136,43 @@ public class DragSelection : MonoBehaviour
 
         foreach (Squad squad in FindObjectsOfType<Squad>())
         {
-            if (squad == null) continue; 
+            if (squad == null) continue;
 
-            Vector3 screenPos = rtsCamera.WorldToScreenPoint(squad.GetSquadCenter());
+            bool squadSelected = false;
 
-            if (screenPos.z < 0f) continue;
-
-            if (screenPos.x >= min.x && screenPos.x <= max.x &&
-                screenPos.y >= min.y && screenPos.y <= max.y)
+            foreach (var soldier in squad.soldiers)
             {
-                squad.SetSelected(true);
-                selectedNow.Add(squad);
+                if (soldier == null) continue;
+
+                Vector3 sp = rtsCamera.WorldToScreenPoint(soldier.transform.position);
+
+                if (sp.z < 0f) continue;
+
+                if (sp.x >= min.x && sp.x <= max.x &&
+                    sp.y >= min.y && sp.y <= max.y)
+                {
+                    squadSelected = true;
+                    break;
+                }
+            }
+
+            if (squadSelected)
+            {
+                // 🔥 BLOCK ENEMY SQUADS 🔥
+                if (squad.teamID == 0) // 0 = Player team
+                {
+                    squad.SetSelected(true);
+                    selectedNow.Add(squad);
+                }
             }
         }
 
-        
         if (selectedNow.Count > 0)
         {
             RTSSelectionManager mgr = FindObjectOfType<RTSSelectionManager>();
             if (mgr != null)
             {
-                mgr.SetSelectedSquads(selectedNow); 
+                mgr.SetSelectedSquads(selectedNow);
             }
         }
     }

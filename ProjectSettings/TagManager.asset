@@ -11,14 +11,14 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Soldier
+  - PlayerSoldier
   - Water
   - UI
   - Ground
   - Portrait
-  - 
-  - 
-  - 
+  - EnemySoldier
+  - NeutralHostileSoldier
+  - NeutralPassiveSoldier
   - 
   - 
   - 

@@ -7,7 +7,6 @@ public class UnitSelection : MonoBehaviour
 
     void Awake()
     {
-        // Find the child named "SelectionCircle" under this soldier prefab (even if disabled)
         var allChildren = GetComponentsInChildren<Transform>(true);
         var match = allChildren.FirstOrDefault(t => t.name == "SelectionCircle");
 

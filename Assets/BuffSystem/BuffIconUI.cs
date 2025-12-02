@@ -10,11 +10,7 @@ public class BuffIconUI : MonoBehaviour
     public Image timerOverlay;
 
     private string id;
-
-
-    // ============================================================
-    // INITIAL SETUP
-    // ============================================================
+    
     public void Setup(string buffID, Sprite sprite, int stacks, float duration)
     {
         this.id = buffID;
@@ -26,20 +22,12 @@ public class BuffIconUI : MonoBehaviour
         // Full timer bar at start
         timerOverlay.fillAmount = 1f;
     }
-
-
-    // ============================================================
-    // UPDATE TIMER (called from BuffUIManager)
-    // ============================================================
+    
     public void UpdateTimer(float remaining, float duration)
     {
         timerOverlay.fillAmount = Mathf.Clamp01(remaining / duration);
     }
-
-
-    // ============================================================
-    // UPDATE STACKS / REFRESH
-    // ============================================================
+    
     public void UpdateBuff(int stacks, float newDuration)
     {
         stackText.text = stacks > 1 ? stacks.ToString() : "";

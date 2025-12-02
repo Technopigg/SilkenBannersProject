@@ -4,7 +4,11 @@ using UnityEngine;
 public class ArmyToken : MonoBehaviour
 {
     [Header("Army Settings")]
-    public string owner = "Player"; 
+    public string owner = "Player";
+
+    // NEW — team ID (0 = Player, 1 = Enemy)
+    public int teamID = 0;
+
     public float moveSpeed = 5f;
 
     [Header("Visuals")]
@@ -39,12 +43,48 @@ public class ArmyToken : MonoBehaviour
     {
         renderers = GetComponentsInChildren<Renderer>();
         targetPosition = transform.position;
+
+        AssignTeamFromOwner();
         ApplyOwnerColor();
     }
 
+    // ------------------------------------------------------------
+    // TEAM LOGIC
+    // ------------------------------------------------------------
+    private void AssignTeamFromOwner()
+    {
+        // Automatic assignment based on your previous system:
+        // Player = 0, AI = 1
+        if (owner == "Player") teamID = 0;
+        else if (owner == "AI") teamID = 1;
+        else teamID = 2; // neutral or other
+
+        // Propagate to army composition
+        foreach (var unit in composition)
+        {
+            if (unit != null)
+                unit.teamID = teamID;
+        }
+    }
+
+    public void ForceSetTeam(int id)
+    {
+        teamID = id;
+
+        foreach (var unit in composition)
+        {
+            if (unit != null)
+                unit.teamID = id;
+        }
+    }
+
+    // ------------------------------------------------------------
+    // UPDATE LOOP
+    // ------------------------------------------------------------
     void Update()
     {
-        if (isLockedInBattle || !canMoveOnWorldMap) return;
+        if (isLockedInBattle || !canMoveOnWorldMap)
+            return;
 
         transform.position = Vector3.MoveTowards(
             transform.position,
@@ -52,19 +92,21 @@ public class ArmyToken : MonoBehaviour
             moveSpeed * Time.deltaTime
         );
 
-        if (activeMarker != null && Vector3.Distance(transform.position, targetPosition) < 0.1f)
+        if (activeMarker != null &&
+            Vector3.Distance(transform.position, targetPosition) < 0.1f)
         {
             Destroy(activeMarker);
             activeMarker = null;
         }
     }
 
+    // ------------------------------------------------------------
+    // INPUT HANDLING
+    // ------------------------------------------------------------
     void OnMouseDown()
     {
         if (Time.time - lastClickTime < doubleClickThreshold)
-        {
             HandleDoubleClick();
-        }
 
         lastClickTime = Time.time;
     }
@@ -85,6 +127,9 @@ public class ArmyToken : MonoBehaviour
         }
     }
 
+    // ------------------------------------------------------------
+    // SELECTION
+    // ------------------------------------------------------------
     public void SetSelected(bool selected)
     {
         isSelected = selected;
@@ -92,6 +137,9 @@ public class ArmyToken : MonoBehaviour
         else ApplyOwnerColor();
     }
 
+    // ------------------------------------------------------------
+    // MOVEMENT COMMAND
+    // ------------------------------------------------------------
     public void SetTarget(Vector3 pos)
     {
         if (isLockedInBattle || !canMoveOnWorldMap)
@@ -111,6 +159,9 @@ public class ArmyToken : MonoBehaviour
         }
     }
 
+    // ------------------------------------------------------------
+    // COLOR SYSTEM
+    // ------------------------------------------------------------
     private void ApplyOwnerColor()
     {
         switch (owner)
@@ -123,20 +174,23 @@ public class ArmyToken : MonoBehaviour
 
     private void ApplyColor(Color c)
     {
+        if (renderers == null) return;
+
         foreach (var r in renderers)
             r.material.color = c;
     }
 
+    // ------------------------------------------------------------
+    // BATTLE STATE LOGIC
+    // ------------------------------------------------------------
     public void LockInBattle()
     {
         isLockedInBattle = true;
         canMoveOnWorldMap = false;
 
         foreach (var unit in composition)
-        {
             if (unit != null)
                 unit.isLockedInBattle = true;
-        }
 
         Debug.Log($"{name}: LOCKED in battle.");
     }
@@ -147,10 +201,8 @@ public class ArmyToken : MonoBehaviour
         canMoveOnWorldMap = true;
 
         foreach (var unit in composition)
-        {
             if (unit != null)
                 unit.isLockedInBattle = false;
-        }
 
         Debug.Log($"{name}: UNLOCKED from battle.");
     }

@@ -10,7 +10,7 @@ public class UnitMovement : MonoBehaviour
     private float targetSpeed = 3.5f;
     private float snapDistance = 0.35f;
     private bool hasTarget = false;
-
+    public float MoveSpeed => baseSpeed;
     void Awake()
     {
         agent = GetComponent<NavMeshAgent>();

@@ -2277,7 +2277,12 @@ PrefabInstance:
     - target: {fileID: 3209918059107484484, guid: e7116fde634e81948a8e7692a884a00f,
         type: 3}
       propertyPath: owner
-      value: AI
+      value: Ai
+      objectReference: {fileID: 0}
+    - target: {fileID: 3209918059107484484, guid: e7116fde634e81948a8e7692a884a00f,
+        type: 3}
+      propertyPath: teamID
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3209918059107484484, guid: e7116fde634e81948a8e7692a884a00f,
         type: 3}
@@ -2354,6 +2359,11 @@ PrefabInstance:
         type: 3}
       propertyPath: composition.Array.data[3].type
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3209918059107484484, guid: e7116fde634e81948a8e7692a884a00f,
+        type: 3}
+      propertyPath: composition.Array.data[1].count
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3209918059107484484, guid: e7116fde634e81948a8e7692a884a00f,
         type: 3}
@@ -2992,7 +3002,12 @@ PrefabInstance:
     - target: {fileID: 3209918059107484484, guid: 257bc1339e8f5bf479bb4856d2606a45,
         type: 3}
       propertyPath: owner
-      value: PLAYER
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 3209918059107484484, guid: 257bc1339e8f5bf479bb4856d2606a45,
+        type: 3}
+      propertyPath: teamID
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3209918059107484484, guid: 257bc1339e8f5bf479bb4856d2606a45,
         type: 3}
@@ -3008,7 +3023,7 @@ PrefabInstance:
     - target: {fileID: 3209918059107484484, guid: 257bc1339e8f5bf479bb4856d2606a45,
         type: 3}
       propertyPath: composition.Array.size
-      value: 20
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3209918059107484484, guid: 257bc1339e8f5bf479bb4856d2606a45,
         type: 3}
@@ -3033,7 +3048,7 @@ PrefabInstance:
     - target: {fileID: 3209918059107484484, guid: 257bc1339e8f5bf479bb4856d2606a45,
         type: 3}
       propertyPath: composition.Array.data[1].type
-      value: Spearman
+      value: Archer
       objectReference: {fileID: 0}
     - target: {fileID: 3209918059107484484, guid: 257bc1339e8f5bf479bb4856d2606a45,
         type: 3}

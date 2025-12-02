@@ -10,20 +10,15 @@ public class BuffUIManager : MonoBehaviour
     [Header("Containers")]
     public Transform buffContainer;
     public Transform debuffContainer;
-
-    // Active UI Icons
+    
     private Dictionary<string, BuffIconUI> activeBuffs = new Dictionary<string, BuffIconUI>();
     private Dictionary<string, BuffIconUI> activeDebuffs = new Dictionary<string, BuffIconUI>();
-
-
-    // ----------------------------------------
-    // ADD BUFF
-    // ----------------------------------------
+    
     public void AddBuff(string buffID, Sprite icon, int stacks, float duration)
     {
         if (activeBuffs.TryGetValue(buffID, out BuffIconUI ui))
         {
-            ui.UpdateBuff(stacks, duration); // refresh icon + stacks + timer
+            ui.UpdateBuff(stacks, duration); 
             return;
         }
 
@@ -36,9 +31,6 @@ public class BuffUIManager : MonoBehaviour
     }
 
 
-    // ----------------------------------------
-    // ADD DEBUFF
-    // ----------------------------------------
     public void AddDebuff(string debuffID, Sprite icon, int stacks, float duration)
     {
         if (activeDebuffs.TryGetValue(debuffID, out BuffIconUI ui))
@@ -55,10 +47,6 @@ public class BuffUIManager : MonoBehaviour
     }
 
 
-    // ----------------------------------------
-    // UPDATE TIMERS
-    // Called every frame by BuffController
-    // ----------------------------------------
     public void UpdateBuffTimer(string buffID, float remaining, float duration)
     {
         if (activeBuffs.TryGetValue(buffID, out BuffIconUI ui))
@@ -72,9 +60,7 @@ public class BuffUIManager : MonoBehaviour
     }
 
 
-    // ----------------------------------------
-    // REMOVE BUFFS
-    // ----------------------------------------
+
     public void RemoveBuff(string buffID)
     {
         if (activeBuffs.TryGetValue(buffID, out BuffIconUI ui))

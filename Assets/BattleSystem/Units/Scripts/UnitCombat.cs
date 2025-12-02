@@ -33,7 +33,7 @@ public class UnitCombat : MonoBehaviour
         UnitMovement mover = GetComponent<UnitMovement>();
         if (mover != null)
         {
-            mover.SetMovementTarget(currentTarget.position, mover.moveSpeed);
+            mover.SetMovementTarget(currentTarget.position, mover.MoveSpeed);
         }
     }
 

@@ -4,10 +4,11 @@ using System.Collections.Generic;
 [RequireComponent(typeof(SphereCollider))]
 public class SquadCombatController : MonoBehaviour
 {
-    public Squad squad;                         // Assigned automatically
+    public Squad squad;  
     public float engageDistance = 2.5f;
 
-    public int enemyCount = 0;                  // ✔ Required by morale system
+    public int enemyCount = 0;         
+    public bool isEngaged = false;     
 
     private readonly List<UnitCombat> enemiesInRange = new();
 
@@ -18,7 +19,7 @@ public class SquadCombatController : MonoBehaviour
 
         var col = GetComponent<SphereCollider>();
         col.isTrigger = true;
-        col.radius = 7f; // You can tweak
+        col.radius = 7f; // tweak based on squad width
     }
 
     private void OnTriggerEnter(Collider other)
@@ -28,11 +29,14 @@ public class SquadCombatController : MonoBehaviour
             if (unit.squadRoot != squad)
             {
                 if (!enemiesInRange.Contains(unit))
+                {
                     enemiesInRange.Add(unit);
-
-                enemyCount++;   // ✔ Morale uses this
+                    enemyCount++;         
+                }
             }
         }
+
+        UpdateEngagementState();        
     }
 
     private void OnTriggerExit(Collider other)
@@ -43,13 +47,26 @@ public class SquadCombatController : MonoBehaviour
                 enemiesInRange.Remove(unit);
 
             if (unit.squadRoot != squad && enemyCount > 0)
-                enemyCount--;  // ✔ Morale uses this
+                enemyCount--;       
         }
+
+        UpdateEngagementState();           
+    }
+
+    /// <summary>
+    /// Updates isEngaged based on whether any enemies are in range.
+    /// </summary>
+    private void UpdateEngagementState()
+    {
+        if (enemiesInRange.Count > 0)
+            isEngaged = true;
+        else
+            isEngaged = false;
     }
 
     void Update()
     {
-        if (enemiesInRange.Count == 0) 
+        if (enemiesInRange.Count == 0)
             return;
 
         foreach (var soldier in squad.soldiers)

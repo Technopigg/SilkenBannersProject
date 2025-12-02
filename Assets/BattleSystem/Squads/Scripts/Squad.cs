@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class Squad : MonoBehaviour
 {
+    [Header("Team Info")]
+    public int teamID = -1; // 0 = Player, 1 = Enemy, etc.
+
     [Header("Squad Info")]
     public int squadID;
     public string owner;
@@ -30,9 +33,36 @@ public class Squad : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// NEW: Simple move order (auto-facing)
-    /// </summary>
+    // ------------------------------------------------------------
+    // TEAM SYSTEM
+    // ------------------------------------------------------------
+    public void SetTeam(int id)
+    {
+        teamID = id;
+
+        // Propagate to units (if they already exist)
+        foreach (Transform soldier in soldiers)
+        {
+            if (soldier == null) continue;
+            var unitComp = soldier.GetComponent<Unit>();
+            if (unitComp != null)
+                unitComp.teamID = id;
+        }
+    }
+
+    // Optional - only works if soldiers have renderers
+    public void ApplyTeamColor(Color c)
+    {
+        foreach (Transform soldier in soldiers)
+        {
+            Renderer r = soldier.GetComponentInChildren<Renderer>();
+            if (r != null) r.material.color = c;
+        }
+    }
+
+    // ------------------------------------------------------------
+    // MOVEMENT
+    // ------------------------------------------------------------
     public void MoveSquad(Vector3 destination)
     {
         Vector3 facingDir = (destination - transform.position);
@@ -44,10 +74,6 @@ public class Squad : MonoBehaviour
         MoveSquad(destination, facingDir.normalized);
     }
 
-    /// <summary>
-    /// Issue a move order to the entire squad, with a facing direction.
-    /// facingDir should be a normalized vector (world-space).
-    /// </summary>
     public void MoveSquad(Vector3 destination, Vector3 facingDir)
     {
         if (soldiers == null || soldiers.Count == 0) return;
@@ -60,6 +86,7 @@ public class Squad : MonoBehaviour
         Quaternion formationRot = Quaternion.LookRotation(facingDir, Vector3.up);
         Vector3 currentCenter = GetSquadCenter();
         float centerDist = Vector3.Distance(currentCenter, destination);
+
         int count = soldiers.Count;
         int rows = Mathf.CeilToInt((float)count / formationWidth);
         float halfWidth = ((formationWidth - 1) * spacing) * 0.5f;
@@ -91,6 +118,9 @@ public class Squad : MonoBehaviour
         }
     }
 
+    // ------------------------------------------------------------
+    // SELECTION
+    // ------------------------------------------------------------
     public void SetSelected(bool selected)
     {
         foreach (Transform soldier in soldiers)
@@ -105,6 +135,9 @@ public class Squad : MonoBehaviour
         }
     }
 
+    // ------------------------------------------------------------
+    // CENTER
+    // ------------------------------------------------------------
     public Vector3 GetSquadCenter()
     {
         if (soldiers == null || soldiers.Count == 0)

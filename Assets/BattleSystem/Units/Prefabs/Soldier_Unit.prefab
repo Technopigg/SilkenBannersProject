@@ -106,10 +106,11 @@ GameObject:
   - component: {fileID: -59698289146793361}
   - component: {fileID: -969354120764561622}
   - component: {fileID: -6876933935181861948}
-  - component: {fileID: -201631781868771436}
-  - component: {fileID: -5443629767674576736}
-  m_Layer: 3
-  m_Name: Archer_Unit
+  - component: {fileID: 2002698689995470366}
+  - component: {fileID: 3024670068458915547}
+  - component: {fileID: -1492919537346162190}
+  m_Layer: 0
+  m_Name: Soldier_Unit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -164,7 +165,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ad9ade173b54b774eaf3b814b37b721a, type: 2}
+  - {fileID: 2100000, guid: bb0107d4c80c1b242ae014c685ddde46, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -281,7 +282,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94d586ae6c3bff94c9a7b44f32449495, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &-201631781868771436
+--- !u!114 &2002698689995470366
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -290,26 +291,29 @@ MonoBehaviour:
   m_GameObject: {fileID: 5922544110780624846}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 92a3549b903446e5958a6e388189cfc6, type: 3}
+  m_Script: {fileID: 11500000, guid: 6e011143f0fc415c8b5850e2b95201d2, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UnitStats
+  m_EditorClassIdentifier: Assembly-CSharp::UnitHealth
   maxHealth: 100
-  currentHealth: 100
-  attackDamage: 12
-  attackRate: 1
-  weaponReach: 1.6
-  defense: 0
-  moveSpeed: 3.5
-  bravery: 1
-  morale: 1
-  fatigue: 0
-  cohesion: 1
-  frontMultiplier: 1
-  flankMultiplier: 1.2
-  rearMultiplier: 1.4
-  frontAngle: 60
-  rearAngle: 120
---- !u!114 &-5443629767674576736
+  currentHealth: 0
+--- !u!114 &3024670068458915547
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5922544110780624846}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9d15ade56d549e7a2f2cdec6e981617, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Unit
+  teamID: 0
+  isLockedInBattle: 0
+  movement: {fileID: 0}
+  combat: {fileID: 0}
+  health: {fileID: 0}
+--- !u!114 &-1492919537346162190
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -321,4 +325,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5bfe2c8a11748ce971ac2da3387ff6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitCombat
+  attackRange: 1.8
+  attackDamage: 10
+  attackCooldown: 1.5
   currentTarget: {fileID: 0}
+  squadRoot: {fileID: 0}
+  combatDisabled: 0

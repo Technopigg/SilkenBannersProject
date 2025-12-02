@@ -14,50 +14,70 @@ public class RTSSelectionManager : MonoBehaviour
     {
         if (ModeController.Instance == null ||
             ModeController.Instance.currentMode != ControlMode.RTS)
-        {
             return;
-        }
 
-       
-        if (Input.GetMouseButtonDown(0))
+        HandleLeftClickSelection();
+        HandleRightClickMovement();
+    }
+
+    void HandleLeftClickSelection()
+    {
+        if (!Input.GetMouseButtonDown(0)) return;
+
+        Ray ray = rtsCamera.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit, 500f, soldierLayer))
         {
-            Ray ray = rtsCamera.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
+            Squad squad = hit.collider.GetComponentInParent<Squad>();
 
-            if (Physics.Raycast(ray, out hit, 500f, soldierLayer))
+            // ★ BLOCK ENEMY SELECTION ★
+            if (squad != null)
             {
-                Squad squad = hit.collider.GetComponentInParent<Squad>();
-                if (squad != null)
+                if (squad.teamID != 0)
                 {
-                    SelectOnlyThisSquad(squad);
+                    Debug.Log($"Selection blocked: Tried to select Team {squad.teamID}");
+                    return;
                 }
-            }
-            else
-            {
-                ClearSelection();
+
+                SelectOnlyThisSquad(squad);
             }
         }
-
-      
-        if (Input.GetMouseButtonDown(1) && selectedSquads.Count > 0)
+        else
         {
-            Ray ray = rtsCamera.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-
-            if (Physics.Raycast(ray, out hit, 1000f, groundLayer))
-            {
-                Vector3 destination = hit.point;
-
-                // Move EACH selected squad
-                foreach (Squad s in selectedSquads)
-                {
-                    if (s != null)
-                        s.MoveSquad(destination);
-                }
-            }
+            ClearSelection();
         }
     }
 
+    void HandleRightClickMovement()
+    {
+        if (!Input.GetMouseButtonDown(1) || selectedSquads.Count == 0)
+            return;
+
+        Ray ray = rtsCamera.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+
+        if (!Physics.Raycast(ray, out hit, 1000f, groundLayer))
+            return;
+
+        Vector3 destination = hit.point;
+
+        float spacing = 8f;
+        int squads = selectedSquads.Count;
+
+        for (int i = 0; i < squads; i++)
+        {
+            Squad s = selectedSquads[i];
+            if (s == null) continue;
+
+            int row = i / 2;
+            int col = i % 2;
+
+            Vector3 offset = new Vector3(col * spacing, 0f, row * spacing);
+
+            s.MoveSquad(destination + offset);
+        }
+    }
 
     public void SetSelectedSquads(List<Squad> squads)
     {
@@ -65,14 +85,13 @@ public class RTSSelectionManager : MonoBehaviour
 
         foreach (var s in squads)
         {
-            if (s != null)
+            if (s != null && s.teamID == 0) // team filter
             {
                 s.SetSelected(true);
                 selectedSquads.Add(s);
             }
         }
     }
-
 
     private void SelectOnlyThisSquad(Squad squad)
     {
@@ -86,7 +105,8 @@ public class RTSSelectionManager : MonoBehaviour
     {
         foreach (var s in selectedSquads)
         {
-            if (s != null) s.SetSelected(false);
+            if (s != null)
+                s.SetSelected(false);
         }
 
         selectedSquads.Clear();
