@@ -11,7 +11,7 @@ public class UnitCombat : MonoBehaviour
     public Transform currentTarget;
     public Squad squadRoot;
 
-    public bool combatDisabled = false;    // ✔ Used by morale system
+    public bool combatDisabled = false;
 
     private float nextAttackTime = 0f;
 
@@ -53,9 +53,6 @@ public class UnitCombat : MonoBehaviour
         }
     }
 
-    // ─────────────────────────────────────────────
-    // ✔ Added for SquadMorale system
-    // ─────────────────────────────────────────────
     public void DisableCombatTemporarily()
     {
         combatDisabled = true;
@@ -69,5 +66,22 @@ public class UnitCombat : MonoBehaviour
     public void EnableCombat()
     {
         combatDisabled = false;
+    }
+
+    // ─────────────────────────────────────────────
+    // Gizmos for debugging
+    // ─────────────────────────────────────────────
+    void OnDrawGizmosSelected()
+    {
+        // Attack Range
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, attackRange);
+
+        // Current Target
+        if (currentTarget != null)
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawLine(transform.position, currentTarget.position);
+        }
     }
 }

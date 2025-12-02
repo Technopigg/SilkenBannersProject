@@ -12,14 +12,16 @@ public class SquadCombatController : MonoBehaviour
 
     private readonly List<UnitCombat> enemiesInRange = new();
 
+    private SphereCollider col;
+
     void Awake()
     {
         if (squad == null)
             squad = GetComponent<Squad>();
 
-        var col = GetComponent<SphereCollider>();
+        col = GetComponent<SphereCollider>();
         col.isTrigger = true;
-        col.radius = 7f; // tweak based on squad width
+        col.radius = 7f;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -31,12 +33,12 @@ public class SquadCombatController : MonoBehaviour
                 if (!enemiesInRange.Contains(unit))
                 {
                     enemiesInRange.Add(unit);
-                    enemyCount++;         
+                    enemyCount++;
                 }
             }
         }
 
-        UpdateEngagementState();        
+        UpdateEngagementState();
     }
 
     private void OnTriggerExit(Collider other)
@@ -47,21 +49,15 @@ public class SquadCombatController : MonoBehaviour
                 enemiesInRange.Remove(unit);
 
             if (unit.squadRoot != squad && enemyCount > 0)
-                enemyCount--;       
+                enemyCount--;
         }
 
-        UpdateEngagementState();           
+        UpdateEngagementState();
     }
 
-    /// <summary>
-    /// Updates isEngaged based on whether any enemies are in range.
-    /// </summary>
     private void UpdateEngagementState()
     {
-        if (enemiesInRange.Count > 0)
-            isEngaged = true;
-        else
-            isEngaged = false;
+        isEngaged = enemiesInRange.Count > 0;
     }
 
     void Update()
@@ -76,7 +72,6 @@ public class SquadCombatController : MonoBehaviour
             UnitCombat combat = soldier.GetComponent<UnitCombat>();
             if (combat == null || combat.combatDisabled) continue;
 
-            // find nearest enemy
             UnitCombat closest = null;
             float shortest = Mathf.Infinity;
 
@@ -97,14 +92,21 @@ public class SquadCombatController : MonoBehaviour
                 combat.SetTarget(closest.transform);
 
                 if (shortest > engageDistance)
-                {
                     combat.MoveTowardsTarget();
-                }
                 else
-                {
                     combat.TryAttack();
-                }
             }
         }
+    }
+
+    // ─────────────────────────────────────────────
+    // Gizmos
+    // ─────────────────────────────────────────────
+    void OnDrawGizmos()
+    {
+        if (col == null) col = GetComponent<SphereCollider>();
+
+        Gizmos.color = new Color(1f, 0.5f, 0f, 0.25f);
+        Gizmos.DrawWireSphere(transform.position, col.radius);
     }
 }

@@ -5,8 +5,7 @@ using UnityEngine;
 public class BattlefieldState
 {
     public List<SquadState> squads = new List<SquadState>();
-
-    // ✅ New fields for General persistence
+    
     public Vector3? playerGeneralPosition;
     public Vector3? enemyGeneralPosition;
     public Quaternion? playerGeneralRotation;
