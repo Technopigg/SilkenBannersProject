@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 310022173576471611}
   - component: {fileID: 3225287435104843439}
   - component: {fileID: 9092682527532834094}
+  - component: {fileID: 8605321088212473725}
   m_Layer: 0
   m_Name: General_Unit
   m_TagString: PlayerUnit
@@ -196,7 +197,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5bfe2c8a11748ce971ac2da3387ff6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitCombat
+  attackRange: 1.8
+  attackDamage: 10
+  attackCooldown: 1.5
   currentTarget: {fileID: 0}
+  squadRoot: {fileID: 0}
+  combatDisabled: 0
 --- !u!114 &9092682527532834094
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -225,3 +231,24 @@ MonoBehaviour:
   rearMultiplier: 1.4
   frontAngle: 60
   rearAngle: 120
+--- !u!135 &8605321088212473725
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8526360160813945221}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 264
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 1.6
+  m_Center: {x: 0, y: 1, z: 0}
