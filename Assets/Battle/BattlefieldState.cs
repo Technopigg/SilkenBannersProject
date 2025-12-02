@@ -16,8 +16,8 @@ public class BattlefieldState
 [System.Serializable]
 public class SquadState
 {
-    public string owner;       // "Player" or "Enemy"
-    public string unitType;    // Infantry, Archer, Cavalry
+    public string owner;       
+    public string unitType;    
     public int squadID;
     public List<Vector3> soldierPositions = new List<Vector3>();
 }

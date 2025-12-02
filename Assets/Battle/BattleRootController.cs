@@ -33,8 +33,7 @@ public class BattleRootController : MonoBehaviour
     public void ShowBattlefield()
     {
         gameObject.SetActive(true);
-
-        // enable cameras explicitly
+        
         if (sceneCameras != null)
         {
             for (int i = 0; i < sceneCameras.Length; i++)
@@ -43,15 +42,13 @@ public class BattleRootController : MonoBehaviour
                     sceneCameras[i].enabled = true;
             }
         }
-
-        // enable UI roots
+        
         if (uiRoots != null)
         {
             foreach (var u in uiRoots)
                 if (u != null) u.SetActive(true);
         }
-
-        // ⭐ Reapply current camera mode when returning to the battlefield
+        
         if (ModeController.Instance != null)
         {
             ModeController.Instance.ApplyCameraState(
@@ -62,7 +59,7 @@ public class BattleRootController : MonoBehaviour
             Debug.Log("BattleRootController: Camera state reapplied through ModeController.");
         }
 
-        // Allow squad spawner a frame to re-link PlayerGeneral if needed
+    
         StartCoroutine(AllowSpawnerToInitialize());
 
         Debug.Log("BattleRootController: ShowBattlefield called.");
@@ -86,14 +83,12 @@ public class BattleRootController : MonoBehaviour
     /// </summary>
     public void HideBattlefield()
     {
-        // Save state explicitly before hiding
         if (squadSpawner != null)
         {
             squadSpawner.SaveBattlefieldStateNow();
             Debug.Log("BattleRootController: Saved battlefield state via SquadSpawner before hiding.");
         }
-
-        // disable cameras
+        
         if (sceneCameras != null)
         {
             for (int i = 0; i < sceneCameras.Length; i++)
@@ -101,15 +96,13 @@ public class BattleRootController : MonoBehaviour
                 if (sceneCameras[i] != null) sceneCameras[i].enabled = false;
             }
         }
-
-        // hide UI
+        
         if (uiRoots != null)
         {
             foreach (var u in uiRoots) 
                 if (u != null) u.SetActive(false);
         }
-
-        // disable root
+        
         gameObject.SetActive(false);
         Debug.Log("BattleRootController: HideBattlefield called, BattleRoot disabled.");
     }

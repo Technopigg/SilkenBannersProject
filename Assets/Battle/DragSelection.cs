@@ -5,10 +5,9 @@ using System.Collections.Generic;
 public class DragSelection : MonoBehaviour
 {
     [Header("UI")]
-    public RectTransform selectionBox; // assign a transparent Image under a full-screen Canvas
-
+    public RectTransform selectionBox; 
     [Header("Settings")]
-    public float dragThreshold = 8f;   // pixels: below this, treat as click
+    public float dragThreshold = 8f;   
     public bool additiveWithShift = true;
 
     private Vector2 startPos;
@@ -18,7 +17,6 @@ public class DragSelection : MonoBehaviour
 
     void Awake()
     {
-        // Cache RTS camera if ModeController is already alive
         if (ModeController.Instance != null)
         {
             rtsCamera = ModeController.Instance.rtsCamera;
@@ -32,7 +30,6 @@ public class DragSelection : MonoBehaviour
 
     void Update()
     {
-        // Only active in RTS mode
         if (ModeController.Instance == null ||
             ModeController.Instance.currentMode != ControlMode.RTS)
         {
@@ -41,7 +38,7 @@ public class DragSelection : MonoBehaviour
             return;
         }
 
-        // Ensure camera reference is always valid
+   
         if (rtsCamera == null && ModeController.Instance != null)
         {
             rtsCamera = ModeController.Instance.rtsCamera;
@@ -52,7 +49,6 @@ public class DragSelection : MonoBehaviour
             return;
         }
 
-        // === Start drag ===
         if (Input.GetMouseButtonDown(0))
         {
             startPos = Input.mousePosition;
@@ -61,11 +57,11 @@ public class DragSelection : MonoBehaviour
             if (selectionBox != null)
             {
                 selectionBox.gameObject.SetActive(true);
-                UpdateSelectionBox(); // Initialize box at 0 size
+                UpdateSelectionBox(); 
             }
         }
 
-        // === Update drag ===
+     
         if (Input.GetMouseButton(0))
         {
             endPos = Input.mousePosition;
@@ -75,7 +71,6 @@ public class DragSelection : MonoBehaviour
             }
         }
 
-        // === Release drag ===
         if (Input.GetMouseButtonUp(0))
         {
             Vector2 min = Vector2.Min(startPos, endPos);
@@ -108,14 +103,14 @@ public class DragSelection : MonoBehaviour
         Vector2 min = Vector2.Min(startPos, endPos);
         Vector2 max = Vector2.Max(startPos, endPos);
 
-        // Convert screen-space to local-space of the parent canvas
+
         Vector2 localMin, localMax;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
             selectionBox.parent as RectTransform, min, null, out localMin);
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
             selectionBox.parent as RectTransform, max, null, out localMax);
 
-        // Calculate center and size
+     
         Vector2 localCenter = (localMin + localMax) / 2f;
         Vector2 localSize = localMax - localMin;
 
@@ -125,7 +120,7 @@ public class DragSelection : MonoBehaviour
 
     void SelectUnitsInBox(Vector2 min, Vector2 max)
     {
-        // Refresh RTS camera every time
+
         if (ModeController.Instance != null)
             rtsCamera = ModeController.Instance.rtsCamera;
 
@@ -138,7 +133,7 @@ public class DragSelection : MonoBehaviour
         bool additive = additiveWithShift &&
                         (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift));
 
-        // Clear previous selection if not additive
+
         if (!additive)
         {
             foreach (Squad s in FindObjectsOfType<Squad>())
@@ -151,11 +146,10 @@ public class DragSelection : MonoBehaviour
 
         foreach (Squad squad in FindObjectsOfType<Squad>())
         {
-            if (squad == null) continue; // skip destroyed squads
+            if (squad == null) continue;
 
             Vector3 screenPos = rtsCamera.WorldToScreenPoint(squad.GetSquadCenter());
-
-            // Ignore units behind the camera
+            
             if (screenPos.z < 0f) continue;
 
             if (screenPos.x >= min.x && screenPos.x <= max.x &&
@@ -164,15 +158,13 @@ public class DragSelection : MonoBehaviour
                 squad.SetSelected(true);
                 selectedNow.Add(squad);
             }
-        }
-
-        // Optional: set a "primary" squad for move orders
+        } 
         if (selectedNow.Count > 0)
         {
             RTSSelectionManager mgr = FindObjectOfType<RTSSelectionManager>();
             if (mgr != null)
             {
-                mgr.SelectSquad(selectedNow[0]); // Ensure SelectSquad is public
+                mgr.SetSelectedSquads(selectedNow); 
             }
         }
     }

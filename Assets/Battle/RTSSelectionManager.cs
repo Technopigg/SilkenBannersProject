@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 public class RTSSelectionManager : MonoBehaviour
 {
@@ -7,66 +8,87 @@ public class RTSSelectionManager : MonoBehaviour
     public LayerMask soldierLayer;
     public LayerMask groundLayer;
 
-    private Squad selectedSquad;
+    private List<Squad> selectedSquads = new List<Squad>();
 
-   public void Update()
+    void Update()
     {
         if (ModeController.Instance == null ||
             ModeController.Instance.currentMode != ControlMode.RTS)
         {
-            return; // only active in RTS mode
+            return;
         }
 
-        // === Left-click: select squad ===
+       
         if (Input.GetMouseButtonDown(0))
         {
             Ray ray = rtsCamera.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
+
             if (Physics.Raycast(ray, out hit, 500f, soldierLayer))
             {
                 Squad squad = hit.collider.GetComponentInParent<Squad>();
                 if (squad != null)
                 {
-                    SelectSquad(squad);
+                    SelectOnlyThisSquad(squad);
                 }
             }
             else
             {
-                DeselectSquad();
+                ClearSelection();
             }
         }
 
-        // === Right-click: issue move order ===
-        if (Input.GetMouseButtonDown(1) && selectedSquad != null)
+      
+        if (Input.GetMouseButtonDown(1) && selectedSquads.Count > 0)
         {
             Ray ray = rtsCamera.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
+
             if (Physics.Raycast(ray, out hit, 1000f, groundLayer))
             {
                 Vector3 destination = hit.point;
-                selectedSquad.MoveSquad(destination);
+
+                // Move EACH selected squad
+                foreach (Squad s in selectedSquads)
+                {
+                    if (s != null)
+                        s.MoveSquad(destination);
+                }
             }
         }
     }
 
-   public void SelectSquad(Squad squad)
-    {
-        if (selectedSquad != null)
-        {
-            selectedSquad.SetSelected(false);
-        }
 
-        selectedSquad = squad;
-        selectedSquad.SetSelected(true);
-        Debug.Log("Selected squad: " + squad.squadID);
+    public void SetSelectedSquads(List<Squad> squads)
+    {
+        ClearSelection();
+
+        foreach (var s in squads)
+        {
+            if (s != null)
+            {
+                s.SetSelected(true);
+                selectedSquads.Add(s);
+            }
+        }
     }
 
-    public void DeselectSquad()
+
+    private void SelectOnlyThisSquad(Squad squad)
     {
-        if (selectedSquad != null)
+        ClearSelection();
+
+        squad.SetSelected(true);
+        selectedSquads.Add(squad);
+    }
+
+    public void ClearSelection()
+    {
+        foreach (var s in selectedSquads)
         {
-            selectedSquad.SetSelected(false);
-            selectedSquad = null;
+            if (s != null) s.SetSelected(false);
         }
+
+        selectedSquads.Clear();
     }
 }

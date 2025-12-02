@@ -14,7 +14,6 @@ public class BattleSceneController : MonoBehaviour
 
     private IEnumerator InitRoutine()
     {
-        // Wait two frames to allow SquadSpawner / PlayerGeneral to initialize
         yield return null;
         yield return null;
 
