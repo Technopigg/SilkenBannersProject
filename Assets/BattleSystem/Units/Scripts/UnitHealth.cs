@@ -19,6 +19,8 @@ public class UnitHealth : MonoBehaviour
             maxHealth = stats.maxHealth;
 
         currentHealth = maxHealth;
+
+        Debug.Log($"{name}: UnitHealth Awake → MaxHealth {maxHealth}");
     }
 
     public void TakeDamage(float amount)
@@ -27,8 +29,11 @@ public class UnitHealth : MonoBehaviour
 
         currentHealth -= amount;
 
+        Debug.Log($"{name}: Took DAMAGE {amount}, HP now {currentHealth}/{maxHealth}");
+
         if (currentHealth <= 0)
         {
+            Debug.Log($"{name}: DIED");
             Die();
         }
     }
@@ -36,17 +41,21 @@ public class UnitHealth : MonoBehaviour
     private void Die()
     {
         IsDead = true;
+
         var combat = GetComponent<UnitCombat>();
         if (combat != null) combat.combatDisabled = true;
+
         var movement = GetComponent<UnitMovement>();
         if (movement != null) movement.StopImmediate();
-        
+
         if (animator != null)
         {
             animator.SetTrigger("Die");
         }
+
         var col = GetComponent<Collider>();
         if (col != null) col.enabled = false;
+
         Destroy(gameObject, 4f);
     }
 }

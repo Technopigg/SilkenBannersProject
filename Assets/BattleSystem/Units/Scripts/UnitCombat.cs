@@ -18,12 +18,15 @@ public class UnitCombat : MonoBehaviour
     void Awake()
     {
         squadRoot = GetComponentInParent<Squad>();
+        Debug.Log($"{name}: UnitCombat Awake - squadRoot = {squadRoot}");
     }
 
     public void SetTarget(Transform t)
     {
         if (combatDisabled) return;
+
         currentTarget = t;
+        Debug.Log($"{name}: Target SET → {t.name}");
     }
 
     public void MoveTowardsTarget()
@@ -33,6 +36,7 @@ public class UnitCombat : MonoBehaviour
         UnitMovement mover = GetComponent<UnitMovement>();
         if (mover != null)
         {
+            Debug.Log($"{name}: Moving toward target {currentTarget.name}");
             mover.SetMovementTarget(currentTarget.position, mover.MoveSpeed);
         }
     }
@@ -42,19 +46,38 @@ public class UnitCombat : MonoBehaviour
         if (combatDisabled || currentTarget == null) return;
 
         float dist = Vector3.Distance(transform.position, currentTarget.position);
-        if (dist > attackRange) return;
+
+        Debug.Log($"{name}: TryAttack() → target={currentTarget.name}, dist={dist}");
+
+        if (dist > attackRange)
+        {
+            Debug.Log($"{name}: Target OUT of attack range");
+            return;
+        }
 
         if (Time.time >= nextAttackTime)
         {
             nextAttackTime = Time.time + attackCooldown;
 
             if (currentTarget.TryGetComponent<UnitHealth>(out var hp))
+            {
+                Debug.Log($"{name}: ATTACKING {currentTarget.name} for {attackDamage} dmg!");
                 hp.TakeDamage(attackDamage);
+            }
+            else
+            {
+                Debug.Log($"{name}: ERROR → Target has NO UnitHealth");
+            }
+        }
+        else
+        {
+            Debug.Log($"{name}: Attack ON COOLDOWN");
         }
     }
 
     public void DisableCombatTemporarily()
     {
+        Debug.Log($"{name}: Combat disabled temporarily");
         combatDisabled = true;
         StopAllCoroutines();
 
@@ -65,12 +88,10 @@ public class UnitCombat : MonoBehaviour
 
     public void EnableCombat()
     {
+        Debug.Log($"{name}: Combat re-enabled");
         combatDisabled = false;
     }
 
-    // ─────────────────────────────────────────────
-    // Gizmos for debugging
-    // ─────────────────────────────────────────────
     void OnDrawGizmosSelected()
     {
         // Attack Range

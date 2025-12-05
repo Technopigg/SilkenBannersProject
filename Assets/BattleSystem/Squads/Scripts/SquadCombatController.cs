@@ -4,11 +4,11 @@ using System.Collections.Generic;
 [RequireComponent(typeof(SphereCollider))]
 public class SquadCombatController : MonoBehaviour
 {
-    public Squad squad;  
+    public Squad squad;
     public float engageDistance = 2.5f;
 
-    public int enemyCount = 0;         
-    public bool isEngaged = false;     
+    public int enemyCount = 0;
+    public bool isEngaged = false;
 
     private readonly List<UnitCombat> enemiesInRange = new();
 
@@ -22,19 +22,32 @@ public class SquadCombatController : MonoBehaviour
         col = GetComponent<SphereCollider>();
         col.isTrigger = true;
         col.radius = 7f;
+        
     }
 
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log($"{squad.name} TRIGGER ENTER: {other.name}");
+
         if (other.TryGetComponent<UnitCombat>(out var unit))
         {
+            Debug.Log($" - {other.name} has UnitCombat");
+
             if (unit.squadRoot != squad)
             {
+                Debug.Log($" - {other.name} is ENEMY");
+
                 if (!enemiesInRange.Contains(unit))
                 {
                     enemiesInRange.Add(unit);
                     enemyCount++;
+
+                    Debug.Log($" → Enemy ADDED: {other.name}. Total enemies = {enemyCount}");
                 }
+            }
+            else
+            {
+                Debug.Log($" - {other.name} is SAME SQUAD (ignored)");
             }
         }
 
@@ -43,13 +56,17 @@ public class SquadCombatController : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
+        Debug.Log($"{squad.name} TRIGGER EXIT: {other.name}");
+
         if (other.TryGetComponent<UnitCombat>(out var unit))
         {
             if (enemiesInRange.Contains(unit))
+            {
                 enemiesInRange.Remove(unit);
-
-            if (unit.squadRoot != squad && enemyCount > 0)
                 enemyCount--;
+
+                Debug.Log($" → Enemy REMOVED: {other.name}. Total enemies = {enemyCount}");
+            }
         }
 
         UpdateEngagementState();
@@ -57,7 +74,13 @@ public class SquadCombatController : MonoBehaviour
 
     private void UpdateEngagementState()
     {
-        isEngaged = enemiesInRange.Count > 0;
+        bool newState = enemiesInRange.Count > 0;
+
+        if (newState != isEngaged)
+        {
+            isEngaged = newState;
+            Debug.Log($"{squad.name} → Engagement State: {(isEngaged ? "ENGAGED" : "CLEAR")}");
+        }
     }
 
     void Update()
@@ -89,6 +112,8 @@ public class SquadCombatController : MonoBehaviour
 
             if (closest != null)
             {
+                Debug.Log($"{soldier.name} → Targeting {closest.name}");
+
                 combat.SetTarget(closest.transform);
 
                 if (shortest > engageDistance)
@@ -99,9 +124,6 @@ public class SquadCombatController : MonoBehaviour
         }
     }
 
-    // ─────────────────────────────────────────────
-    // Gizmos
-    // ─────────────────────────────────────────────
     void OnDrawGizmos()
     {
         if (col == null) col = GetComponent<SphereCollider>();
