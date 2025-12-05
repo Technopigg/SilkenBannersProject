@@ -114,9 +114,14 @@ public class SquadSpawner : MonoBehaviour
         GameObject squadObj = new GameObject($"{owner}_Squad_{unit.type}");
         Squad squad = squadObj.AddComponent<Squad>();
         
+        // Add a kinematic Rigidbody so triggers work reliably
+        Rigidbody rb = squadObj.AddComponent<Rigidbody>();
+        rb.isKinematic = true;
+        rb.useGravity = false;
+
         SphereCollider detection = squadObj.AddComponent<SphereCollider>();
         detection.isTrigger = true;
-        detection.radius = 7f;
+        detection.radius = 20f; // larger for testing; reduce later if desired
 
         SquadCombatController ctrl = squadObj.AddComponent<SquadCombatController>();
         ctrl.squad = squad;
@@ -143,7 +148,7 @@ public class SquadSpawner : MonoBehaviour
             soldier.tag = tagToAssign;
             SetLayerRecursive(soldier, layerToAssign);
 
-            // Set squadRoot in UnitCombat
+            // Set squadRoot in UnitCombat (guarantee reference)
             UnitCombat uc = soldier.GetComponent<UnitCombat>();
             if (uc != null)
                 uc.squadRoot = squad;
@@ -164,9 +169,14 @@ public class SquadSpawner : MonoBehaviour
             GameObject squadObj = new GameObject($"{ss.owner}_Squad_{ss.squadID}_{ss.unitType}");
             Squad squad = squadObj.AddComponent<Squad>();
 
+            // Add kinematic Rigidbody so triggers work after restore
+            Rigidbody rb = squadObj.AddComponent<Rigidbody>();
+            rb.isKinematic = true;
+            rb.useGravity = false;
+
             SphereCollider detection = squadObj.AddComponent<SphereCollider>();
             detection.isTrigger = true;
-            detection.radius = 7f;
+            detection.radius = 20f;
 
             SquadCombatController ctrl = squadObj.AddComponent<SquadCombatController>();
             ctrl.squad = squad;
