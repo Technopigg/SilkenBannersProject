@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[DisallowMultipleComponent]
 public class Squad : MonoBehaviour
 {
     [Header("Team Info")]
-    public int teamID = -1; // 0 = Player, 1 = Enemy, etc.
+    public int teamID = -1; 
 
     [Header("Squad Info")]
     public int squadID;
@@ -23,12 +24,15 @@ public class Squad : MonoBehaviour
 
     void Awake()
     {
-        soldiers.Clear();
-        foreach (Transform child in transform)
+        if (soldiers == null) soldiers = new List<Transform>();
+        if (soldiers.Count == 0)
         {
-            if (child != null && child.GetComponent<UnitSelection>() != null)
+            foreach (Transform child in transform)
             {
-                soldiers.Add(child);
+                if (child != null && child.GetComponent<Unit>() != null)
+                {
+                    soldiers.Add(child);
+                }
             }
         }
     }
@@ -40,7 +44,6 @@ public class Squad : MonoBehaviour
     {
         teamID = id;
 
-        // Propagate to units (if they already exist)
         foreach (Transform soldier in soldiers)
         {
             if (soldier == null) continue;
@@ -50,11 +53,11 @@ public class Squad : MonoBehaviour
         }
     }
 
-    // Optional - only works if soldiers have renderers
     public void ApplyTeamColor(Color c)
     {
         foreach (Transform soldier in soldiers)
         {
+            if (soldier == null) continue;
             Renderer r = soldier.GetComponentInChildren<Renderer>();
             if (r != null) r.material.color = c;
         }
@@ -65,7 +68,7 @@ public class Squad : MonoBehaviour
     // ------------------------------------------------------------
     public void MoveSquad(Vector3 destination)
     {
-        Vector3 facingDir = (destination - transform.position);
+        Vector3 facingDir = destination - GetSquadCenter();
         facingDir.y = 0f;
 
         if (facingDir.sqrMagnitude < 0.001f)
@@ -81,6 +84,7 @@ public class Squad : MonoBehaviour
         facingDir.y = 0f;
         if (facingDir.sqrMagnitude < 0.001f)
             facingDir = transform.forward;
+
         facingDir.Normalize();
 
         Quaternion formationRot = Quaternion.LookRotation(facingDir, Vector3.up);
@@ -106,15 +110,11 @@ public class Squad : MonoBehaviour
 
             float speedFactor = 1f;
             if (centerDist <= arriveSlowDistance)
-            {
                 speedFactor = Mathf.Clamp(centerDist / arriveSlowDistance, minSpeedFactor, 1f);
-            }
 
             UnitMovement mover = soldier.GetComponent<UnitMovement>();
             if (mover != null)
-            {
                 mover.SetMovementTarget(soldierTarget, squadBaseSpeed * speedFactor);
-            }
         }
     }
 
@@ -128,10 +128,7 @@ public class Squad : MonoBehaviour
             if (soldier == null) continue;
 
             UnitSelection sel = soldier.GetComponent<UnitSelection>();
-            if (sel != null)
-            {
-                sel.SetSelected(selected);
-            }
+            if (sel != null) sel.SetSelected(selected);
         }
     }
 
@@ -153,6 +150,7 @@ public class Squad : MonoBehaviour
                 count++;
             }
         }
+
         return count > 0 ? sum / count : transform.position;
     }
 }

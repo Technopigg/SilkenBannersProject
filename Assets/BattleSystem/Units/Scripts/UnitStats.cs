@@ -14,8 +14,10 @@ public class UnitStats : MonoBehaviour
 
     [Header("Defence")]
     public float defense = 0f;
+
     [Header("Movement")]
     public float moveSpeed = 3.5f;
+
     [Header("Psychology")]
     [Range(0f, 2f)] public float bravery = 1.0f;
     [Range(0f, 1f)] public float morale = 1.0f;
@@ -61,7 +63,7 @@ public class UnitStats : MonoBehaviour
         float finalDamage = Mathf.Max(1f, damage - defense);
 
         currentHealth -= finalDamage;
-
+        
         float moraleHit = Mathf.Clamp01((finalDamage / maxHealth) * 1.5f);
         moraleHit *= facingMult;
         morale = Mathf.Clamp01(morale - moraleHit);
@@ -82,9 +84,10 @@ public class UnitStats : MonoBehaviour
         currentHealth = Mathf.Clamp(currentHealth + amount, 0f, maxHealth);
     }
 
-    void Die()
+    private void Die()
     {
         var col = GetComponent<Collider>();
         if (col != null) col.enabled = false;
+        
     }
 }

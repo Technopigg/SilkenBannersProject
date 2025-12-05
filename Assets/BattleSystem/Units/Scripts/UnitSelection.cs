@@ -13,7 +13,7 @@ public class UnitSelection : MonoBehaviour
         if (match != null)
         {
             selectionCircle = match.gameObject;
-            selectionCircle.SetActive(false); // hidden by default
+            selectionCircle.SetActive(false);
         }
         else
         {
@@ -23,10 +23,7 @@ public class UnitSelection : MonoBehaviour
 
     public void SetSelected(bool isSelected)
     {
-        Debug.Log($"{name} SetSelected({isSelected})");
         if (selectionCircle != null)
-        {
             selectionCircle.SetActive(isSelected);
-        }
     }
 }

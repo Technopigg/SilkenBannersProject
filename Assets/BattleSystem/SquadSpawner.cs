@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 
 /// <summary>
-/// Spawns squads and generals OR restores them if a saved BattlefieldState exists.
-/// Updated to fully support the new ArmyToken system.
+/// Spawns squads and generals or restores them if a saved BattlefieldState exists.
+/// Fully supports the new ArmyToken system and Total War–style squad combat.
 /// </summary>
 public class SquadSpawner : MonoBehaviour
 {
@@ -12,9 +12,7 @@ public class SquadSpawner : MonoBehaviour
     public Transform enemySpawnPoint;
 
     [Header("Prefabs")]
-    public GameObject squadPrefab;
-
-    [Header("Fallback Prefabs (used only if token has none)")]
+    public GameObject squadPrefab; 
     public GameObject generalPrefab;
 
     [Header("Unit Prefabs")]
@@ -26,7 +24,6 @@ public class SquadSpawner : MonoBehaviour
 
     private bool hasSpawned = false;
 
-    // ────────────────────────────────────────────────────────────────
     void Start()
     {
         if (hasSpawned)
@@ -46,7 +43,6 @@ public class SquadSpawner : MonoBehaviour
         BattlefieldState saved = BattleManager.Instance.GetLastBattlefieldState();
         if (saved != null && saved.squads != null && saved.squads.Count > 0)
         {
-            Debug.Log("SquadSpawner: Restoring battlefield from saved state...");
             RestoreBattlefield(saved);
             return;
         }
@@ -66,63 +62,46 @@ public class SquadSpawner : MonoBehaviour
             return;
         }
 
-        Debug.Log("SquadSpawner: Spawning armies...");
-
         SpawnArmy(playerToken, playerSpawnPoint, "Player", 0);
         SpawnArmy(enemyToken, enemySpawnPoint, "Enemy", 1);
     }
 
-    // ────────────────────────────────────────────────────────────────
     private GameObject GetPrefabForType(string unitType)
     {
-        if (string.IsNullOrWhiteSpace(unitType))
-            return null;
+        if (string.IsNullOrWhiteSpace(unitType)) return null;
 
         switch (unitType.Trim().ToLower())
         {
             case "spearman": return spearmanPrefab;
-            case "archer":   return archerPrefab;
+            case "archer": return archerPrefab;
             default:
                 Debug.LogError($"Unit type '{unitType}' not mapped to a prefab!");
                 return null;
         }
     }
 
-    // ────────────────────────────────────────────────────────────────
     private void SpawnArmy(ArmyToken token, Transform spawnPoint, string owner, int teamID)
     {
         foreach (var unit in token.composition)
         {
             SpawnSquad(spawnPoint.position, unit, owner, teamID, unit.count);
         }
-
-        // Spawn general
         Vector3 genPos = spawnPoint.position + Vector3.forward * 2f;
-
-        GameObject genPrefabToUse =
-            (token.generalPrefab != null) ? token.generalPrefab : generalPrefab;
-
+        GameObject genPrefabToUse = (token.generalPrefab != null) ? token.generalPrefab : generalPrefab;
         GameObject generalObj = Instantiate(genPrefabToUse, genPos, Quaternion.identity);
-        
+
         generalObj.tag = (teamID == 0) ? "PlayerUnit" : "EnemyUnit";
-        
         SetLayerRecursive(generalObj, (teamID == 0)
             ? LayerMask.NameToLayer("PlayerSoldier")
             : LayerMask.NameToLayer("EnemySoldier"));
 
         var movement = generalObj.GetComponent<Player3PMovement>();
-        if (movement != null)
-            movement.isPlayerControlled = (teamID == 0);
+        if (movement != null) movement.isPlayerControlled = (teamID == 0);
 
-        if (teamID == 0)
-            PlayerGeneral = generalObj;
-        else
-            EnemyGeneral = generalObj;
-
-        Debug.Log($"{owner} General spawned (Team {teamID}).");
+        if (teamID == 0) PlayerGeneral = generalObj;
+        else EnemyGeneral = generalObj;
     }
 
-    // ────────────────────────────────────────────────────────────────
     private void SpawnSquad(Vector3 position, ArmyUnit unit, string owner, int teamID, int count)
     {
         GameObject prefab = GetPrefabForType(unit.type);
@@ -134,6 +113,13 @@ public class SquadSpawner : MonoBehaviour
 
         GameObject squadObj = new GameObject($"{owner}_Squad_{unit.type}");
         Squad squad = squadObj.AddComponent<Squad>();
+        
+        SphereCollider detection = squadObj.AddComponent<SphereCollider>();
+        detection.isTrigger = true;
+        detection.radius = 7f;
+
+        SquadCombatController ctrl = squadObj.AddComponent<SquadCombatController>();
+        ctrl.squad = squad;
 
         squad.teamID = teamID;
         squad.owner = owner;
@@ -141,12 +127,7 @@ public class SquadSpawner : MonoBehaviour
         squad.squadID = Random.Range(1000, 9999);
         squad.soldiers = new List<Transform>();
 
-        Debug.Log($"[SPAWN] Squad {squad.squadID} ({owner}) assigned Team {teamID}");
-
-        int layerToAssign = (teamID == 0)
-            ? LayerMask.NameToLayer("PlayerSoldier")
-            : LayerMask.NameToLayer("EnemySoldier");
-
+        int layerToAssign = (teamID == 0) ? LayerMask.NameToLayer("PlayerSoldier") : LayerMask.NameToLayer("EnemySoldier");
         string tagToAssign = (teamID == 0) ? "PlayerUnit" : "EnemyUnit";
 
         for (int i = 0; i < Mathf.Max(1, count); i++)
@@ -155,24 +136,22 @@ public class SquadSpawner : MonoBehaviour
             GameObject soldier = Instantiate(prefab, offset, Quaternion.identity);
             soldier.transform.SetParent(squadObj.transform);
 
-            // Assign UNIT script team
             var unitComp = soldier.GetComponent<Unit>();
-            if (unitComp != null)
-                unitComp.teamID = teamID;
+            if (unitComp != null) unitComp.teamID = teamID;
 
             // Assign Layer + Tag
             soldier.tag = tagToAssign;
             SetLayerRecursive(soldier, layerToAssign);
 
-            Debug.Log($"  Soldier '{soldier.name}' -> Team {teamID}, Tag={tagToAssign}, Layer={LayerMask.LayerToName(layerToAssign)}");
+            // Set squadRoot in UnitCombat
+            UnitCombat uc = soldier.GetComponent<UnitCombat>();
+            if (uc != null)
+                uc.squadRoot = squad;
 
             squad.soldiers.Add(soldier.transform);
         }
-
-        Debug.Log($"{owner} Squad {squad.squadID} spawned (Team {teamID}) with {count} {unit.type}(s)");
     }
 
-    // ────────────────────────────────────────────────────────────────
     private void RestoreBattlefield(BattlefieldState state)
     {
         if (state.squads == null) return;
@@ -182,22 +161,23 @@ public class SquadSpawner : MonoBehaviour
             GameObject prefab = GetPrefabForType(ss.unitType);
             if (prefab == null) continue;
 
-            GameObject squadObj =
-                new GameObject($"{ss.owner}_Squad_{ss.squadID}_{ss.unitType}");
-
+            GameObject squadObj = new GameObject($"{ss.owner}_Squad_{ss.squadID}_{ss.unitType}");
             Squad squad = squadObj.AddComponent<Squad>();
+
+            SphereCollider detection = squadObj.AddComponent<SphereCollider>();
+            detection.isTrigger = true;
+            detection.radius = 7f;
+
+            SquadCombatController ctrl = squadObj.AddComponent<SquadCombatController>();
+            ctrl.squad = squad;
 
             squad.teamID = (ss.owner == "Player") ? 0 : 1;
             squad.owner = ss.owner;
             squad.unitType = ss.unitType;
             squad.squadID = ss.squadID;
-
             squad.soldiers = new List<Transform>();
 
-            int layerToAssign = (squad.teamID == 0)
-                ? LayerMask.NameToLayer("PlayerSoldier")
-                : LayerMask.NameToLayer("EnemySoldier");
-
+            int layerToAssign = (squad.teamID == 0) ? LayerMask.NameToLayer("PlayerSoldier") : LayerMask.NameToLayer("EnemySoldier");
             string tagToAssign = (squad.teamID == 0) ? "PlayerUnit" : "EnemyUnit";
 
             foreach (var pos in ss.soldierPositions)
@@ -206,19 +186,20 @@ public class SquadSpawner : MonoBehaviour
                 soldier.transform.SetParent(squadObj.transform);
 
                 var unitComp = soldier.GetComponent<Unit>();
-                if (unitComp != null)
-                    unitComp.teamID = squad.teamID;
+                if (unitComp != null) unitComp.teamID = squad.teamID;
 
                 soldier.tag = tagToAssign;
                 SetLayerRecursive(soldier, layerToAssign);
 
+                // Set squadRoot in UnitCombat
+                UnitCombat uc = soldier.GetComponent<UnitCombat>();
+                if (uc != null)
+                    uc.squadRoot = squad;
+
                 squad.soldiers.Add(soldier.transform);
             }
-
-            Debug.Log($"Restored Squad {ss.squadID} ({ss.unitType}) Team {squad.teamID}");
         }
-
-        // Restore generals
+        
         if (state.playerGeneralPosition.HasValue)
         {
             PlayerGeneral = Instantiate(
@@ -226,7 +207,6 @@ public class SquadSpawner : MonoBehaviour
                 state.playerGeneralPosition.Value,
                 state.playerGeneralRotation ?? Quaternion.identity
             );
-
             PlayerGeneral.tag = "PlayerUnit";
             SetLayerRecursive(PlayerGeneral, LayerMask.NameToLayer("PlayerSoldier"));
         }
@@ -238,13 +218,11 @@ public class SquadSpawner : MonoBehaviour
                 state.enemyGeneralPosition.Value,
                 state.enemyGeneralRotation ?? Quaternion.identity
             );
-
             EnemyGeneral.tag = "EnemyUnit";
             SetLayerRecursive(EnemyGeneral, LayerMask.NameToLayer("EnemySoldier"));
         }
     }
 
-    // ────────────────────────────────────────────────────────────────
     private void SetLayerRecursive(GameObject obj, int layer)
     {
         obj.layer = layer;
@@ -252,7 +230,6 @@ public class SquadSpawner : MonoBehaviour
             SetLayerRecursive(child.gameObject, layer);
     }
 
-    // ────────────────────────────────────────────────────────────────
     public BattlefieldState SaveBattlefieldStateNow()
     {
         BattlefieldState state = new BattlefieldState();
@@ -269,8 +246,7 @@ public class SquadSpawner : MonoBehaviour
             };
 
             foreach (var t in squad.soldiers)
-                if (t != null)
-                    ss.soldierPositions.Add(t.position);
+                if (t != null) ss.soldierPositions.Add(t.position);
 
             state.squads.Add(ss);
         }
@@ -286,8 +262,6 @@ public class SquadSpawner : MonoBehaviour
             state.enemyGeneralPosition = EnemyGeneral.transform.position;
             state.enemyGeneralRotation = EnemyGeneral.transform.rotation;
         }
-
-        Debug.Log("SquadSpawner: Saved battlefield state.");
 
         return state;
     }

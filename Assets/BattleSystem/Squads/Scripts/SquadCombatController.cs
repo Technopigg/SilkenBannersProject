@@ -7,10 +7,10 @@ public class SquadCombatController : MonoBehaviour
     public Squad squad;
     public float engageDistance = 2.5f;
 
-    public int enemyCount = 0;
     public bool isEngaged = false;
 
-    private readonly List<UnitCombat> enemiesInRange = new();
+    // Tracks enemy squads in range
+    public readonly List<SquadCombatController> enemySquadsInRange = new();
 
     private SphereCollider col;
 
@@ -22,59 +22,38 @@ public class SquadCombatController : MonoBehaviour
         col = GetComponent<SphereCollider>();
         col.isTrigger = true;
         col.radius = 7f;
-        
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log($"{squad.name} TRIGGER ENTER: {other.name}");
-
-        if (other.TryGetComponent<UnitCombat>(out var unit))
+        // Detect enemy squads only
+        if (other.TryGetComponent<SquadCombatController>(out var enemySquadCtrl))
         {
-            Debug.Log($" - {other.name} has UnitCombat");
-
-            if (unit.squadRoot != squad)
+            if (enemySquadCtrl.squad.teamID != squad.teamID && !enemySquadsInRange.Contains(enemySquadCtrl))
             {
-                Debug.Log($" - {other.name} is ENEMY");
-
-                if (!enemiesInRange.Contains(unit))
-                {
-                    enemiesInRange.Add(unit);
-                    enemyCount++;
-
-                    Debug.Log($" → Enemy ADDED: {other.name}. Total enemies = {enemyCount}");
-                }
-            }
-            else
-            {
-                Debug.Log($" - {other.name} is SAME SQUAD (ignored)");
+                enemySquadsInRange.Add(enemySquadCtrl);
+                Debug.Log($"{squad.name} → Enemy squad detected: {enemySquadCtrl.squad.name}");
+                UpdateEngagementState();
             }
         }
-
-        UpdateEngagementState();
     }
 
     private void OnTriggerExit(Collider other)
     {
-        Debug.Log($"{squad.name} TRIGGER EXIT: {other.name}");
-
-        if (other.TryGetComponent<UnitCombat>(out var unit))
+        if (other.TryGetComponent<SquadCombatController>(out var enemySquadCtrl))
         {
-            if (enemiesInRange.Contains(unit))
+            if (enemySquadsInRange.Contains(enemySquadCtrl))
             {
-                enemiesInRange.Remove(unit);
-                enemyCount--;
-
-                Debug.Log($" → Enemy REMOVED: {other.name}. Total enemies = {enemyCount}");
+                enemySquadsInRange.Remove(enemySquadCtrl);
+                Debug.Log($"{squad.name} → Enemy squad left: {enemySquadCtrl.squad.name}");
+                UpdateEngagementState();
             }
         }
-
-        UpdateEngagementState();
     }
 
     private void UpdateEngagementState()
     {
-        bool newState = enemiesInRange.Count > 0;
+        bool newState = enemySquadsInRange.Count > 0;
 
         if (newState != isEngaged)
         {
@@ -85,8 +64,8 @@ public class SquadCombatController : MonoBehaviour
 
     void Update()
     {
-        if (enemiesInRange.Count == 0)
-            return;
+        if (!isEngaged) return;
+        if (squad == null || squad.soldiers.Count == 0) return;
 
         foreach (var soldier in squad.soldiers)
         {
@@ -95,28 +74,32 @@ public class SquadCombatController : MonoBehaviour
             UnitCombat combat = soldier.GetComponent<UnitCombat>();
             if (combat == null || combat.combatDisabled) continue;
 
-            UnitCombat closest = null;
-            float shortest = Mathf.Infinity;
+            UnitCombat closestEnemyUnit = null;
+            float shortestDistance = Mathf.Infinity;
 
-            foreach (var enemy in enemiesInRange)
+            // Find closest enemy unit inside any detected enemy squad
+            foreach (var enemySquadCtrl in enemySquadsInRange)
             {
-                if (enemy == null) continue;
+                if (enemySquadCtrl == null || enemySquadCtrl.squad == null) continue;
 
-                float dist = Vector3.Distance(soldier.position, enemy.transform.position);
-                if (dist < shortest)
+                foreach (var enemySoldier in enemySquadCtrl.squad.soldiers)
                 {
-                    shortest = dist;
-                    closest = enemy;
+                    if (enemySoldier == null) continue;
+
+                    float dist = Vector3.Distance(soldier.position, enemySoldier.position);
+                    if (dist < shortestDistance)
+                    {
+                        shortestDistance = dist;
+                        closestEnemyUnit = enemySoldier.GetComponent<UnitCombat>();
+                    }
                 }
             }
 
-            if (closest != null)
+            if (closestEnemyUnit != null)
             {
-                Debug.Log($"{soldier.name} → Targeting {closest.name}");
+                combat.SetTarget(closestEnemyUnit.transform);
 
-                combat.SetTarget(closest.transform);
-
-                if (shortest > engageDistance)
+                if (shortestDistance > engageDistance)
                     combat.MoveTowardsTarget();
                 else
                     combat.TryAttack();

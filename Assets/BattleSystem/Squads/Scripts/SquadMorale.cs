@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public enum MoraleState
@@ -10,22 +9,23 @@ public enum MoraleState
     Routing
 }
 
+[DisallowMultipleComponent]
 public class SquadMorale : MonoBehaviour
 {
     public Squad squad;
 
     [Header("Morale Settings")]
     public float maxMorale = 100f;
-    public float morale = 100f;
+    [SerializeField] private float morale = 100f;
     public MoraleState state = MoraleState.Steady;
 
     [Header("Loss Impact")]
     public float lossPerCasualty = 5f;
     public float lossWhenFlanked = 10f;
-    public float lossWhenLosingCombat = 0.8f; // per second
+    public float lossWhenLosingCombat = 0.8f; 
 
     [Header("Regeneration")]
-    public float regenRate = 2f; // per second when not fighting
+    public float regenRate = 2f; 
 
     [Header("Routing Settings")]
     public float shakenThreshold = 60f;
@@ -42,18 +42,29 @@ public class SquadMorale : MonoBehaviour
 
     void Update()
     {
+        if (squad == null) return;
+
         UpdateMoraleState();
 
-        if (!combat.isEngaged)
+        // Regenerate morale when not engaged
+        if (combat == null || !combat.isEngaged)
         {
             morale = Mathf.Min(maxMorale, morale + regenRate * Time.deltaTime);
         }
         else
         {
-            // losing? apply pressure
-            if (combat.enemyCount > squad.soldiers.Count)
+            // Reduce morale if outnumbered by enemy squads
+            int enemyUnits = 0;
+            if (combat != null)
             {
-                morale -= lossWhenLosingCombat * Time.deltaTime;
+                foreach (var enemySquad in combat.enemySquadsInRange)
+                    if (enemySquad != null && enemySquad.squad != null)
+                        enemyUnits += enemySquad.squad.soldiers.Count;
+
+                if (enemyUnits > squad.soldiers.Count)
+                {
+                    morale -= lossWhenLosingCombat * Time.deltaTime;
+                }
             }
         }
 
@@ -95,17 +106,25 @@ public class SquadMorale : MonoBehaviour
     {
         state = MoraleState.Routing;
 
-        Vector3 fleeDir = -transform.forward;
+        if (squad == null || squad.soldiers.Count == 0) return;
+
+        Vector3 fleeDir = -squad.transform.forward;
         fleeDir.y = 0f;
 
-        Vector3 fleePoint = transform.position + fleeDir * 30f;
-
+        Vector3 fleePoint = squad.GetSquadCenter() + fleeDir * 30f;
         squad.MoveSquad(fleePoint);
 
         foreach (Transform soldier in squad.soldiers)
         {
+            if (soldier == null) continue;
+
             UnitCombat uc = soldier.GetComponent<UnitCombat>();
             if (uc != null) uc.DisableCombatTemporarily();
         }
+    }
+
+    public float GetMoralePercentage()
+    {
+        return morale / maxMorale;
     }
 }

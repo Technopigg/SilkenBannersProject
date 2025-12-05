@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+[RequireComponent(typeof(UnitMovement))]
 public class UnitCombat : MonoBehaviour
 {
     [Header("Combat Stats")]
@@ -18,15 +19,24 @@ public class UnitCombat : MonoBehaviour
     void Awake()
     {
         squadRoot = GetComponentInParent<Squad>();
-        Debug.Log($"{name}: UnitCombat Awake - squadRoot = {squadRoot}");
+        if (squadRoot == null)
+        {
+            Debug.LogWarning($"{name}: No Squad found in parent hierarchy!");
+        }
+        else
+        {
+            Debug.Log($"{name}: UnitCombat Awake - squadRoot = {squadRoot.name}");
+        }
     }
 
     public void SetTarget(Transform t)
     {
         if (combatDisabled) return;
+        if (t == null) return;
 
         currentTarget = t;
-        Debug.Log($"{name}: Target SET → {t.name}");
+        // Debug log can be commented out in large battles for performance
+        // Debug.Log($"{name}: Target SET → {t.name}");
     }
 
     public void MoveTowardsTarget()
@@ -36,7 +46,6 @@ public class UnitCombat : MonoBehaviour
         UnitMovement mover = GetComponent<UnitMovement>();
         if (mover != null)
         {
-            Debug.Log($"{name}: Moving toward target {currentTarget.name}");
             mover.SetMovementTarget(currentTarget.position, mover.MoveSpeed);
         }
     }
@@ -46,12 +55,10 @@ public class UnitCombat : MonoBehaviour
         if (combatDisabled || currentTarget == null) return;
 
         float dist = Vector3.Distance(transform.position, currentTarget.position);
-
-        Debug.Log($"{name}: TryAttack() → target={currentTarget.name}, dist={dist}");
-
         if (dist > attackRange)
         {
-            Debug.Log($"{name}: Target OUT of attack range");
+            // Target out of range; move closer
+            MoveTowardsTarget();
             return;
         }
 
@@ -61,44 +68,33 @@ public class UnitCombat : MonoBehaviour
 
             if (currentTarget.TryGetComponent<UnitHealth>(out var hp))
             {
-                Debug.Log($"{name}: ATTACKING {currentTarget.name} for {attackDamage} dmg!");
                 hp.TakeDamage(attackDamage);
             }
-            else
-            {
-                Debug.Log($"{name}: ERROR → Target has NO UnitHealth");
-            }
-        }
-        else
-        {
-            Debug.Log($"{name}: Attack ON COOLDOWN");
         }
     }
 
     public void DisableCombatTemporarily()
     {
-        Debug.Log($"{name}: Combat disabled temporarily");
         combatDisabled = true;
         StopAllCoroutines();
 
-        var move = GetComponent<UnitMovement>();
-        if (move != null)
-            move.StopImmediate();
+        var mover = GetComponent<UnitMovement>();
+        if (mover != null)
+            mover.StopImmediate();
     }
 
     public void EnableCombat()
     {
-        Debug.Log($"{name}: Combat re-enabled");
         combatDisabled = false;
     }
 
     void OnDrawGizmosSelected()
     {
-        // Attack Range
+        // Attack range
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attackRange);
 
-        // Current Target
+        // Current target line
         if (currentTarget != null)
         {
             Gizmos.color = Color.green;

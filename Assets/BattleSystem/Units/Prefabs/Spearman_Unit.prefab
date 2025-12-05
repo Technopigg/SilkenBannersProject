@@ -108,10 +108,9 @@ GameObject:
   - component: {fileID: 2002698689995470366}
   - component: {fileID: 3024670068458915547}
   - component: {fileID: -1492919537346162190}
-  - component: {fileID: 2975655988536324018}
   - component: {fileID: 4114665515492526368}
   m_Layer: 0
-  m_Name: Soldier_Unit
+  m_Name: Spearman_Unit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -305,27 +304,6 @@ MonoBehaviour:
   currentTarget: {fileID: 0}
   squadRoot: {fileID: 0}
   combatDisabled: 0
---- !u!135 &2975655988536324018
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5922544110780624846}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 264
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 5
-  m_Center: {x: 0, y: 1, z: 0}
 --- !u!114 &4114665515492526368
 MonoBehaviour:
   m_ObjectHideFlags: 0

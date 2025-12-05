@@ -796,12 +796,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1904999339}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &902980802 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8305152593724776116, guid: b045fb0671b465b40bf8b354be82d3da,
-    type: 3}
-  m_PrefabInstance: {fileID: 1750413484873860505}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1099247117
 GameObject:
   m_ObjectHideFlags: 0
@@ -813,8 +807,6 @@ GameObject:
   - component: {fileID: 1099247120}
   - component: {fileID: 1099247119}
   - component: {fileID: 1099247118}
-  - component: {fileID: 1099247122}
-  - component: {fileID: 1099247121}
   m_Layer: 0
   m_Name: SquadSpawner
   m_TagString: Untagged
@@ -873,43 +865,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1904999339}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1099247121
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1099247117}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 377795f32c224e37835570937a492e80, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SquadCombatController
-  squad: {fileID: 0}
-  engageDistance: 2.5
-  enemyCount: 0
-  isEngaged: 0
---- !u!135 &1099247122
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1099247117}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1102630901
 GameObject:
   m_ObjectHideFlags: 0
@@ -1581,6 +1536,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1099247120}
+  - {fileID: 1102630902}
+  - {fileID: 1411508143}
   - {fileID: 1690515294}
   - {fileID: 834441310}
   - {fileID: 832575519}
@@ -1590,12 +1548,8 @@ Transform:
   - {fileID: 38444805}
   - {fileID: 589815871}
   - {fileID: 1338448474}
-  - {fileID: 1411508143}
-  - {fileID: 1102630902}
   - {fileID: 55974915}
-  - {fileID: 1099247120}
   - {fileID: 1233206779}
-  - {fileID: 902980802}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1972478290
@@ -1888,100 +1842,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1904999339}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &1750413484873860505
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1904999339}
-    m_Modifications:
-    - target: {fileID: 5976196345591550138, guid: b045fb0671b465b40bf8b354be82d3da,
-        type: 3}
-      propertyPath: m_Name
-      value: SquadPrefab
-      objectReference: {fileID: 0}
-    - target: {fileID: 8305152593724776116, guid: b045fb0671b465b40bf8b354be82d3da,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8305152593724776116, guid: b045fb0671b465b40bf8b354be82d3da,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8305152593724776116, guid: b045fb0671b465b40bf8b354be82d3da,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8305152593724776116, guid: b045fb0671b465b40bf8b354be82d3da,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8305152593724776116, guid: b045fb0671b465b40bf8b354be82d3da,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8305152593724776116, guid: b045fb0671b465b40bf8b354be82d3da,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8305152593724776116, guid: b045fb0671b465b40bf8b354be82d3da,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8305152593724776116, guid: b045fb0671b465b40bf8b354be82d3da,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8305152593724776116, guid: b045fb0671b465b40bf8b354be82d3da,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8305152593724776116, guid: b045fb0671b465b40bf8b354be82d3da,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 5976196345591550138, guid: b045fb0671b465b40bf8b354be82d3da,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1750413484873860507}
-  m_SourcePrefab: {fileID: 100100000, guid: b045fb0671b465b40bf8b354be82d3da, type: 3}
---- !u!1 &1750413484873860506 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5976196345591550138, guid: b045fb0671b465b40bf8b354be82d3da,
-    type: 3}
-  m_PrefabInstance: {fileID: 1750413484873860505}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1750413484873860507
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1750413484873860506}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 377795f32c224e37835570937a492e80, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SquadCombatController
-  squad: {fileID: 0}
-  engageDistance: 2.5
-  enemyCount: 0
-  isEngaged: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

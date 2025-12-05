@@ -9,6 +9,7 @@ public class UnitHealth : MonoBehaviour
 
     private UnitStats stats;
     private Animator animator;
+    private SquadMorale squadMorale;
 
     void Awake()
     {
@@ -19,6 +20,9 @@ public class UnitHealth : MonoBehaviour
             maxHealth = stats.maxHealth;
 
         currentHealth = maxHealth;
+        Squad parentSquad = GetComponentInParent<Squad>();
+        if (parentSquad != null)
+            squadMorale = parentSquad.GetComponent<SquadMorale>();
 
         Debug.Log($"{name}: UnitHealth Awake → MaxHealth {maxHealth}");
     }
@@ -34,6 +38,7 @@ public class UnitHealth : MonoBehaviour
         if (currentHealth <= 0)
         {
             Debug.Log($"{name}: DIED");
+            squadMorale?.ApplyCasualty();
             Die();
         }
     }

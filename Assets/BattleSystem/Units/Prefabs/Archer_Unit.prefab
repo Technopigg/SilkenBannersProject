@@ -109,7 +109,6 @@ GameObject:
   - component: {fileID: -5443629767674576736}
   - component: {fileID: -7544725924082894205}
   - component: {fileID: -6980309941541267668}
-  - component: {fileID: 5717700624376412399}
   m_Layer: 0
   m_Name: Archer_Unit
   m_TagString: Untagged
@@ -333,24 +332,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UnitHealth
   maxHealth: 100
   currentHealth: 0
---- !u!135 &5717700624376412399
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5922544110780624846}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 264
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 1.6
-  m_Center: {x: 0, y: 1, z: 0}
