@@ -5,7 +5,7 @@ using UnityEngine;
 public class Squad : MonoBehaviour
 {
     [Header("Team Info")]
-    public int teamID = -1; 
+    public int teamID = -1;
 
     [Header("Squad Info")]
     public int squadID;
@@ -22,6 +22,14 @@ public class Squad : MonoBehaviour
     [Header("Movement")]
     public float squadBaseSpeed = 3.5f;
 
+    // ------------------------------------------------------------
+    // HEALTH SYSTEM
+    // ------------------------------------------------------------
+    [Header("Squad Health (Auto-Calculated)")]
+    public float totalMaxHealth = 0f;    
+    public float totalCurrentHealth = 0f; 
+    public bool isSelected = false;
+
     void Awake()
     {
         if (soldiers == null) soldiers = new List<Transform>();
@@ -35,6 +43,46 @@ public class Squad : MonoBehaviour
                 }
             }
         }
+
+        RecalculateMaxHealth();
+        RecalculateCurrentHealth();
+    }
+
+    // ------------------------------------------------------------
+    // HEALTH CALCULATION
+    // ------------------------------------------------------------
+    public void RecalculateMaxHealth()
+    {
+        totalMaxHealth = 0f;
+
+        foreach (Transform soldier in soldiers)
+        {
+            if (soldier == null) continue;
+
+            UnitHealth u = soldier.GetComponent<UnitHealth>();
+            if (u != null)
+                totalMaxHealth += u.maxHealth;
+        }
+    }
+
+    public void RecalculateCurrentHealth()
+    {
+        totalCurrentHealth = 0f;
+
+        foreach (Transform soldier in soldiers)
+        {
+            if (soldier == null) continue;
+
+            UnitHealth u = soldier.GetComponent<UnitHealth>();
+            if (u != null && u.currentHealth > 0)
+                totalCurrentHealth += u.currentHealth;
+        }
+    }
+
+    // Call this whenever a unit dies
+    public void NotifyUnitDied(UnitHealth deadUnit)
+    {
+        RecalculateCurrentHealth();
     }
 
     // ------------------------------------------------------------
@@ -123,6 +171,8 @@ public class Squad : MonoBehaviour
     // ------------------------------------------------------------
     public void SetSelected(bool selected)
     {
+        isSelected = selected;
+
         foreach (Transform soldier in soldiers)
         {
             if (soldier == null) continue;

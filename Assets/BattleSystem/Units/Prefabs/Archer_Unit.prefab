@@ -295,7 +295,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5bfe2c8a11748ce971ac2da3387ff6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitCombat
-  attackRange: 1.8
+  attackRange: 20
   attackDamage: 10
   attackCooldown: 1.5
   currentTarget: {fileID: 0}
@@ -315,9 +315,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Unit
   teamID: 0
   isLockedInBattle: 0
-  movement: {fileID: 0}
-  combat: {fileID: 0}
-  health: {fileID: 0}
 --- !u!114 &-6980309941541267668
 MonoBehaviour:
   m_ObjectHideFlags: 0

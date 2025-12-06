@@ -46,14 +46,13 @@ public class SquadMorale : MonoBehaviour
 
         UpdateMoraleState();
 
-        // Regenerate morale when not engaged
+
         if (combat == null || !combat.isEngaged)
         {
             morale = Mathf.Min(maxMorale, morale + regenRate * Time.deltaTime);
         }
         else
         {
-            // Reduce morale if outnumbered by enemy squads
             int enemyUnits = 0;
             if (combat != null)
             {
