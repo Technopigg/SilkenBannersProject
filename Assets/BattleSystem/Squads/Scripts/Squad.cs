@@ -22,16 +22,13 @@ public class Squad : MonoBehaviour
     [Header("Movement")]
     public float squadBaseSpeed = 3.5f;
 
-    // ------------------------------------------------------------
-    // HEALTH SYSTEM
-    // ------------------------------------------------------------
-    [Header("Squad Health (Auto-Calculated)")]
+    [Header("Health System")]
     public float totalMaxHealth = 0f;
     public float totalCurrentHealth = 0f;
     public bool isSelected = false;
 
     [Header("UI")]
-    public SquadHealthBar healthBar;   
+    public SquadHealthBar healthBar;
 
     void Awake()
     {
@@ -49,6 +46,14 @@ public class Squad : MonoBehaviour
 
         RecalculateMaxHealth();
         RecalculateCurrentHealth();
+
+        foreach (Transform soldier in soldiers)
+        {
+            if (soldier == null) continue;
+            UnitHealth uh = soldier.GetComponent<UnitHealth>();
+            if (uh != null)
+                uh.OnHealthChanged += OnUnitHealthChanged;
+        }
     }
 
     // ------------------------------------------------------------
@@ -57,32 +62,33 @@ public class Squad : MonoBehaviour
     public void RecalculateMaxHealth()
     {
         totalMaxHealth = 0f;
-
         foreach (Transform soldier in soldiers)
         {
             if (soldier == null) continue;
-
             UnitHealth u = soldier.GetComponent<UnitHealth>();
             if (u != null)
                 totalMaxHealth += u.maxHealth;
         }
+        if (healthBar != null)
+            healthBar.SetMaxHealth(totalMaxHealth);
     }
 
     public void RecalculateCurrentHealth()
     {
         totalCurrentHealth = 0f;
-
         foreach (Transform soldier in soldiers)
         {
             if (soldier == null) continue;
-
             UnitHealth u = soldier.GetComponent<UnitHealth>();
-            if (u != null && u.currentHealth > 0)
+            if (u != null && !u.IsDead)
                 totalCurrentHealth += u.currentHealth;
         }
+
+        if (healthBar != null)
+            healthBar.SetHealth(totalCurrentHealth);
     }
 
-    public void NotifyUnitDied(UnitHealth deadUnit)
+    private void OnUnitHealthChanged(UnitHealth unit)
     {
         RecalculateCurrentHealth();
     }
@@ -93,7 +99,6 @@ public class Squad : MonoBehaviour
     public void SetTeam(int id)
     {
         teamID = id;
-
         foreach (Transform soldier in soldiers)
         {
             if (soldier == null) continue;
@@ -120,7 +125,6 @@ public class Squad : MonoBehaviour
     {
         Vector3 facingDir = destination - GetSquadCenter();
         facingDir.y = 0f;
-
         if (facingDir.sqrMagnitude < 0.001f)
             facingDir = transform.forward;
 
@@ -175,21 +179,12 @@ public class Squad : MonoBehaviour
     {
         isSelected = selected;
 
-        // NEW: Toggle health bar visibility
         if (healthBar != null)
-        {
             healthBar.gameObject.SetActive(selected);
-        }
-        else
-        {
-            Debug.LogWarning($"{name} has no HealthBar assigned in the inspector!");
-        }
 
-        // Existing: toggle soldier selection visuals
         foreach (Transform soldier in soldiers)
         {
             if (soldier == null) continue;
-
             UnitSelection sel = soldier.GetComponent<UnitSelection>();
             if (sel != null) sel.SetSelected(selected);
         }
@@ -213,7 +208,6 @@ public class Squad : MonoBehaviour
                 count++;
             }
         }
-
         return count > 0 ? sum / count : transform.position;
     }
 }
