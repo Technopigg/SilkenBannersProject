@@ -12,17 +12,21 @@ public class SquadSpawner : MonoBehaviour
     public Transform enemySpawnPoint;
 
     [Header("Prefabs")]
-    public GameObject squadPrefab; 
+    public GameObject squadPrefab;
     public GameObject generalPrefab;
 
     [Header("Unit Prefabs")]
     [SerializeField] private GameObject spearmanPrefab;
     [SerializeField] private GameObject archerPrefab;
 
+    [Header("UI Prefabs")]
+    public GameObject squadHealthBarPrefab;
+
     public GameObject PlayerGeneral { get; private set; }
     public GameObject EnemyGeneral { get; private set; }
 
     private bool hasSpawned = false;
+    private Canvas worldSpaceCanvas;
 
     void Start()
     {
@@ -33,6 +37,21 @@ public class SquadSpawner : MonoBehaviour
         }
 
         hasSpawned = true;
+        
+        Canvas[] canvases = FindObjectsOfType<Canvas>();
+        foreach (var c in canvases)
+        {
+            if (c.renderMode == RenderMode.WorldSpace)
+            {
+                worldSpaceCanvas = c;
+                break;
+            }
+        }
+
+        if (worldSpaceCanvas == null)
+        {
+            Debug.LogWarning("SquadSpawner: No World-Space Canvas found. Health bars will still be created but not parented to a world-space canvas.");
+        }
 
         if (BattleManager.Instance == null)
         {
@@ -86,14 +105,16 @@ public class SquadSpawner : MonoBehaviour
         {
             SpawnSquad(spawnPoint.position, unit, owner, teamID, unit.count);
         }
+
         Vector3 genPos = spawnPoint.position + Vector3.forward * 2f;
         GameObject genPrefabToUse = (token.generalPrefab != null) ? token.generalPrefab : generalPrefab;
         GameObject generalObj = Instantiate(genPrefabToUse, genPos, Quaternion.identity);
 
         generalObj.tag = (teamID == 0) ? "PlayerUnit" : "EnemyUnit";
-        SetLayerRecursive(generalObj, (teamID == 0)
-            ? LayerMask.NameToLayer("PlayerSoldier")
-            : LayerMask.NameToLayer("EnemySoldier"));
+
+        SetLayerRecursive(generalObj,
+            (teamID == 0) ? LayerMask.NameToLayer("PlayerSoldier")
+                         : LayerMask.NameToLayer("EnemySoldier"));
 
         var movement = generalObj.GetComponent<Player3PMovement>();
         if (movement != null) movement.isPlayerControlled = (teamID == 0);
@@ -111,6 +132,7 @@ public class SquadSpawner : MonoBehaviour
             return;
         }
 
+
         GameObject squadObj = new GameObject($"{owner}_Squad_{unit.type}");
         Squad squad = squadObj.AddComponent<Squad>();
         Rigidbody rb = squadObj.AddComponent<Rigidbody>();
@@ -119,11 +141,10 @@ public class SquadSpawner : MonoBehaviour
 
         SphereCollider detection = squadObj.AddComponent<SphereCollider>();
         detection.isTrigger = true;
-        detection.radius = 20f; 
+        detection.radius = 20f;
 
         SquadCombatController ctrl = squadObj.AddComponent<SquadCombatController>();
         ctrl.squad = squad;
-
         squad.teamID = teamID;
         squad.owner = owner;
         squad.unitType = unit.type;
@@ -132,7 +153,6 @@ public class SquadSpawner : MonoBehaviour
 
         int layerToAssign = (teamID == 0) ? LayerMask.NameToLayer("PlayerSoldier") : LayerMask.NameToLayer("EnemySoldier");
         string tagToAssign = (teamID == 0) ? "PlayerUnit" : "EnemyUnit";
-
         for (int i = 0; i < Mathf.Max(1, count); i++)
         {
             Vector3 offset = position + new Vector3(i * 1.5f, 0, 0);
@@ -141,13 +161,35 @@ public class SquadSpawner : MonoBehaviour
 
             var unitComp = soldier.GetComponent<Unit>();
             if (unitComp != null) unitComp.teamID = teamID;
+
             soldier.tag = tagToAssign;
             SetLayerRecursive(soldier, layerToAssign);
+
             UnitCombat uc = soldier.GetComponent<UnitCombat>();
             if (uc != null)
                 uc.squadRoot = squad;
 
             squad.soldiers.Add(soldier.transform);
+        }
+
+        // -------------------------
+        //  CREATE HEALTH BAR UI
+        // -------------------------
+        if (squadHealthBarPrefab != null)
+        {
+            Transform parent = (worldSpaceCanvas != null) ? worldSpaceCanvas.transform : null;
+            GameObject hb = (parent != null) ? Instantiate(squadHealthBarPrefab, parent) : Instantiate(squadHealthBarPrefab);
+            SquadHealthBar hbComp = hb.GetComponent<SquadHealthBar>();
+            if (hbComp != null)
+            {
+                hbComp.squad = squad;
+                squad.healthBar = hbComp;
+                hb.transform.position = squad.GetSquadCenter() + Vector3.up * 2f;
+            }
+            else
+            {
+                Debug.LogError("SquadSpawner: SquadHealthBar prefab is missing SquadHealthBar component!");
+            }
         }
     }
 
@@ -159,8 +201,10 @@ public class SquadSpawner : MonoBehaviour
         {
             GameObject prefab = GetPrefabForType(ss.unitType);
             if (prefab == null) continue;
+
             GameObject squadObj = new GameObject($"{ss.owner}_Squad_{ss.squadID}_{ss.unitType}");
             Squad squad = squadObj.AddComponent<Squad>();
+
             Rigidbody rb = squadObj.AddComponent<Rigidbody>();
             rb.isKinematic = true;
             rb.useGravity = false;
@@ -191,11 +235,29 @@ public class SquadSpawner : MonoBehaviour
 
                 soldier.tag = tagToAssign;
                 SetLayerRecursive(soldier, layerToAssign);
+
                 UnitCombat uc = soldier.GetComponent<UnitCombat>();
                 if (uc != null)
                     uc.squadRoot = squad;
 
                 squad.soldiers.Add(soldier.transform);
+            }
+
+            // -------------------------
+            //  RESTORE HEALTH BAR
+            // -------------------------
+            if (squadHealthBarPrefab != null)
+            {
+                Transform parent = (worldSpaceCanvas != null) ? worldSpaceCanvas.transform : null;
+                GameObject hb = (parent != null) ? Instantiate(squadHealthBarPrefab, parent) : Instantiate(squadHealthBarPrefab);
+
+                SquadHealthBar hbComp = hb.GetComponent<SquadHealthBar>();
+                if (hbComp != null)
+                {
+                    hbComp.squad = squad;
+                    squad.healthBar = hbComp;
+                    hb.transform.position = squad.GetSquadCenter() + Vector3.up * 2f;
+                }
             }
         }
         

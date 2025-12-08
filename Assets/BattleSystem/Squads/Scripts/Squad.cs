@@ -26,9 +26,12 @@ public class Squad : MonoBehaviour
     // HEALTH SYSTEM
     // ------------------------------------------------------------
     [Header("Squad Health (Auto-Calculated)")]
-    public float totalMaxHealth = 0f;    
-    public float totalCurrentHealth = 0f; 
+    public float totalMaxHealth = 0f;
+    public float totalCurrentHealth = 0f;
     public bool isSelected = false;
+
+    [Header("UI")]
+    public SquadHealthBar healthBar;   
 
     void Awake()
     {
@@ -79,7 +82,6 @@ public class Squad : MonoBehaviour
         }
     }
 
-    // Call this whenever a unit dies
     public void NotifyUnitDied(UnitHealth deadUnit)
     {
         RecalculateCurrentHealth();
@@ -173,6 +175,17 @@ public class Squad : MonoBehaviour
     {
         isSelected = selected;
 
+        // NEW: Toggle health bar visibility
+        if (healthBar != null)
+        {
+            healthBar.gameObject.SetActive(selected);
+        }
+        else
+        {
+            Debug.LogWarning($"{name} has no HealthBar assigned in the inspector!");
+        }
+
+        // Existing: toggle soldier selection visuals
         foreach (Transform soldier in soldiers)
         {
             if (soldier == null) continue;

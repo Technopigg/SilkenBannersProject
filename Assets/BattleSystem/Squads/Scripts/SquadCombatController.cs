@@ -8,8 +8,6 @@ public class SquadCombatController : MonoBehaviour
     public float engageDistance = 2.5f;
 
     public bool isEngaged = false;
-
-    // Tracks enemy squads in range
     public readonly List<SquadCombatController> enemySquadsInRange = new();
 
     private SphereCollider col;
@@ -26,7 +24,6 @@ public class SquadCombatController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        // Detect enemy squads only
         if (other.TryGetComponent<SquadCombatController>(out var enemySquadCtrl))
         {
             if (enemySquadCtrl.squad.teamID != squad.teamID && !enemySquadsInRange.Contains(enemySquadCtrl))
@@ -77,7 +74,6 @@ public class SquadCombatController : MonoBehaviour
             UnitCombat closestEnemyUnit = null;
             float shortestDistance = Mathf.Infinity;
 
-            // Find closest enemy unit inside any detected enemy squad
             foreach (var enemySquadCtrl in enemySquadsInRange)
             {
                 if (enemySquadCtrl == null || enemySquadCtrl.squad == null) continue;

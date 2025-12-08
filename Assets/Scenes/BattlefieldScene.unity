@@ -835,6 +835,8 @@ MonoBehaviour:
     type: 3}
   archerPrefab: {fileID: 5922544110780624846, guid: 6ab925c60306f9e4e8cb34a8126baef0,
     type: 3}
+  squadHealthBarPrefab: {fileID: 5021504085575221976, guid: 668b912fc0ac6e54b95d718ec5a16cd3,
+    type: 3}
 --- !u!114 &1099247119
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -88,6 +88,9 @@ MonoBehaviour:
   arriveSlowDistance: 6
   minSpeedFactor: 0.3
   squadBaseSpeed: 3.5
+  totalMaxHealth: 0
+  totalCurrentHealth: 0
+  isSelected: 0
 --- !u!135 &-6531741261661150668
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -123,5 +126,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SquadCombatController
   squad: {fileID: 0}
   engageDistance: 2.5
-  enemyCount: 0
   isEngaged: 0
