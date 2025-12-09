@@ -65,8 +65,6 @@ public class Squad : MonoBehaviour
 
         if (healthBar != null)
             healthBar.SetMaxHealth(totalMaxHealth);
-
-        Debug.Log($"[SQUAD] {name}: MaxHealth = {totalMaxHealth}");
     }
 
     public void RecalculateCurrentHealth()
@@ -82,8 +80,6 @@ public class Squad : MonoBehaviour
 
         if (healthBar != null)
             healthBar.SetHealth(totalCurrentHealth);
-
-        Debug.Log($"[SQUAD] {name}: CurrentHealth = {totalCurrentHealth}");
     }
 
     private void OnUnitHealthChanged(UnitHealth unit)
@@ -97,7 +93,6 @@ public class Squad : MonoBehaviour
     public void SetSelected(bool selected)
     {
         isSelected = selected;
-
         if (healthBar != null)
             healthBar.gameObject.SetActive(selected);
         foreach (var soldier in soldiers)

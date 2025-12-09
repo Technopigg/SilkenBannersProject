@@ -32,14 +32,8 @@ public class RTSSelectionManager : MonoBehaviour
             Squad squad = hit.collider.GetComponentInParent<Squad>();
 
             // ★ BLOCK ENEMY SELECTION ★
-            if (squad != null)
+            if (squad != null && squad.teamID == 0)
             {
-                if (squad.teamID != 0)
-                {
-                    Debug.Log($"Selection blocked: Tried to select Team {squad.teamID}");
-                    return;
-                }
-
                 SelectOnlyThisSquad(squad);
             }
         }
@@ -74,7 +68,6 @@ public class RTSSelectionManager : MonoBehaviour
             int col = i % 2;
 
             Vector3 offset = new Vector3(col * spacing, 0f, row * spacing);
-
             s.MoveSquad(destination + offset);
         }
     }
@@ -85,10 +78,13 @@ public class RTSSelectionManager : MonoBehaviour
 
         foreach (var s in squads)
         {
-            if (s != null && s.teamID == 0) // team filter
+            if (s != null && s.teamID == 0)
             {
                 s.SetSelected(true);
                 selectedSquads.Add(s);
+
+                if (s.healthBar != null)
+                    s.healthBar.gameObject.SetActive(true);
             }
         }
     }
@@ -96,9 +92,11 @@ public class RTSSelectionManager : MonoBehaviour
     private void SelectOnlyThisSquad(Squad squad)
     {
         ClearSelection();
-
         squad.SetSelected(true);
         selectedSquads.Add(squad);
+
+        if (squad.healthBar != null)
+            squad.healthBar.gameObject.SetActive(true);
     }
 
     public void ClearSelection()
@@ -106,7 +104,11 @@ public class RTSSelectionManager : MonoBehaviour
         foreach (var s in selectedSquads)
         {
             if (s != null)
+            {
                 s.SetSelected(false);
+                if (s.healthBar != null)
+                    s.healthBar.gameObject.SetActive(false);
+            }
         }
 
         selectedSquads.Clear();

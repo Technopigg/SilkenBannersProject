@@ -41,29 +41,23 @@ public class SquadHealthBar : MonoBehaviour
     void Update()
     {
         if (squad == null) return;
-        
+
         float targetValue = Mathf.Clamp(squad.totalCurrentHealth, 0f, squad.totalMaxHealth);
         healthSlider.value = Mathf.Lerp(healthSlider.value, targetValue, Time.deltaTime * hpLerpSpeed);
+
         targetAlpha = squad.isSelected ? 1f : 0f;
         float speed = squad.isSelected ? showSpeed : hideSpeed;
         canvasGroup.alpha = Mathf.Lerp(canvasGroup.alpha, targetAlpha, Time.deltaTime * speed);
+
         if (followOffset != null)
             transform.position = followOffset.position;
         else
             transform.position = squad.GetSquadCenter() + Vector3.up * 2f;
+
         if (cam != null)
             transform.LookAt(cam.transform);
-
-        // -----------------------------
-        // DEBUG OUTPUT
-        // -----------------------------
-        Debug.Log(
-            $"[HealthBar DEBUG] Squad={squad.name} | " +
-            $"Max={squad.totalMaxHealth} | Cur={squad.totalCurrentHealth} | " +
-            $"Slider={healthSlider.value} | Active={squad.isSelected}"
-        );
     }
-    
+
     public void SetMaxHealth(float max)
     {
         healthSlider.maxValue = max;
