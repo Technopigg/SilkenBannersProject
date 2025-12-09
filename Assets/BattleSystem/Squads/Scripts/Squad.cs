@@ -35,7 +35,6 @@ public class Squad : MonoBehaviour
         if (soldiers == null) soldiers = new List<Transform>();
     }
 
-
     public void InitializeSquad()
     {
         foreach (Transform soldier in soldiers)
@@ -98,8 +97,16 @@ public class Squad : MonoBehaviour
     public void SetSelected(bool selected)
     {
         isSelected = selected;
+
         if (healthBar != null)
             healthBar.gameObject.SetActive(selected);
+        foreach (var soldier in soldiers)
+        {
+            if (soldier == null) continue;
+            var selection = soldier.GetComponent<UnitSelection>();
+            if (selection != null)
+                selection.SetSelected(selected);
+        }
     }
 
     // ------------------------------------------------------------
