@@ -5,14 +5,14 @@ public class SquadHealthBar : MonoBehaviour
 {
     [Header("References")]
     public Squad squad;                      
-    public Slider healthSlider;             
+    public Slider healthSlider;
     public CanvasGroup canvasGroup;           
     public Transform followOffset;           
 
     [Header("Settings")]
-    public float showSpeed = 8f;              
-    public float hideSpeed = 4f;              
-    public float hpLerpSpeed = 6f;            
+    public float showSpeed = 8f;
+    public float hideSpeed = 4f;
+    public float hpLerpSpeed = 6f;
 
     private Camera cam;
     private float targetAlpha = 0f;
@@ -35,48 +35,42 @@ public class SquadHealthBar : MonoBehaviour
             return;
         }
 
-        if (squad != null)
-        {
-            SetMaxHealth(squad.totalMaxHealth);
-            SetHealth(squad.totalCurrentHealth);
-        }
-
         canvasGroup.alpha = 0f;
     }
 
     void Update()
     {
         if (squad == null) return;
-
-
+        
         float targetValue = Mathf.Clamp(squad.totalCurrentHealth, 0f, squad.totalMaxHealth);
         healthSlider.value = Mathf.Lerp(healthSlider.value, targetValue, Time.deltaTime * hpLerpSpeed);
-
         targetAlpha = squad.isSelected ? 1f : 0f;
         float speed = squad.isSelected ? showSpeed : hideSpeed;
         canvasGroup.alpha = Mathf.Lerp(canvasGroup.alpha, targetAlpha, Time.deltaTime * speed);
-
         if (followOffset != null)
             transform.position = followOffset.position;
         else
             transform.position = squad.GetSquadCenter() + Vector3.up * 2f;
-
         if (cam != null)
             transform.LookAt(cam.transform);
-    }
 
-    // -----------------------------
-    // Public methods for Squad
-    // -----------------------------
+        // -----------------------------
+        // DEBUG OUTPUT
+        // -----------------------------
+        Debug.Log(
+            $"[HealthBar DEBUG] Squad={squad.name} | " +
+            $"Max={squad.totalMaxHealth} | Cur={squad.totalCurrentHealth} | " +
+            $"Slider={healthSlider.value} | Active={squad.isSelected}"
+        );
+    }
+    
     public void SetMaxHealth(float max)
     {
-        if (healthSlider != null)
-            healthSlider.maxValue = max;
+        healthSlider.maxValue = max;
     }
 
     public void SetHealth(float current)
     {
-        if (healthSlider != null)
-            healthSlider.value = Mathf.Clamp(current, 0f, healthSlider.maxValue);
+        healthSlider.value = Mathf.Clamp(current, 0f, healthSlider.maxValue);
     }
 }

@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 
 public class SquadHealthBarManager : MonoBehaviour
 {
@@ -13,29 +12,19 @@ public class SquadHealthBarManager : MonoBehaviour
             mainCamera = Camera.main;
 
         if (healthBar != null)
-        {
-            healthBar.gameObject.SetActive(false); 
-        }
+            healthBar.gameObject.SetActive(false);
     }
 
     void Update()
     {
         if (healthBar == null) return;
 
-        // Find the currently selected squad
         Squad selectedSquad = FindSelectedSquad();
+
         if (selectedSquad != null)
         {
             healthBar.gameObject.SetActive(true);
             healthBar.squad = selectedSquad;
-
-
-            if (healthBar.followOffset == null)
-                healthBar.transform.position = selectedSquad.GetSquadCenter() + Vector3.up * 2f;
-
-
-            if (mainCamera != null)
-                healthBar.transform.LookAt(mainCamera.transform);
         }
         else
         {

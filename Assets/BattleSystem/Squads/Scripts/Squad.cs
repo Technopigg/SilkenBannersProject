@@ -33,20 +33,11 @@ public class Squad : MonoBehaviour
     void Awake()
     {
         if (soldiers == null) soldiers = new List<Transform>();
-        if (soldiers.Count == 0)
-        {
-            foreach (Transform child in transform)
-            {
-                if (child != null && child.GetComponent<Unit>() != null)
-                {
-                    soldiers.Add(child);
-                }
-            }
-        }
+    }
 
-        RecalculateMaxHealth();
-        RecalculateCurrentHealth();
 
+    public void InitializeSquad()
+    {
         foreach (Transform soldier in soldiers)
         {
             if (soldier == null) continue;
@@ -54,6 +45,9 @@ public class Squad : MonoBehaviour
             if (uh != null)
                 uh.OnHealthChanged += OnUnitHealthChanged;
         }
+
+        RecalculateMaxHealth();
+        RecalculateCurrentHealth();
     }
 
     // ------------------------------------------------------------
@@ -69,8 +63,11 @@ public class Squad : MonoBehaviour
             if (u != null)
                 totalMaxHealth += u.maxHealth;
         }
+
         if (healthBar != null)
             healthBar.SetMaxHealth(totalMaxHealth);
+
+        Debug.Log($"[SQUAD] {name}: MaxHealth = {totalMaxHealth}");
     }
 
     public void RecalculateCurrentHealth()
@@ -86,6 +83,8 @@ public class Squad : MonoBehaviour
 
         if (healthBar != null)
             healthBar.SetHealth(totalCurrentHealth);
+
+        Debug.Log($"[SQUAD] {name}: CurrentHealth = {totalCurrentHealth}");
     }
 
     private void OnUnitHealthChanged(UnitHealth unit)
@@ -94,104 +93,17 @@ public class Squad : MonoBehaviour
     }
 
     // ------------------------------------------------------------
-    // TEAM SYSTEM
-    // ------------------------------------------------------------
-    public void SetTeam(int id)
-    {
-        teamID = id;
-        foreach (Transform soldier in soldiers)
-        {
-            if (soldier == null) continue;
-            var unitComp = soldier.GetComponent<Unit>();
-            if (unitComp != null)
-                unitComp.teamID = id;
-        }
-    }
-
-    public void ApplyTeamColor(Color c)
-    {
-        foreach (Transform soldier in soldiers)
-        {
-            if (soldier == null) continue;
-            Renderer r = soldier.GetComponentInChildren<Renderer>();
-            if (r != null) r.material.color = c;
-        }
-    }
-
-    // ------------------------------------------------------------
-    // MOVEMENT
-    // ------------------------------------------------------------
-    public void MoveSquad(Vector3 destination)
-    {
-        Vector3 facingDir = destination - GetSquadCenter();
-        facingDir.y = 0f;
-        if (facingDir.sqrMagnitude < 0.001f)
-            facingDir = transform.forward;
-
-        MoveSquad(destination, facingDir.normalized);
-    }
-
-    public void MoveSquad(Vector3 destination, Vector3 facingDir)
-    {
-        if (soldiers == null || soldiers.Count == 0) return;
-
-        facingDir.y = 0f;
-        if (facingDir.sqrMagnitude < 0.001f)
-            facingDir = transform.forward;
-
-        facingDir.Normalize();
-
-        Quaternion formationRot = Quaternion.LookRotation(facingDir, Vector3.up);
-        Vector3 currentCenter = GetSquadCenter();
-        float centerDist = Vector3.Distance(currentCenter, destination);
-
-        int count = soldiers.Count;
-        int rows = Mathf.CeilToInt((float)count / formationWidth);
-        float halfWidth = ((formationWidth - 1) * spacing) * 0.5f;
-        float halfDepth = ((rows - 1) * spacing) * 0.5f;
-
-        for (int i = 0; i < count; i++)
-        {
-            Transform soldier = soldiers[i];
-            if (soldier == null) continue;
-
-            int row = i / formationWidth;
-            int col = i % formationWidth;
-
-            Vector3 localOffset = new Vector3(col * spacing - halfWidth, 0f, row * spacing - halfDepth);
-            Vector3 worldOffset = formationRot * localOffset;
-            Vector3 soldierTarget = destination + worldOffset;
-
-            float speedFactor = 1f;
-            if (centerDist <= arriveSlowDistance)
-                speedFactor = Mathf.Clamp(centerDist / arriveSlowDistance, minSpeedFactor, 1f);
-
-            UnitMovement mover = soldier.GetComponent<UnitMovement>();
-            if (mover != null)
-                mover.SetMovementTarget(soldierTarget, squadBaseSpeed * speedFactor);
-        }
-    }
-
-    // ------------------------------------------------------------
     // SELECTION
     // ------------------------------------------------------------
     public void SetSelected(bool selected)
     {
         isSelected = selected;
-
         if (healthBar != null)
             healthBar.gameObject.SetActive(selected);
-
-        foreach (Transform soldier in soldiers)
-        {
-            if (soldier == null) continue;
-            UnitSelection sel = soldier.GetComponent<UnitSelection>();
-            if (sel != null) sel.SetSelected(selected);
-        }
     }
 
     // ------------------------------------------------------------
-    // CENTER
+    // SQUAD CENTER
     // ------------------------------------------------------------
     public Vector3 GetSquadCenter()
     {
@@ -208,6 +120,40 @@ public class Squad : MonoBehaviour
                 count++;
             }
         }
+
         return count > 0 ? sum / count : transform.position;
+    }
+
+    // ------------------------------------------------------------
+    // SQUAD MOVEMENT
+    // ------------------------------------------------------------
+    public void MoveSquad(Vector3 destination)
+    {
+        if (soldiers == null || soldiers.Count == 0)
+            return;
+
+        int count = soldiers.Count;
+        int width = formationWidth;
+
+        for (int i = 0; i < count; i++)
+        {
+            Transform soldier = soldiers[i];
+            if (soldier == null) continue;
+
+            int row = i / width;
+            int col = i % width;
+
+            Vector3 offset = new Vector3(
+                col * spacing - ((width - 1) * spacing * 0.5f),
+                0f,
+                row * spacing
+            );
+
+            Vector3 targetPos = destination + offset;
+
+            UnitMovement mover = soldier.GetComponent<UnitMovement>();
+            if (mover != null)
+                mover.SetDestination(targetPos);
+        }
     }
 }
