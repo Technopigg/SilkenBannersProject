@@ -9,8 +9,8 @@ public class BattleRootController : MonoBehaviour
 {
     [Header("References (optional - auto-find if left empty)")]
     public SquadSpawner squadSpawner;
-    public GameObject[] uiRoots;         // any UI GameObjects under BattleRoot you want to toggle separately
-    public Camera[] sceneCameras;        // battlefield cameras (player/rts) if you want explicit control
+    public GameObject[] uiRoots;         
+    public Camera[] sceneCameras;        
 
     void Awake()
     {

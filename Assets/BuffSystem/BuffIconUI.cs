@@ -14,12 +14,8 @@ public class BuffIconUI : MonoBehaviour
     public void Setup(string buffID, Sprite sprite, int stacks, float duration)
     {
         this.id = buffID;
-
         iconImage.sprite = sprite;
-
         stackText.text = stacks > 1 ? stacks.ToString() : "";
-
-        // Full timer bar at start
         timerOverlay.fillAmount = 1f;
     }
     

@@ -66,10 +66,8 @@ public class RTSCameraController : MonoBehaviour
 
     void Update()
     {
-        // Prevent movement when camera is off
         if (!cam || !cam.enabled) return;
 
-        // Prevent movement if NOT in RTS mode
         if (ModeController.Instance == null ||
             ModeController.Instance.currentMode != ControlMode.RTS)
         {
@@ -81,13 +79,11 @@ public class RTSCameraController : MonoBehaviour
         Vector3 right = transform.right; right.y = 0f; right.Normalize();
 
         Vector3 next = transform.position;
-
-        // === WASD movement ===
+        
         float h = Input.GetAxisRaw("Horizontal");
         float v = Input.GetAxisRaw("Vertical");
         next += (forward * v + right * h) * panSpeed * Time.deltaTime;
 
-        // === Middle mouse drag ===
         if (Input.GetMouseButton(2))
         {
             if (lastMousePos != Vector3.zero)
@@ -102,7 +98,7 @@ public class RTSCameraController : MonoBehaviour
             lastMousePos = Vector3.zero;
         }
 
-        // === Edge scrolling ===
+    
         Vector3 mousePos = Input.mousePosition;
         if (mousePos.x <= edgeThickness)
             next -= right * edgeScrollSpeed * Time.deltaTime;
@@ -114,7 +110,7 @@ public class RTSCameraController : MonoBehaviour
         else if (mousePos.y >= Screen.height - edgeThickness)
             next += forward * edgeScrollSpeed * Time.deltaTime;
 
-        // === Zoom ===
+     
         float scroll = Input.GetAxis("Mouse ScrollWheel");
         if (Mathf.Abs(scroll) > 0.0001f)
         {
@@ -129,7 +125,7 @@ public class RTSCameraController : MonoBehaviour
             transform.rotation = Quaternion.Euler(euler);
         }
 
-        // === Apply battlefield bounds ===
+   
         next.x = Mathf.Clamp(next.x, xLimits.x, xLimits.y);
         next.z = Mathf.Clamp(next.z, zLimits.x, zLimits.y);
 

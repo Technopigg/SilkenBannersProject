@@ -82,6 +82,17 @@ public class SquadSpawner : MonoBehaviour
         SpawnArmy(playerToken, playerSpawnPoint, "Player", 0);
         SpawnArmy(enemyToken, enemySpawnPoint, "Enemy", 1);
     }
+    private Vector3 GetCenterOfPositions(List<Vector3> positions)
+    {
+        if (positions == null || positions.Count == 0)
+            return Vector3.zero;
+
+        Vector3 sum = Vector3.zero;
+        foreach (var pos in positions)
+            sum += pos;
+
+        return sum / positions.Count;
+    }
 
     private GameObject GetPrefabForType(string unitType)
     {
@@ -131,6 +142,10 @@ public class SquadSpawner : MonoBehaviour
         }
 
         GameObject squadObj = new GameObject($"{owner}_Squad_{unit.type}");
+
+   
+        squadObj.transform.position = position;
+
         Squad squad = squadObj.AddComponent<Squad>();
         Rigidbody rb = squadObj.AddComponent<Rigidbody>();
         rb.isKinematic = true;
@@ -170,8 +185,7 @@ public class SquadSpawner : MonoBehaviour
 
             squad.soldiers.Add(soldier.transform);
         }
-
-        // CREATE HEALTH BAR
+        
         if (squadHealthBarPrefab != null)
         {
             Transform parent = (worldSpaceCanvas != null) ? worldSpaceCanvas.transform : null;
@@ -203,6 +217,8 @@ public class SquadSpawner : MonoBehaviour
 
             GameObject squadObj = new GameObject($"{ss.owner}_Squad_{ss.squadID}_{ss.unitType}");
             Squad squad = squadObj.AddComponent<Squad>();
+
+            squadObj.transform.position = GetCenterOfPositions(ss.soldierPositions);
 
             Rigidbody rb = squadObj.AddComponent<Rigidbody>();
             rb.isKinematic = true;
@@ -241,8 +257,7 @@ public class SquadSpawner : MonoBehaviour
 
                 squad.soldiers.Add(soldier.transform);
             }
-
-            // CREATE HEALTH BAR
+            
             if (squadHealthBarPrefab != null)
             {
                 Transform parent = (worldSpaceCanvas != null) ? worldSpaceCanvas.transform : null;

@@ -35,7 +35,7 @@ public class UnitCombat : MonoBehaviour
         if (t == null) return;
 
         currentTarget = t;
-        // Debug log can be commented out in large battles for performance
+
         // Debug.Log($"{name}: Target SET → {t.name}");
     }
 
@@ -57,7 +57,7 @@ public class UnitCombat : MonoBehaviour
         float dist = Vector3.Distance(transform.position, currentTarget.position);
         if (dist > attackRange)
         {
-            // Target out of range; move closer
+           
             MoveTowardsTarget();
             return;
         }
@@ -90,11 +90,11 @@ public class UnitCombat : MonoBehaviour
 
     void OnDrawGizmosSelected()
     {
-        // Attack range
+   
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attackRange);
 
-        // Current target line
+       
         if (currentTarget != null)
         {
             Gizmos.color = Color.green;

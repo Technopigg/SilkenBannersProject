@@ -3,9 +3,9 @@
 public class Player3PCamera : MonoBehaviour
 {
     [Header("References")]
-    public Camera generalCam;   // THIS camera's Camera component
-    public Camera rtsCam;       // The RTS camera (separate object)
-    public Transform target;    // General / Player unit
+    public Camera generalCam;   
+    public Camera rtsCam;     
+    public Transform target;    
 
     [Header("General Camera Settings")]
     public Vector3 offset = new Vector3(0f, 5f, -10f);

@@ -86,8 +86,7 @@ public class BattleSceneController : MonoBehaviour
 
         Debug.Log("BattleSceneController: FINAL exit → end battle & unload scene.");
         BattleManager.Instance.EndBattle();
-
-        // Switch to WorldMap
+        
         Scene world = SceneManager.GetSceneByName("WorldMap");
         if (world.IsValid() && world.isLoaded)
         {
@@ -98,8 +97,6 @@ public class BattleSceneController : MonoBehaviour
         {
             Debug.LogWarning("BattleSceneController: WorldMap scene not found!");
         }
-
-        // Unload battlefield
         Scene battlefield = SceneManager.GetSceneByName("BattlefieldScene");
         if (battlefield.IsValid() && battlefield.isLoaded)
         {

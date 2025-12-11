@@ -91,6 +91,7 @@ MonoBehaviour:
   totalMaxHealth: 0
   totalCurrentHealth: 0
   isSelected: 0
+  healthBar: {fileID: 0}
 --- !u!135 &-6531741261661150668
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -125,5 +126,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SquadCombatController
   squad: {fileID: 0}
-  engageDistance: 2.5
-  isEngaged: 0
+  engageDistance: 0.01
+  isEngaged: 1

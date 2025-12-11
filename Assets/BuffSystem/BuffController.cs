@@ -34,22 +34,16 @@ public class BuffController : MonoBehaviour
             BuffInstance inst = pair.Value;
 
             inst.remainingTime -= Time.deltaTime;
-
-            // Expired?
             if (inst.remainingTime <= 0)
             {
                 expired.Add(pair.Key);
                 continue;
             }
-
-            // Send timer update to UI
             if (inst.data.isDebuff)
                 uiManager.UpdateDebuffTimer(inst.data.id, inst.remainingTime, inst.data.defaultDuration);
             else
                 uiManager.UpdateBuffTimer(inst.data.id, inst.remainingTime, inst.data.defaultDuration);
         }
-
-        // Clean up expired in last step to avoid modifying dictionary during iteration
         foreach (string id in expired)
             RemoveBuff(id);
     }
@@ -60,17 +54,14 @@ public class BuffController : MonoBehaviour
     // ============================================================
     public void AddBuff(BuffData data)
     {
-        // Already has the buff? → Refresh duration + manage stacks
         if (activeBuffs.TryGetValue(data.id, out BuffInstance inst))
         {
-            // Stack if allowed
             if (inst.stacks < data.maxStacks)
                 inst.stacks++;
 
-            // Refresh duration
+  
             inst.remainingTime = data.defaultDuration;
 
-            // Send updated UI
             SendBuffToUI(inst);
             return;
         }
@@ -79,7 +70,7 @@ public class BuffController : MonoBehaviour
         BuffInstance newBuff = new BuffInstance(data);
         activeBuffs.Add(data.id, newBuff);
 
-        // Add UI icon
+    
         SendBuffToUI(newBuff);
     }
 

@@ -158,8 +158,7 @@ public class DragSelection : MonoBehaviour
 
             if (squadSelected)
             {
-                // 🔥 BLOCK ENEMY SQUADS 🔥
-                if (squad.teamID == 0) // 0 = Player team
+                if (squad.teamID == 0) 
                 {
                     squad.SetSelected(true);
                     selectedNow.Add(squad);

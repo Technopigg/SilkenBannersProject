@@ -75,8 +75,7 @@ public class BattleManager : MonoBehaviour
             Debug.LogError("BeginBattle called with null engagement!");
             return;
         }
-
-        // If same engagement → reactivate battlefield
+        
         if (currentEngagement == engagement)
         {
             StartCoroutine(ActivateBattleSceneRoutine());
@@ -116,14 +115,12 @@ public class BattleManager : MonoBehaviour
         while (!op.isDone)
             yield return null;
 
-        // ✔ MAKE BATTLEFIELD SCENE ACTIVE BEFORE ANYTHING ELSE
         Scene battlefieldScene = SceneManager.GetSceneByName("BattlefieldScene");
         SceneManager.SetActiveScene(battlefieldScene);
         Debug.Log("BattlefieldScene is now ACTIVE scene.");
 
         battlefieldLoading = false;
-
-        // ✔ Now activate battlefield AND then activate SquadSpawner
+        
         yield return StartCoroutine(ActivateBattleSceneRoutine());
     }
 
@@ -158,7 +155,6 @@ public class BattleManager : MonoBehaviour
         battleRoot.ShowBattlefield();
 
         // ────────────────────────────────────────────────────────────────
-        // 🔥 NEW: ENABLE SQUADSPAWNER NOW (OPTION 1 FIX)
         // SquadSpawner object must be disabled in scene beforehand!
         // ────────────────────────────────────────────────────────────────
         EnableSquadSpawner();
@@ -167,9 +163,7 @@ public class BattleManager : MonoBehaviour
         yield return null;
     }
 
-    // ─────────────────────────────────────────────────────────────────────
-    // NEW FUNCTION: MANUALLY ACTIVATE DISABLED SQUADSPAWNER
-    // ─────────────────────────────────────────────────────────────────────
+
     private void EnableSquadSpawner()
     {
         if (battleRoot == null)

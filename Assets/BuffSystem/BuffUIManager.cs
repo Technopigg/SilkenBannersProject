@@ -21,8 +21,7 @@ public class BuffUIManager : MonoBehaviour
             ui.UpdateBuff(stacks, duration); 
             return;
         }
-
-        // Create new icon
+        
         GameObject newIcon = Instantiate(buffIconPrefab, buffContainer);
         ui = newIcon.GetComponent<BuffIconUI>();
         ui.Setup(buffID, icon, stacks, duration);

@@ -49,22 +49,20 @@ public class ModeController : MonoBehaviour
     {
         if (!BattleRootExists())
         {
-            // We are in WorldMap or loading state — clear camera refs
             playerCamera = null;
             rtsCamera = null;
             rtsController = null;
             generalController = null;
             return;
         }
-
-        // Find cameras
+        
         if (playerCamera == null)
             playerCamera = GameObject.Find("PlayerCamera")?.GetComponent<Camera>();
 
         if (rtsCamera == null)
             rtsCamera = GameObject.Find("RTSCamera")?.GetComponent<Camera>();
 
-        // Bind controllers
+       
         if (playerCamera != null)
             generalController = playerCamera.GetComponent<Player3PCamera>();
 
@@ -105,8 +103,7 @@ public class ModeController : MonoBehaviour
         Debug.LogWarning("[ModeController] Cameras not bound yet — ignoring mode switch");
         return;
     }
-
-    // --- ENSURE BOTH CAMERA GAMEOBJECTS ARE ACTIVE ---
+    
     playerCamera.gameObject.SetActive(true);
     rtsCamera.gameObject.SetActive(true);
 
