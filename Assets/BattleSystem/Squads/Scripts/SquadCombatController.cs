@@ -18,10 +18,11 @@ public class SquadCombatController : MonoBehaviour
 
         col = GetComponent<SphereCollider>();
         col.isTrigger = true;
+
         if (col.radius <= 0f)
             col.radius = 1f;
     }
-    
+
     private float GetWorldRadius(SphereCollider c)
     {
         if (c == null) return 0f;
@@ -36,7 +37,6 @@ public class SquadCombatController : MonoBehaviour
             return;
 
         SphereCollider enemyCol = enemySquadCtrl.GetComponent<SphereCollider>();
-
         float myWorldRadius = GetWorldRadius(col);
         float enemyWorldRadius = GetWorldRadius(enemyCol);
 
@@ -52,7 +52,6 @@ public class SquadCombatController : MonoBehaviour
             $"  MyWorldRadius: {myWorldRadius:F2}, EnemyWorldRadius: {enemyWorldRadius:F2}"
         );
 
-        // Guard against false positives
         if (centerDistance > myWorldRadius + enemyWorldRadius + 0.05f)
         {
             Debug.LogWarning(
@@ -129,13 +128,22 @@ public class SquadCombatController : MonoBehaviour
             if (closestEnemyUnit != null)
             {
                 combat.SetTarget(closestEnemyUnit.transform);
-                
+
                 float attackRange = combat.attackRange;
+                bool isRanged = combat.isRanged;
 
                 if (shortestDistance > attackRange)
+                {
                     combat.MoveTowardsTarget();
+                }
+                else if (!isRanged)
+                {
+                    combat.MoveTowardsTarget();
+                }
                 else
+                {
                     combat.TryAttack();
+                }
             }
         }
     }
@@ -145,6 +153,27 @@ public class SquadCombatController : MonoBehaviour
         if (col == null) col = GetComponent<SphereCollider>();
 
         Gizmos.color = new Color(1f, 0.5f, 0f, 0.25f);
-        Gizmos.DrawWireSphere(transform.position, col.radius);
+        Gizmos.DrawWireSphere(transform.position, GetWorldRadius(col));
+
+        if (squad != null && squad.soldiers.Count > 0)
+        {
+            float sumRange = 0f;
+            int count = 0;
+            foreach (var soldier in squad.soldiers)
+            {
+                if (soldier == null) continue;
+                UnitCombat uc = soldier.GetComponent<UnitCombat>();
+                if (uc == null) continue;
+                sumRange += uc.attackRange;
+                count++;
+            }
+
+            if (count > 0)
+            {
+                float avgRange = sumRange / count;
+                Gizmos.color = new Color(1f, 0f, 0f, 0.3f);
+                Gizmos.DrawWireSphere(transform.position, avgRange);
+            }
+        }
     }
 }

@@ -298,6 +298,7 @@ MonoBehaviour:
   attackRange: 20
   attackDamage: 10
   attackCooldown: 1.5
+  isRanged: 1
   currentTarget: {fileID: 0}
   squadRoot: {fileID: 0}
   combatDisabled: 0
