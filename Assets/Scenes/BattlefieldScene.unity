@@ -831,7 +831,7 @@ MonoBehaviour:
   squadPrefab: {fileID: 0}
   generalPrefab: {fileID: 8526360160813945221, guid: 5b442b1e90e90924d91839b65852463f,
     type: 3}
-  spearmanPrefab: {fileID: 5922544110780624846, guid: b4ba9609fe28aa248921ba1fc39be5b6,
+  spearmanPrefab: {fileID: 8826269378017713404, guid: 07d77bd4cb5341f418ba8161523d32e5,
     type: 3}
   archerPrefab: {fileID: 5922544110780624846, guid: 6ab925c60306f9e4e8cb34a8126baef0,
     type: 3}

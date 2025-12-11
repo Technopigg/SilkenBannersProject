@@ -38,7 +38,7 @@ public class SquadCombatController : MonoBehaviour
             return;
 
         if (enemySquadCtrl.squad.teamID == squad.teamID) return;
-        
+
         Vector3 myCenter = squad.GetSquadCenter();
         Vector3 enemyCenter = enemySquadCtrl.squad.GetSquadCenter();
 
@@ -47,23 +47,12 @@ public class SquadCombatController : MonoBehaviour
 
         float centerDistance = Vector3.Distance(myCenter, enemyCenter);
 
-        Debug.Log(
-            $"{squad.name} OnTriggerEnter → {enemySquadCtrl.squad.name}\n" +
-            $"  MyCenter: {myCenter:F2}, EnemyCenter: {enemyCenter:F2}\n" +
-            $"  CenterDist: {centerDistance:F2}\n" +
-            $"  MyWorldRadius: {myWorldRadius:F2}, EnemyWorldRadius: {enemyWorldRadius:F2}"
-        );
-        
         if (centerDistance > myWorldRadius + enemyWorldRadius + 0.05f)
-        {
-            Debug.LogWarning($"{squad.name} → IGNORING trigger with {enemySquadCtrl.squad.name} (centers farther than combined radii)");
             return;
-        }
 
         if (!enemySquadsInRange.Contains(enemySquadCtrl))
         {
             enemySquadsInRange.Add(enemySquadCtrl);
-            Debug.Log($"{squad.name} → Enemy squad detected: {enemySquadCtrl.squad.name}");
             UpdateEngagementState();
         }
     }
@@ -76,7 +65,6 @@ public class SquadCombatController : MonoBehaviour
         if (enemySquadsInRange.Contains(enemySquadCtrl))
         {
             enemySquadsInRange.Remove(enemySquadCtrl);
-            Debug.Log($"{squad.name} → Enemy squad left: {enemySquadCtrl.squad.name}");
             UpdateEngagementState();
         }
     }
@@ -84,18 +72,15 @@ public class SquadCombatController : MonoBehaviour
     private void UpdateEngagementState()
     {
         bool newState = enemySquadsInRange.Count > 0;
-
         if (newState != isEngaged)
         {
             isEngaged = newState;
-            Debug.Log($"{squad.name} → Engagement State: {(isEngaged ? "ENGAGED" : "CLEAR")}");
         }
     }
 
     void Update()
     {
-        if (!isEngaged) return;
-        if (squad == null || squad.soldiers.Count == 0) return;
+        if (!isEngaged || squad == null || squad.soldiers.Count == 0) return;
 
         foreach (var soldier in squad.soldiers)
         {
@@ -120,7 +105,7 @@ public class SquadCombatController : MonoBehaviour
                     {
                         shortestDistance = dist;
                         closestEnemyUnit = enemySoldier.GetComponent<UnitCombat>();
-                    } 
+                    }
                 }
             }
 

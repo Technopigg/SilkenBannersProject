@@ -10,12 +10,14 @@ public class UnitMovement : MonoBehaviour
     private float snapDistance = 0.35f;
     private bool hasTarget = false;
 
+    [Header("Animator")]
+    public Animator animator;
+
     public float MoveSpeed => baseSpeed;
 
     void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
-
         var stats = GetComponent<UnitStats>();
         if (stats != null) baseSpeed = stats.moveSpeed;
 
@@ -23,6 +25,9 @@ public class UnitMovement : MonoBehaviour
         agent.angularSpeed = 120f;
         agent.acceleration = 8f;
         agent.autoBraking = true;
+
+        if (animator == null)
+            animator = GetComponent<Animator>();
     }
 
     void Update()
@@ -40,6 +45,15 @@ public class UnitMovement : MonoBehaviour
         {
             agent.isStopped = false;
         }
+
+        UpdateAnimator();
+    }
+
+    private void UpdateAnimator()
+    {
+        if (animator == null) return;
+        float speed = agent.velocity.magnitude;
+        animator.SetFloat("Speed", speed);
     }
 
     public void SetMovementTarget(Vector3 destination, float speed)

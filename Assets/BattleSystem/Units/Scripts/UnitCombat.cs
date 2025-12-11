@@ -9,27 +9,28 @@ public class UnitCombat : MonoBehaviour
     public float attackCooldown = 1.5f;
 
     [Header("Unit Type")]
-    public bool isRanged = false; 
+    public bool isRanged = false;
 
     [Header("Runtime")]
     public Transform currentTarget;
     public Squad squadRoot;
-
     public bool combatDisabled = false;
 
+    [Header("Animation")]
+    public Animator animator;
+
     private float nextAttackTime = 0f;
+    private UnitMovement mover;
 
     void Awake()
     {
+        mover = GetComponent<UnitMovement>();
+        if (animator == null)
+            animator = GetComponent<Animator>();
+
         squadRoot = GetComponentInParent<Squad>();
         if (squadRoot == null)
-        {
             Debug.LogWarning($"{name}: No Squad found in parent hierarchy!");
-        }
-        else
-        {
-            Debug.Log($"{name}: UnitCombat Awake - squadRoot = {squadRoot.name}");
-        }
     }
 
     public void SetTarget(Transform t)
@@ -38,18 +39,15 @@ public class UnitCombat : MonoBehaviour
         if (t == null) return;
 
         currentTarget = t;
-        // Debug.Log($"{name}: Target SET → {t.name}");
     }
 
     public void MoveTowardsTarget()
     {
-        if (combatDisabled || currentTarget == null) return;
+        if (combatDisabled || currentTarget == null || mover == null) return;
+        mover.SetMovementTarget(currentTarget.position, mover.MoveSpeed);
 
-        UnitMovement mover = GetComponent<UnitMovement>();
-        if (mover != null)
-        {
-            mover.SetMovementTarget(currentTarget.position, mover.MoveSpeed);
-        }
+        if (animator != null)
+            animator.SetBool("Walking", true);
     }
 
     public void TryAttack()
@@ -68,8 +66,12 @@ public class UnitCombat : MonoBehaviour
             nextAttackTime = Time.time + attackCooldown;
 
             if (currentTarget.TryGetComponent<UnitHealth>(out var hp))
-            {
                 hp.TakeDamage(attackDamage);
+
+            if (animator != null)
+            {
+                animator.SetTrigger("InwardSlash");
+                animator.SetBool("Walking", false);
             }
         }
     }
@@ -77,9 +79,6 @@ public class UnitCombat : MonoBehaviour
     public void DisableCombatTemporarily()
     {
         combatDisabled = true;
-        StopAllCoroutines();
-
-        var mover = GetComponent<UnitMovement>();
         if (mover != null)
             mover.StopImmediate();
     }
@@ -91,11 +90,9 @@ public class UnitCombat : MonoBehaviour
 
     void OnDrawGizmosSelected()
     {
-        // Attack range
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attackRange);
 
-        // Current target line
         if (currentTarget != null)
         {
             Gizmos.color = Color.green;
