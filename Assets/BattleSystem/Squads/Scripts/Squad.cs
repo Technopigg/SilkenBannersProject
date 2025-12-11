@@ -118,14 +118,17 @@ public class Squad : MonoBehaviour
         {
             if (soldier != null)
             {
-                sum += soldier.position;
-                count++;
+                UnitHealth u = soldier.GetComponent<UnitHealth>();
+                if (u != null && !u.IsDead)
+                {
+                    sum += soldier.position;
+                    count++;
+                }
             }
         }
 
         return count > 0 ? sum / count : transform.position;
     }
-
     // ------------------------------------------------------------
     // SQUAD MOVEMENT
     // ------------------------------------------------------------

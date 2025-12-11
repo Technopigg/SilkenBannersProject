@@ -153,7 +153,7 @@ public class SquadSpawner : MonoBehaviour
 
         SphereCollider detection = squadObj.AddComponent<SphereCollider>();
         detection.isTrigger = true;
-        detection.radius = 2.5f;
+        detection.radius = 10f;
 
         SquadCombatController ctrl = squadObj.AddComponent<SquadCombatController>();
         ctrl.squad = squad;

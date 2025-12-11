@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class SquadCombatController : MonoBehaviour
 {
     public Squad squad;
+    public float engageDistance = 0.5f;
 
     public bool isEngaged = false;
     public readonly List<SquadCombatController> enemySquadsInRange = new();
@@ -36,32 +37,30 @@ public class SquadCombatController : MonoBehaviour
         if (!other.TryGetComponent<SquadCombatController>(out var enemySquadCtrl))
             return;
 
-        SphereCollider enemyCol = enemySquadCtrl.GetComponent<SphereCollider>();
-        float myWorldRadius = GetWorldRadius(col);
-        float enemyWorldRadius = GetWorldRadius(enemyCol);
+        if (enemySquadCtrl.squad.teamID == squad.teamID) return;
+        
+        Vector3 myCenter = squad.GetSquadCenter();
+        Vector3 enemyCenter = enemySquadCtrl.squad.GetSquadCenter();
 
-        Vector3 myCenter = transform.position + (col != null ? transform.TransformPoint(col.center) - transform.position : Vector3.zero);
-        Vector3 enemyCenter = enemySquadCtrl.transform.position + (enemyCol != null ? enemySquadCtrl.transform.TransformPoint(enemyCol.center) - enemySquadCtrl.transform.position : Vector3.zero);
+        float myWorldRadius = GetWorldRadius(col);
+        float enemyWorldRadius = GetWorldRadius(enemySquadCtrl.GetComponent<SphereCollider>());
 
         float centerDistance = Vector3.Distance(myCenter, enemyCenter);
 
         Debug.Log(
             $"{squad.name} OnTriggerEnter → {enemySquadCtrl.squad.name}\n" +
-            $"  MyPos: {transform.position:F2}, EnemyPos: {enemySquadCtrl.transform.position:F2}\n" +
+            $"  MyCenter: {myCenter:F2}, EnemyCenter: {enemyCenter:F2}\n" +
             $"  CenterDist: {centerDistance:F2}\n" +
             $"  MyWorldRadius: {myWorldRadius:F2}, EnemyWorldRadius: {enemyWorldRadius:F2}"
         );
-
+        
         if (centerDistance > myWorldRadius + enemyWorldRadius + 0.05f)
         {
-            Debug.LogWarning(
-                $"{squad.name} → IGNORING trigger with {enemySquadCtrl.squad.name} " +
-                $"(centers farther than combined radii)"
-            );
+            Debug.LogWarning($"{squad.name} → IGNORING trigger with {enemySquadCtrl.squad.name} (centers farther than combined radii)");
             return;
         }
 
-        if (enemySquadCtrl.squad.teamID != squad.teamID && !enemySquadsInRange.Contains(enemySquadCtrl))
+        if (!enemySquadsInRange.Contains(enemySquadCtrl))
         {
             enemySquadsInRange.Add(enemySquadCtrl);
             Debug.Log($"{squad.name} → Enemy squad detected: {enemySquadCtrl.squad.name}");
@@ -95,8 +94,8 @@ public class SquadCombatController : MonoBehaviour
 
     void Update()
     {
-        if (!isEngaged || squad == null || squad.soldiers.Count == 0)
-            return;
+        if (!isEngaged) return;
+        if (squad == null || squad.soldiers.Count == 0) return;
 
         foreach (var soldier in squad.soldiers)
         {
@@ -121,7 +120,7 @@ public class SquadCombatController : MonoBehaviour
                     {
                         shortestDistance = dist;
                         closestEnemyUnit = enemySoldier.GetComponent<UnitCombat>();
-                    }
+                    } 
                 }
             }
 
@@ -129,21 +128,10 @@ public class SquadCombatController : MonoBehaviour
             {
                 combat.SetTarget(closestEnemyUnit.transform);
 
-                float attackRange = combat.attackRange;
-                bool isRanged = combat.isRanged;
-
-                if (shortestDistance > attackRange)
-                {
+                if (shortestDistance > combat.attackRange)
                     combat.MoveTowardsTarget();
-                }
-                else if (!isRanged)
-                {
-                    combat.MoveTowardsTarget();
-                }
                 else
-                {
                     combat.TryAttack();
-                }
             }
         }
     }
@@ -153,27 +141,12 @@ public class SquadCombatController : MonoBehaviour
         if (col == null) col = GetComponent<SphereCollider>();
 
         Gizmos.color = new Color(1f, 0.5f, 0f, 0.25f);
-        Gizmos.DrawWireSphere(transform.position, GetWorldRadius(col));
+        Gizmos.DrawWireSphere(transform.position, col.radius);
 
-        if (squad != null && squad.soldiers.Count > 0)
+        if (squad != null && squad.soldiers != null && squad.soldiers.Count > 0)
         {
-            float sumRange = 0f;
-            int count = 0;
-            foreach (var soldier in squad.soldiers)
-            {
-                if (soldier == null) continue;
-                UnitCombat uc = soldier.GetComponent<UnitCombat>();
-                if (uc == null) continue;
-                sumRange += uc.attackRange;
-                count++;
-            }
-
-            if (count > 0)
-            {
-                float avgRange = sumRange / count;
-                Gizmos.color = new Color(1f, 0f, 0f, 0.3f);
-                Gizmos.DrawWireSphere(transform.position, avgRange);
-            }
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(squad.GetSquadCenter(), col.radius);
         }
     }
 }
