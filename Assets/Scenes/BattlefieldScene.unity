@@ -829,7 +829,7 @@ MonoBehaviour:
   playerSpawnPoint: {fileID: 1102630902}
   enemySpawnPoint: {fileID: 1411508143}
   squadPrefab: {fileID: 0}
-  generalPrefab: {fileID: 8526360160813945221, guid: 5b442b1e90e90924d91839b65852463f,
+  generalPrefab: {fileID: 7351035983372923416, guid: 741b57a88951430428acbcb0fe4efaca,
     type: 3}
   spearmanPrefab: {fileID: 8826269378017713404, guid: 07d77bd4cb5341f418ba8161523d32e5,
     type: 3}

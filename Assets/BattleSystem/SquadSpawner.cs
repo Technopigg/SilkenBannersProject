@@ -14,7 +14,7 @@ public class SquadSpawner : MonoBehaviour
     [Header("Prefabs")]
     public GameObject squadPrefab;
     public GameObject generalPrefab;
-
+    
     [Header("Unit Prefabs")]
     [SerializeField] private GameObject spearmanPrefab;
     [SerializeField] private GameObject archerPrefab;
