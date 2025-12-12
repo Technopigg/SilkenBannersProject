@@ -1,14 +1,15 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections.Generic;
 
 /// <summary>
-/// Creates a portrait preview of a general prefab using a dedicated camera rendering to a RenderTexture,
+/// Creates a portrait preview of a champion/general prefab using a dedicated camera rendering to a RenderTexture,
 /// and displays it on a RawImage in the UI. The spawned preview instance is isolated (its gameplay scripts
 /// are disabled) and animator is driven to a specified idle state.
 /// </summary>
 public class GeneralPortraitUI : MonoBehaviour
 {
+    public static GeneralPortraitUI Instance { get; private set; }
+
     [Header("UI")]
     public RawImage portraitImage;           
     public Vector2 renderTextureSize = new Vector2(512, 512);
@@ -24,7 +25,6 @@ public class GeneralPortraitUI : MonoBehaviour
 
     [Header("Animation")]
     public string idleStateName = "Idle";    
-    public string animatorLayer = "Base Layer";
 
     [Header("Model Offset")]
     public Vector3 modelPositionOffset = Vector3.zero;  
@@ -36,6 +36,13 @@ public class GeneralPortraitUI : MonoBehaviour
 
     void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+        Instance = this;
+
         if (portraitCamera == null)
             Debug.LogError("GeneralPortraitUI: portraitCamera not assigned.");
 
@@ -50,7 +57,7 @@ public class GeneralPortraitUI : MonoBehaviour
             Debug.LogWarning($"GeneralPortraitUI: layer '{portraitLayerName}' not found. Please create it in Tags & Layers.");
 
         CreateRenderTexture();
-        Hide(); 
+        Hide();
     }
 
     void CreateRenderTexture()
@@ -68,18 +75,14 @@ public class GeneralPortraitUI : MonoBehaviour
         if (portraitCamera != null)
         {
             portraitCamera.targetTexture = rt;
-            portraitCamera.cullingMask = 1 << portraitLayerMask; 
+            portraitCamera.cullingMask = 1 << portraitLayerMask;
         }
         portraitImage.texture = rt;
     }
 
-    /// <summary>
-    /// Show the portrait for a general prefab. This instantiates a preview clone,
-    /// strips gameplay scripts, places it in portraitRoot and plays idle animation.
-    /// </summary>
-    public void Show(GameObject generalPrefab)
+    public void Show(GameObject championPrefab)
     {
-        if (generalPrefab == null)
+        if (championPrefab == null)
         {
             Debug.LogWarning("GeneralPortraitUI.Show called with null prefab.");
             Hide();
@@ -87,44 +90,30 @@ public class GeneralPortraitUI : MonoBehaviour
         }
 
         CreateRenderTexture();
+
         if (currentInstance != null)
-        {
             DestroyCurrentInstance();
-        }
-        currentInstance = Instantiate(generalPrefab, portraitRoot);
+
+        currentInstance = Instantiate(championPrefab, portraitRoot);
         currentInstance.transform.localPosition = modelPositionOffset;
         currentInstance.transform.localEulerAngles = modelRotationEuler;
         currentInstance.transform.localScale = modelScale;
+
         SetLayerRecursively(currentInstance, portraitLayerName);
         DisableGameplayScripts(currentInstance);
         DisablePhysics(currentInstance);
-        
-        if (portraitCamera != null)
-        {
-            portraitCamera.enabled = true;
-        }
 
-        // Attempt to play idle animation
+        if (portraitCamera != null)
+            portraitCamera.enabled = true;
+
         Animator animator = currentInstance.GetComponentInChildren<Animator>();
         if (animator != null)
         {
             animator.updateMode = AnimatorUpdateMode.UnscaledTime;
-            try
-            {
-                if (!string.IsNullOrEmpty(idleStateName))
-                    animator.Play(idleStateName);
-            }
-            catch (System.Exception ex)
-            {
-                Debug.LogWarning("GeneralPortraitUI: Could not Play idle state on Animator: " + ex.Message);
-            }
-        }
-        else
-        {
-            Debug.LogWarning("GeneralPortraitUI: no Animator found on general prefab instance.");
+            if (!string.IsNullOrEmpty(idleStateName))
+                animator.Play(idleStateName);
         }
 
-        // Make portrait visible
         portraitImage.enabled = true;
         if (portraitRoot != null) portraitRoot.gameObject.SetActive(true);
     }
@@ -166,13 +155,11 @@ public class GeneralPortraitUI : MonoBehaviour
 
     private void DisableGameplayScripts(GameObject go)
     {
-    
         var monos = go.GetComponentsInChildren<MonoBehaviour>(true);
         foreach (var m in monos)
         {
             if (m == null) continue;
-            if (m is Animator) continue; 
-        
+            if (m is Animator) continue;
             m.enabled = false;
         }
     }

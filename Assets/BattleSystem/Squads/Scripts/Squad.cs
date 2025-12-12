@@ -30,6 +30,9 @@ public class Squad : MonoBehaviour
     [Header("UI")]
     public SquadHealthBar healthBar;
 
+    [Header("Parent Army")]
+    public ArmyToken armyToken; // <-- added reference to ArmyToken
+
     void Awake()
     {
         if (soldiers == null) soldiers = new List<Transform>();
@@ -129,6 +132,7 @@ public class Squad : MonoBehaviour
 
         return count > 0 ? sum / count : transform.position;
     }
+
     // ------------------------------------------------------------
     // SQUAD MOVEMENT
     // ------------------------------------------------------------

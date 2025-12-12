@@ -19,6 +19,9 @@ public class Player3PMovement : MonoBehaviour
     [Header("Grounding")]
     public float bodyHeightOffset = 0.5f;
 
+    [Header("Champion Reference")]
+    public GameObject championPrefab;
+
     private Rigidbody rb;
     private Animator anim;
     private float yaw;
@@ -34,16 +37,24 @@ public class Player3PMovement : MonoBehaviour
         yaw = transform.eulerAngles.y;
     }
 
+    void OnEnable()
+    {
+        if (isPlayerControlled && championPrefab != null)
+            PortraitHelper.ShowForChampion(championPrefab);
+    }
+
+    void OnDisable()
+    {
+        PortraitHelper.HidePortrait();
+    }
+
     void Update()
     {
         if (!isPlayerControlled) return;
 
-        // If RTS mode, disable player control
-        if (ModeController.Instance != null &&
-            ModeController.Instance.currentMode == ControlMode.RTS)
+        if (ModeController.Instance != null && ModeController.Instance.currentMode == ControlMode.RTS)
             return;
 
-        // Camera turning
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
         yaw += mouseX;
 
@@ -54,9 +65,8 @@ public class Player3PMovement : MonoBehaviour
     void FixedUpdate()
     {
         if (!isPlayerControlled) return;
-        
-        if (ModeController.Instance != null &&
-            ModeController.Instance.currentMode == ControlMode.RTS)
+
+        if (ModeController.Instance != null && ModeController.Instance.currentMode == ControlMode.RTS)
         {
             Vector3 vel = rb.linearVelocity;
             rb.linearVelocity = new Vector3(0f, vel.y, 0f);
@@ -64,14 +74,10 @@ public class Player3PMovement : MonoBehaviour
             return;
         }
 
-        // ---------- INPUT ----------
         float h = Input.GetAxisRaw("Horizontal");
         float v = Input.GetAxisRaw("Vertical");
 
-        // ---------- CAMERA ----------
-        Camera playerCam = ModeController.Instance != null ? 
-            ModeController.Instance.playerCamera : Camera.main;
-
+        Camera playerCam = ModeController.Instance != null ? ModeController.Instance.playerCamera : Camera.main;
         if (playerCam == null) return;
 
         Vector3 camForward = playerCam.transform.forward;
@@ -83,18 +89,14 @@ public class Player3PMovement : MonoBehaviour
         camRight.Normalize();
 
         Vector3 moveDir = (camForward * v + camRight * h).normalized;
-
-        // ---------- VELOCITY ----------
         float speed = moveSpeed * (Input.GetKey(KeyCode.LeftShift) ? sprintMultiplier : 1f);
 
         Vector3 targetVel = moveDir * speed;
         Vector3 currentVel = rb.linearVelocity;
-
         Vector3 desiredVel = new Vector3(targetVel.x, currentVel.y, targetVel.z);
 
         rb.linearVelocity = Vector3.MoveTowards(currentVel, desiredVel, acceleration * Time.fixedDeltaTime);
 
-        // ---------- MODEL ROTATION ----------
         if (moveDir != Vector3.zero)
         {
             Quaternion lookRot = Quaternion.LookRotation(moveDir);
@@ -103,15 +105,10 @@ public class Player3PMovement : MonoBehaviour
 
         SnapToTerrain();
 
-        // ---------- ANIMATOR ----------
         if (anim != null)
         {
-            float horizontalSpeed =
-                new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z).magnitude;
-
-            // Debug line to check speed for Blend Tree thresholds
+            float horizontalSpeed = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z).magnitude;
             Debug.Log("Champion Speed: " + horizontalSpeed);
-
             anim.SetFloat("Speed", horizontalSpeed);
         }
     }
@@ -121,12 +118,9 @@ public class Player3PMovement : MonoBehaviour
         if (Terrain.activeTerrain == null) return;
 
         Vector3 pos = rb.position;
-
         float terrainY = Terrain.activeTerrain.SampleHeight(pos) + bodyHeightOffset;
 
         if (Mathf.Abs(pos.y - terrainY) > 0.001f)
-        {
             rb.MovePosition(new Vector3(pos.x, terrainY, pos.z));
-        }
     }
 }

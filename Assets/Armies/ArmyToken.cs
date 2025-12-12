@@ -6,9 +6,7 @@ public class ArmyToken : MonoBehaviour
     [Header("Army Settings")]
     public string owner = "Player";
 
-    // NEW — team ID (0 = Player, 1 = Enemy)
     public int teamID = 0;
-
     public float moveSpeed = 5f;
 
     [Header("Visuals")]
@@ -31,14 +29,11 @@ public class ArmyToken : MonoBehaviour
 
     public string championName = "Champion";
     public int championLevel = 1;
-    [Header("General unit (single)")]
-    public GameObject generalPrefab;
 
     [Header("Battle State")]
     public bool isLockedInBattle = false;
     public bool canMoveOnWorldMap = true;
 
-    // double-click detection
     private float lastClickTime;
     private const float doubleClickThreshold = 0.3f;
 
@@ -51,18 +46,12 @@ public class ArmyToken : MonoBehaviour
         ApplyOwnerColor();
     }
 
-    // ------------------------------------------------------------
-    // TEAM LOGIC
-    // ------------------------------------------------------------
     private void AssignTeamFromOwner()
     {
-        // Automatic assignment based on your previous system:
-        // Player = 0, AI = 1
         if (owner == "Player") teamID = 0;
         else if (owner == "AI") teamID = 1;
-        else teamID = 2; // neutral or other
+        else teamID = 2;
 
-        // Propagate to army composition
         foreach (var unit in composition)
         {
             if (unit != null)
@@ -75,37 +64,23 @@ public class ArmyToken : MonoBehaviour
         teamID = id;
 
         foreach (var unit in composition)
-        {
             if (unit != null)
                 unit.teamID = id;
-        }
     }
 
-    // ------------------------------------------------------------
-    // UPDATE LOOP
-    // ------------------------------------------------------------
     void Update()
     {
-        if (isLockedInBattle || !canMoveOnWorldMap)
-            return;
+        if (isLockedInBattle || !canMoveOnWorldMap) return;
 
-        transform.position = Vector3.MoveTowards(
-            transform.position,
-            targetPosition,
-            moveSpeed * Time.deltaTime
-        );
+        transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
 
-        if (activeMarker != null &&
-            Vector3.Distance(transform.position, targetPosition) < 0.1f)
+        if (activeMarker != null && Vector3.Distance(transform.position, targetPosition) < 0.1f)
         {
             Destroy(activeMarker);
             activeMarker = null;
         }
     }
 
-    // ------------------------------------------------------------
-    // INPUT HANDLING
-    // ------------------------------------------------------------
     void OnMouseDown()
     {
         if (Time.time - lastClickTime < doubleClickThreshold)
@@ -130,19 +105,27 @@ public class ArmyToken : MonoBehaviour
         }
     }
 
-    // ------------------------------------------------------------
-    // SELECTION
-    // ------------------------------------------------------------
     public void SetSelected(bool selected)
     {
         isSelected = selected;
-        if (selected) ApplyColor(selectedColor);
-        else ApplyOwnerColor();
+
+        if (selected)
+        {
+            ApplyColor(selectedColor);
+
+            // Show champion portrait dynamically
+            if (championPrefab != null)
+                PortraitHelper.ShowForChampion(championPrefab);
+        }
+        else
+        {
+            ApplyOwnerColor();
+
+            // Hide portrait when deselected
+            PortraitHelper.HidePortrait();
+        }
     }
 
-    // ------------------------------------------------------------
-    // MOVEMENT COMMAND
-    // ------------------------------------------------------------
     public void SetTarget(Vector3 pos)
     {
         if (isLockedInBattle || !canMoveOnWorldMap)
@@ -162,9 +145,6 @@ public class ArmyToken : MonoBehaviour
         }
     }
 
-    // ------------------------------------------------------------
-    // COLOR SYSTEM
-    // ------------------------------------------------------------
     private void ApplyOwnerColor()
     {
         switch (owner)
@@ -178,14 +158,10 @@ public class ArmyToken : MonoBehaviour
     private void ApplyColor(Color c)
     {
         if (renderers == null) return;
-
         foreach (var r in renderers)
             r.material.color = c;
     }
 
-    // ------------------------------------------------------------
-    // BATTLE STATE LOGIC
-    // ------------------------------------------------------------
     public void LockInBattle()
     {
         isLockedInBattle = true;

@@ -1,6 +1,6 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
-using UnityEngine.EventSystems; 
+﻿using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class RTSSelectionManager : MonoBehaviour
 {
@@ -24,55 +24,47 @@ public class RTSSelectionManager : MonoBehaviour
     void HandleLeftClickSelection()
     {
         if (EventSystem.current.IsPointerOverGameObject()) return;
-
         if (!Input.GetMouseButtonDown(0)) return;
 
         Ray ray = rtsCamera.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-
-        if (Physics.Raycast(ray, out hit, 500f, soldierLayer))
+        if (Physics.Raycast(ray, out RaycastHit hit, 500f, soldierLayer))
         {
             Squad squad = hit.collider.GetComponentInParent<Squad>();
 
-            // ★ BLOCK ENEMY SELECTION ★
             if (squad != null && squad.teamID == 0)
             {
                 SelectOnlyThisSquad(squad);
+
+                // Show champion portrait dynamically
+                if (squad.armyToken != null && squad.armyToken.championPrefab != null)
+                    PortraitHelper.ShowForChampion(squad.armyToken.championPrefab);
             }
         }
         else
         {
             ClearSelection();
+            PortraitHelper.HidePortrait();
         }
     }
 
     void HandleRightClickMovement()
     {
-        // Ignore clicks over UI
         if (EventSystem.current.IsPointerOverGameObject()) return;
-
-        if (!Input.GetMouseButtonDown(1) || selectedSquads.Count == 0)
-            return;
+        if (!Input.GetMouseButtonDown(1) || selectedSquads.Count == 0) return;
 
         Ray ray = rtsCamera.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-
-        if (!Physics.Raycast(ray, out hit, 1000f, groundLayer))
-            return;
+        if (!Physics.Raycast(ray, out RaycastHit hit, 1000f, groundLayer)) return;
 
         Vector3 destination = hit.point;
-
         float spacing = 8f;
-        int squads = selectedSquads.Count;
 
-        for (int i = 0; i < squads; i++)
+        for (int i = 0; i < selectedSquads.Count; i++)
         {
             Squad s = selectedSquads[i];
             if (s == null) continue;
 
             int row = i / 2;
             int col = i % 2;
-
             Vector3 offset = new Vector3(col * spacing, 0f, row * spacing);
             s.MoveSquad(destination + offset);
         }
@@ -81,7 +73,6 @@ public class RTSSelectionManager : MonoBehaviour
     public void SetSelectedSquads(List<Squad> squads)
     {
         ClearSelection();
-
         foreach (var s in squads)
         {
             if (s != null && s.teamID == 0)
@@ -91,6 +82,10 @@ public class RTSSelectionManager : MonoBehaviour
 
                 if (s.healthBar != null)
                     s.healthBar.gameObject.SetActive(true);
+
+                // Show portrait dynamically
+                if (s.armyToken != null && s.armyToken.championPrefab != null)
+                    PortraitHelper.ShowForChampion(s.armyToken.championPrefab);
             }
         }
     }
@@ -103,6 +98,10 @@ public class RTSSelectionManager : MonoBehaviour
 
         if (squad.healthBar != null)
             squad.healthBar.gameObject.SetActive(true);
+
+        // Show portrait dynamically
+        if (squad.armyToken != null && squad.armyToken.championPrefab != null)
+            PortraitHelper.ShowForChampion(squad.armyToken.championPrefab);
     }
 
     public void ClearSelection()
@@ -116,7 +115,7 @@ public class RTSSelectionManager : MonoBehaviour
                     s.healthBar.gameObject.SetActive(false);
             }
         }
-
         selectedSquads.Clear();
+        PortraitHelper.HidePortrait();
     }
 }
