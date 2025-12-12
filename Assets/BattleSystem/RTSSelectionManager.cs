@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.EventSystems; 
 
 public class RTSSelectionManager : MonoBehaviour
 {
@@ -22,6 +23,8 @@ public class RTSSelectionManager : MonoBehaviour
 
     void HandleLeftClickSelection()
     {
+        if (EventSystem.current.IsPointerOverGameObject()) return;
+
         if (!Input.GetMouseButtonDown(0)) return;
 
         Ray ray = rtsCamera.ScreenPointToRay(Input.mousePosition);
@@ -45,6 +48,9 @@ public class RTSSelectionManager : MonoBehaviour
 
     void HandleRightClickMovement()
     {
+        // Ignore clicks over UI
+        if (EventSystem.current.IsPointerOverGameObject()) return;
+
         if (!Input.GetMouseButtonDown(1) || selectedSquads.Count == 0)
             return;
 

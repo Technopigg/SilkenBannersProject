@@ -54,8 +54,7 @@ public class Player3PMovement : MonoBehaviour
     void FixedUpdate()
     {
         if (!isPlayerControlled) return;
-
-        // If RTS mode, prevent movement but keep Champion grounded
+        
         if (ModeController.Instance != null &&
             ModeController.Instance.currentMode == ControlMode.RTS)
         {
@@ -109,6 +108,9 @@ public class Player3PMovement : MonoBehaviour
         {
             float horizontalSpeed =
                 new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z).magnitude;
+
+            // Debug line to check speed for Blend Tree thresholds
+            Debug.Log("Champion Speed: " + horizontalSpeed);
 
             anim.SetFloat("Speed", horizontalSpeed);
         }
