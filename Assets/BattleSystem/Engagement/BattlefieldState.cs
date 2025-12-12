@@ -6,10 +6,11 @@ public class BattlefieldState
 {
     public List<SquadState> squads = new List<SquadState>();
     
-    public Vector3? playerGeneralPosition;
-    public Vector3? enemyGeneralPosition;
-    public Quaternion? playerGeneralRotation;
-    public Quaternion? enemyGeneralRotation;
+    // --- Champion positions & rotations ---
+    public Vector3? playerChampionPosition;
+    public Vector3? enemyChampionPosition;
+    public Quaternion? playerChampionRotation;
+    public Quaternion? enemyChampionRotation;
 }
 
 [System.Serializable]

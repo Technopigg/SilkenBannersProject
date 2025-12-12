@@ -39,12 +39,12 @@ public class BattleSceneController : MonoBehaviour
         Debug.Log("BattleSceneController: Waiting before assigning camera...");
         yield return new WaitForSeconds(0.05f);
 
-        if (spawner != null && spawner.PlayerGeneral != null)
+        if (spawner != null && spawner.PlayerChampion != null)
         {
             Player3PCamera cam = FindObjectOfType<Player3PCamera>();
             if (cam != null)
             {
-                cam.SetTarget(spawner.PlayerGeneral.transform);
+                cam.SetTarget(spawner.PlayerChampion.transform);
                 Debug.Log("BattleSceneController: Camera target set to Player General.");
             }
             else

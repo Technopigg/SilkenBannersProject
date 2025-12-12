@@ -27,7 +27,10 @@ public class ArmyToken : MonoBehaviour
 
     [Header("Army Composition (squads only)")]
     public List<ArmyUnit> composition = new List<ArmyUnit>();
+    public GameObject championPrefab;
 
+    public string championName = "Champion";
+    public int championLevel = 1;
     [Header("General unit (single)")]
     public GameObject generalPrefab;
 

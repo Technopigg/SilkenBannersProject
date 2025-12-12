@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 /// <summary>
-/// Spawns squads and generals or restores them if a saved BattlefieldState exists.
+/// Spawns squads and champions or restores them if a saved BattlefieldState exists.
 /// Fully supports the new ArmyToken system and Total War–style squad combat.
 /// </summary>
 public class SquadSpawner : MonoBehaviour
@@ -13,8 +13,8 @@ public class SquadSpawner : MonoBehaviour
 
     [Header("Prefabs")]
     public GameObject squadPrefab;
-    public GameObject generalPrefab;
-    
+    public GameObject championPrefab;
+
     [Header("Unit Prefabs")]
     [SerializeField] private GameObject spearmanPrefab;
     [SerializeField] private GameObject archerPrefab;
@@ -22,8 +22,8 @@ public class SquadSpawner : MonoBehaviour
     [Header("UI Prefabs")]
     public GameObject squadHealthBarPrefab;
 
-    public GameObject PlayerGeneral { get; private set; }
-    public GameObject EnemyGeneral { get; private set; }
+    public GameObject PlayerChampion { get; private set; }
+    public GameObject EnemyChampion { get; private set; }
 
     private bool hasSpawned = false;
     private Canvas worldSpaceCanvas;
@@ -82,6 +82,7 @@ public class SquadSpawner : MonoBehaviour
         SpawnArmy(playerToken, playerSpawnPoint, "Player", 0);
         SpawnArmy(enemyToken, enemySpawnPoint, "Enemy", 1);
     }
+
     private Vector3 GetCenterOfPositions(List<Vector3> positions)
     {
         if (positions == null || positions.Count == 0)
@@ -115,106 +116,113 @@ public class SquadSpawner : MonoBehaviour
             SpawnSquad(spawnPoint.position, unit, owner, teamID, unit.count);
         }
 
-        Vector3 genPos = spawnPoint.position + Vector3.forward * 2f;
-        GameObject genPrefabToUse = (token.generalPrefab != null) ? token.generalPrefab : generalPrefab;
-        GameObject generalObj = Instantiate(genPrefabToUse, genPos, Quaternion.identity);
-
-        generalObj.tag = (teamID == 0) ? "PlayerUnit" : "EnemyUnit";
-
-        SetLayerRecursive(generalObj,
-            (teamID == 0) ? LayerMask.NameToLayer("PlayerSoldier")
-                         : LayerMask.NameToLayer("EnemySoldier"));
-
-        var movement = generalObj.GetComponent<Player3PMovement>();
-        if (movement != null) movement.isPlayerControlled = (teamID == 0);
-
-        if (teamID == 0) PlayerGeneral = generalObj;
-        else EnemyGeneral = generalObj;
+        // Spawn Champion instead of General
+        SpawnChampion(token, spawnPoint, owner, teamID);
     }
 
-   private void SpawnSquad(Vector3 position, ArmyUnit unit, string owner, int teamID, int count)
-{
-    GameObject prefab = GetPrefabForType(unit.type);
-    if (prefab == null)
+    private void SpawnChampion(ArmyToken token, Transform spawnPoint, string owner, int teamID)
     {
-        Debug.LogError($"Cannot spawn squad: prefab missing for type {unit.type}");
-        return;
+        Vector3 champPos = spawnPoint.position + Vector3.forward * 2f;
+        GameObject champPrefabToUse = token.championPrefab != null ? token.championPrefab : championPrefab;
+
+        GameObject champObj = Instantiate(champPrefabToUse, champPos, Quaternion.identity);
+        champObj.tag = teamID == 0 ? "PlayerUnit" : "EnemyUnit";
+
+        SetLayerRecursive(champObj, teamID == 0 ? LayerMask.NameToLayer("PlayerSoldier") : LayerMask.NameToLayer("EnemySoldier"));
+
+        // Initialize Champion component
+        Champion champComp = champObj.GetComponent<Champion>();
+        if (champComp != null)
+            champComp.InitializeChampion(token.championName, token.championLevel, teamID == 0);
+
+        var movement = champObj.GetComponent<Player3PMovement>();
+        if (movement != null)
+            movement.isPlayerControlled = (teamID == 0);
+
+        if (teamID == 0) PlayerChampion = champObj;
+        else EnemyChampion = champObj;
     }
-    GameObject squadObj = new GameObject($"{owner}_Squad_{unit.type}");
-    squadObj.transform.position = position;
-    
-    string tagToAssign = (teamID == 0) ? "PlayerUnit" : "EnemyUnit";
-    int layerToAssign = (teamID == 0) ? LayerMask.NameToLayer("PlayerSoldier")
-                                      : LayerMask.NameToLayer("EnemySoldier");
 
-    squadObj.tag = tagToAssign;
-    squadObj.layer = layerToAssign;
-
-    // --- COMPONENTS ---
-    Squad squad = squadObj.AddComponent<Squad>();
-
-    Rigidbody rb = squadObj.AddComponent<Rigidbody>();
-    rb.isKinematic = true;
-    rb.useGravity = false;
-
-    SphereCollider detection = squadObj.AddComponent<SphereCollider>();
-    detection.isTrigger = true;
-    detection.radius = 25f; 
-
-    SquadCombatController ctrl = squadObj.AddComponent<SquadCombatController>();
-    ctrl.squad = squad;
-
-    // --- SQUAD DATA ---
-    squad.teamID = teamID;
-    squad.owner = owner;
-    squad.unitType = unit.type;
-    squad.squadID = Random.Range(1000, 9999);
-    squad.soldiers = new List<Transform>();
-
-    // --- SPAWN SOLDIERS ---
-    for (int i = 0; i < Mathf.Max(1, count); i++)
+    private void SpawnSquad(Vector3 position, ArmyUnit unit, string owner, int teamID, int count)
     {
-        Vector3 offset = position + new Vector3(i * 1.5f, 0, 0);
-        GameObject soldier = Instantiate(prefab, offset, Quaternion.identity);
-
-        soldier.transform.SetParent(squadObj.transform);
-        var unitComp = soldier.GetComponent<Unit>();
-        if (unitComp != null)
-            unitComp.teamID = teamID;
-
-        soldier.tag = tagToAssign;
-
-        UnitCombat uc = soldier.GetComponent<UnitCombat>();
-        if (uc != null)
-            uc.squadRoot = squad;
-
-        squad.soldiers.Add(soldier.transform);
-    }
-    
-    SetLayerRecursive(squadObj, layerToAssign);
-    
-    if (squadHealthBarPrefab != null)
-    {
-        Transform parent = (worldSpaceCanvas != null) ? worldSpaceCanvas.transform : null;
-        GameObject hb = (parent != null) ? Instantiate(squadHealthBarPrefab, parent)
-                                         : Instantiate(squadHealthBarPrefab);
-
-        SquadHealthBar hbComp = hb.GetComponent<SquadHealthBar>();
-        if (hbComp != null)
+        GameObject prefab = GetPrefabForType(unit.type);
+        if (prefab == null)
         {
-            hbComp.squad = squad;
-            squad.healthBar = hbComp;
+            Debug.LogError($"Cannot spawn squad: prefab missing for type {unit.type}");
+            return;
+        }
 
-            hb.transform.position = squad.GetSquadCenter() + Vector3.up * 2f;
-        }
-        else
+        GameObject squadObj = new GameObject($"{owner}_Squad_{unit.type}");
+        squadObj.transform.position = position;
+
+        string tagToAssign = (teamID == 0) ? "PlayerUnit" : "EnemyUnit";
+        int layerToAssign = (teamID == 0) ? LayerMask.NameToLayer("PlayerSoldier")
+                                          : LayerMask.NameToLayer("EnemySoldier");
+
+        squadObj.tag = tagToAssign;
+        squadObj.layer = layerToAssign;
+
+        // --- COMPONENTS ---
+        Squad squad = squadObj.AddComponent<Squad>();
+
+        Rigidbody rb = squadObj.AddComponent<Rigidbody>();
+        rb.isKinematic = true;
+        rb.useGravity = false;
+
+        SphereCollider detection = squadObj.AddComponent<SphereCollider>();
+        detection.isTrigger = true;
+        detection.radius = 25f;
+
+        SquadCombatController ctrl = squadObj.AddComponent<SquadCombatController>();
+        ctrl.squad = squad;
+
+        // --- SQUAD DATA ---
+        squad.teamID = teamID;
+        squad.owner = owner;
+        squad.unitType = unit.type;
+        squad.squadID = Random.Range(1000, 9999);
+        squad.soldiers = new List<Transform>();
+
+        // --- SPAWN SOLDIERS ---
+        for (int i = 0; i < Mathf.Max(1, count); i++)
         {
-            Debug.LogError("SquadSpawner: SquadHealthBar prefab is missing SquadHealthBar component!");
+            Vector3 offset = position + new Vector3(i * 1.5f, 0, 0);
+            GameObject soldier = Instantiate(prefab, offset, Quaternion.identity);
+            soldier.transform.SetParent(squadObj.transform);
+
+            var unitComp = soldier.GetComponent<Unit>();
+            if (unitComp != null) unitComp.teamID = teamID;
+
+            soldier.tag = tagToAssign;
+
+            UnitCombat uc = soldier.GetComponent<UnitCombat>();
+            if (uc != null) uc.squadRoot = squad;
+
+            squad.soldiers.Add(soldier.transform);
         }
+
+        SetLayerRecursive(squadObj, layerToAssign);
+
+        if (squadHealthBarPrefab != null)
+        {
+            Transform parent = (worldSpaceCanvas != null) ? worldSpaceCanvas.transform : null;
+            GameObject hb = (parent != null) ? Instantiate(squadHealthBarPrefab, parent) : Instantiate(squadHealthBarPrefab);
+
+            SquadHealthBar hbComp = hb.GetComponent<SquadHealthBar>();
+            if (hbComp != null)
+            {
+                hbComp.squad = squad;
+                squad.healthBar = hbComp;
+                hb.transform.position = squad.GetSquadCenter() + Vector3.up * 2f;
+            }
+            else
+            {
+                Debug.LogError("SquadSpawner: SquadHealthBar prefab is missing SquadHealthBar component!");
+            }
+        }
+
+        squad.InitializeSquad();
     }
-    
-    squad.InitializeSquad();
-}
 
     private void RestoreBattlefield(BattlefieldState state)
     {
@@ -262,12 +270,11 @@ public class SquadSpawner : MonoBehaviour
                 SetLayerRecursive(soldier, layerToAssign);
 
                 UnitCombat uc = soldier.GetComponent<UnitCombat>();
-                if (uc != null)
-                    uc.squadRoot = squad;
+                if (uc != null) uc.squadRoot = squad;
 
                 squad.soldiers.Add(soldier.transform);
             }
-            
+
             if (squadHealthBarPrefab != null)
             {
                 Transform parent = (worldSpaceCanvas != null) ? worldSpaceCanvas.transform : null;
@@ -284,26 +291,27 @@ public class SquadSpawner : MonoBehaviour
             squad.InitializeSquad();
         }
 
-        if (state.playerGeneralPosition.HasValue)
+        // Restore Champions
+        if (state.playerChampionPosition.HasValue)
         {
-            PlayerGeneral = Instantiate(
-                generalPrefab,
-                state.playerGeneralPosition.Value,
-                state.playerGeneralRotation ?? Quaternion.identity
+            PlayerChampion = Instantiate(
+                championPrefab,
+                state.playerChampionPosition.Value,
+                state.playerChampionRotation ?? Quaternion.identity
             );
-            PlayerGeneral.tag = "PlayerUnit";
-            SetLayerRecursive(PlayerGeneral, LayerMask.NameToLayer("PlayerSoldier"));
+            PlayerChampion.tag = "PlayerUnit";
+            SetLayerRecursive(PlayerChampion, LayerMask.NameToLayer("PlayerSoldier"));
         }
 
-        if (state.enemyGeneralPosition.HasValue)
+        if (state.enemyChampionPosition.HasValue)
         {
-            EnemyGeneral = Instantiate(
-                generalPrefab,
-                state.enemyGeneralPosition.Value,
-                state.enemyGeneralRotation ?? Quaternion.identity
+            EnemyChampion = Instantiate(
+                championPrefab,
+                state.enemyChampionPosition.Value,
+                state.enemyChampionRotation ?? Quaternion.identity
             );
-            EnemyGeneral.tag = "EnemyUnit";
-            SetLayerRecursive(EnemyGeneral, LayerMask.NameToLayer("EnemySoldier"));
+            EnemyChampion.tag = "EnemyUnit";
+            SetLayerRecursive(EnemyChampion, LayerMask.NameToLayer("EnemySoldier"));
         }
     }
 
@@ -335,16 +343,16 @@ public class SquadSpawner : MonoBehaviour
             state.squads.Add(ss);
         }
 
-        if (PlayerGeneral != null)
+        if (PlayerChampion != null)
         {
-            state.playerGeneralPosition = PlayerGeneral.transform.position;
-            state.playerGeneralRotation = PlayerGeneral.transform.rotation;
+            state.playerChampionPosition = PlayerChampion.transform.position;
+            state.playerChampionRotation = PlayerChampion.transform.rotation;
         }
 
-        if (EnemyGeneral != null)
+        if (EnemyChampion != null)
         {
-            state.enemyGeneralPosition = EnemyGeneral.transform.position;
-            state.enemyGeneralRotation = EnemyGeneral.transform.rotation;
+            state.enemyChampionPosition = EnemyChampion.transform.position;
+            state.enemyChampionRotation = EnemyChampion.transform.rotation;
         }
 
         return state;
