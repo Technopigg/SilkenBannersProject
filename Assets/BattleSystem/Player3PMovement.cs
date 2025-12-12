@@ -30,6 +30,7 @@ public class Player3PMovement : MonoBehaviour
 
         rb.interpolation = RigidbodyInterpolation.Interpolate;
         rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+
         yaw = transform.eulerAngles.y;
     }
 
@@ -37,14 +38,15 @@ public class Player3PMovement : MonoBehaviour
     {
         if (!isPlayerControlled) return;
 
+        // If RTS mode, disable player control
         if (ModeController.Instance != null &&
             ModeController.Instance.currentMode == ControlMode.RTS)
-        {
             return;
-        }
 
+        // Camera turning
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
         yaw += mouseX;
+
         Quaternion targetRot = Quaternion.Euler(0f, yaw, 0f);
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, turnSmoothing * Time.deltaTime);
     }
@@ -53,28 +55,24 @@ public class Player3PMovement : MonoBehaviour
     {
         if (!isPlayerControlled) return;
 
+        // If RTS mode, prevent movement but keep Champion grounded
         if (ModeController.Instance != null &&
             ModeController.Instance.currentMode == ControlMode.RTS)
         {
             Vector3 vel = rb.linearVelocity;
             rb.linearVelocity = new Vector3(0f, vel.y, 0f);
-
-            Vector3 pos = rb.position;
-            if (Terrain.activeTerrain != null && Terrain.activeTerrain.terrainData != null)
-            {
-                float terrainY = Terrain.activeTerrain.SampleHeight(pos) + bodyHeightOffset;
-                if (Mathf.Abs(pos.y - terrainY) > 0.001f)
-                {
-                    rb.MovePosition(new Vector3(pos.x, terrainY, pos.z));
-                }
-            }
+            SnapToTerrain();
             return;
         }
 
+        // ---------- INPUT ----------
         float h = Input.GetAxisRaw("Horizontal");
         float v = Input.GetAxisRaw("Vertical");
 
-        Camera playerCam = ModeController.Instance != null ? ModeController.Instance.playerCamera : Camera.main;
+        // ---------- CAMERA ----------
+        Camera playerCam = ModeController.Instance != null ? 
+            ModeController.Instance.playerCamera : Camera.main;
+
         if (playerCam == null) return;
 
         Vector3 camForward = playerCam.transform.forward;
@@ -87,35 +85,46 @@ public class Player3PMovement : MonoBehaviour
 
         Vector3 moveDir = (camForward * v + camRight * h).normalized;
 
+        // ---------- VELOCITY ----------
         float speed = moveSpeed * (Input.GetKey(KeyCode.LeftShift) ? sprintMultiplier : 1f);
 
         Vector3 targetVel = moveDir * speed;
         Vector3 currentVel = rb.linearVelocity;
+
         Vector3 desiredVel = new Vector3(targetVel.x, currentVel.y, targetVel.z);
 
         rb.linearVelocity = Vector3.MoveTowards(currentVel, desiredVel, acceleration * Time.fixedDeltaTime);
 
+        // ---------- MODEL ROTATION ----------
         if (moveDir != Vector3.zero)
         {
             Quaternion lookRot = Quaternion.LookRotation(moveDir);
             rb.rotation = Quaternion.Slerp(rb.rotation, lookRot, turnSmoothing * Time.fixedDeltaTime);
         }
 
-        Vector3 posGeneral = rb.position;
-        if (Terrain.activeTerrain != null && Terrain.activeTerrain.terrainData != null)
-        {
-            float terrainY = Terrain.activeTerrain.SampleHeight(posGeneral) + bodyHeightOffset;
-            if (Mathf.Abs(posGeneral.y - terrainY) > 0.001f)
-            {
-                rb.MovePosition(new Vector3(posGeneral.x, terrainY, posGeneral.z));
-            }
-        }
+        SnapToTerrain();
 
-
-        if (anim != null && anim.runtimeAnimatorController != null)
+        // ---------- ANIMATOR ----------
+        if (anim != null)
         {
-            float horizontalSpeed = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z).magnitude;
+            float horizontalSpeed =
+                new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z).magnitude;
+
             anim.SetFloat("Speed", horizontalSpeed);
+        }
+    }
+
+    private void SnapToTerrain()
+    {
+        if (Terrain.activeTerrain == null) return;
+
+        Vector3 pos = rb.position;
+
+        float terrainY = Terrain.activeTerrain.SampleHeight(pos) + bodyHeightOffset;
+
+        if (Mathf.Abs(pos.y - terrainY) > 0.001f)
+        {
+            rb.MovePosition(new Vector3(pos.x, terrainY, pos.z));
         }
     }
 }
