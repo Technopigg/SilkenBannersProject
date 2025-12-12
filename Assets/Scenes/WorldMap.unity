@@ -2348,7 +2348,7 @@ PrefabInstance:
     - target: {fileID: 3209918059107484484, guid: e7116fde634e81948a8e7692a884a00f,
         type: 3}
       propertyPath: composition.Array.data[1].type
-      value: Archer
+      value: Spearman
       objectReference: {fileID: 0}
     - target: {fileID: 3209918059107484484, guid: e7116fde634e81948a8e7692a884a00f,
         type: 3}
@@ -2980,7 +2980,7 @@ PrefabInstance:
     - target: {fileID: 3209918059107484484, guid: 257bc1339e8f5bf479bb4856d2606a45,
         type: 3}
       propertyPath: composition.Array.data[1].type
-      value: Archer
+      value: Spearman
       objectReference: {fileID: 0}
     - target: {fileID: 3209918059107484484, guid: 257bc1339e8f5bf479bb4856d2606a45,
         type: 3}

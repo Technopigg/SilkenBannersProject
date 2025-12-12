@@ -35,10 +35,10 @@ public class UnitMovement : MonoBehaviour
         if (!hasTarget || agent == null || !agent.isActiveAndEnabled) return;
 
         agent.speed = Mathf.Lerp(agent.speed, targetSpeed, Time.deltaTime * 6f);
-
         if (!agent.pathPending && agent.remainingDistance <= snapDistance)
         {
             agent.isStopped = true;
+            agent.velocity = Vector3.zero;    
             hasTarget = false;
         }
         else
@@ -52,9 +52,15 @@ public class UnitMovement : MonoBehaviour
     private void UpdateAnimator()
     {
         if (animator == null) return;
+
         float speed = agent.velocity.magnitude;
+        
+        if (agent.isStopped || agent.velocity.sqrMagnitude < 0.001f)
+            speed = 0f;
+
         animator.SetFloat("Speed", speed);
     }
+
 
     public void SetMovementTarget(Vector3 destination, float speed)
     {

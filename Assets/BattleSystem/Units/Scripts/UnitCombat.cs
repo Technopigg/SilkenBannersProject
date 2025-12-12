@@ -35,19 +35,26 @@ public class UnitCombat : MonoBehaviour
 
     public void SetTarget(Transform t)
     {
-        if (combatDisabled) return;
-        if (t == null) return;
-
+        if (combatDisabled || t == null) return;
         currentTarget = t;
     }
 
     public void MoveTowardsTarget()
     {
         if (combatDisabled || currentTarget == null || mover == null) return;
-        mover.SetMovementTarget(currentTarget.position, mover.MoveSpeed);
+
+        float distance = Vector3.Distance(transform.position, currentTarget.position);
+        
+        float desiredSpeed = mover.MoveSpeed;
+        if (distance > 5f) 
+            desiredSpeed *= 1.5f; 
+
+        mover.SetMovementTarget(currentTarget.position, desiredSpeed);
 
         if (animator != null)
-            animator.SetBool("Walking", true);
+        {
+            animator.SetFloat("Speed", desiredSpeed);
+        }
     }
 
     public void TryAttack()
@@ -55,11 +62,18 @@ public class UnitCombat : MonoBehaviour
         if (combatDisabled || currentTarget == null) return;
 
         float dist = Vector3.Distance(transform.position, currentTarget.position);
+
         if (dist > attackRange)
         {
             MoveTowardsTarget();
             return;
         }
+        
+        if (mover != null)
+            mover.StopImmediate();
+
+        if (animator != null)
+            animator.SetFloat("Speed", 0f); 
 
         if (Time.time >= nextAttackTime)
         {
@@ -69,18 +83,13 @@ public class UnitCombat : MonoBehaviour
                 hp.TakeDamage(attackDamage);
 
             if (animator != null)
-            {
                 animator.SetTrigger("InwardSlash");
-                animator.SetBool("Walking", false);
-            }
         }
     }
-
     public void DisableCombatTemporarily()
     {
         combatDisabled = true;
-        if (mover != null)
-            mover.StopImmediate();
+        mover?.StopImmediate();
     }
 
     public void EnableCombat()
