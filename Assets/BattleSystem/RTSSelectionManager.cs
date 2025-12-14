@@ -27,23 +27,29 @@ public class RTSSelectionManager : MonoBehaviour
         if (!Input.GetMouseButtonDown(0)) return;
 
         Ray ray = rtsCamera.ScreenPointToRay(Input.mousePosition);
+
         if (Physics.Raycast(ray, out RaycastHit hit, 500f, soldierLayer))
         {
             Squad squad = hit.collider.GetComponentInParent<Squad>();
-
             if (squad != null && squad.teamID == 0)
             {
+                Debug.Log($"[RTSSelection] Left-click selected squad: {squad.name}, Champion? {squad.isChampion}");
                 SelectOnlyThisSquad(squad);
 
-                // Show champion portrait dynamically
                 if (squad.armyToken != null && squad.armyToken.championPrefab != null)
+                {
+                    Debug.Log($"[RTSSelection] Showing portrait for champion prefab: {squad.armyToken.championPrefab.name}");
                     PortraitHelper.ShowForChampion(squad.armyToken.championPrefab);
+                }
+                else
+                {
+                    Debug.Log("[RTSSelection] Squad has no championPrefab assigned.");
+                }
             }
         }
         else
         {
             ClearSelection();
-            PortraitHelper.HidePortrait();
         }
     }
 
@@ -63,29 +69,46 @@ public class RTSSelectionManager : MonoBehaviour
             Squad s = selectedSquads[i];
             if (s == null) continue;
 
-            int row = i / 2;
-            int col = i % 2;
-            Vector3 offset = new Vector3(col * spacing, 0f, row * spacing);
-            s.MoveSquad(destination + offset);
+            if (s.isChampion)
+            {
+                s.MoveSquad(destination);
+            }
+            else
+            {
+                int row = i / 2;
+                int col = i % 2;
+                Vector3 offset = new Vector3(col * spacing, 0f, row * spacing);
+                s.MoveSquad(destination + offset);
+            }
         }
     }
 
     public void SetSelectedSquads(List<Squad> squads)
     {
         ClearSelection();
+
         foreach (var s in squads)
         {
-            if (s != null && s.teamID == 0)
+            if (s == null || s.teamID != 0)
+                continue;
+
+            if (s.isChampion)
             {
-                s.SetSelected(true);
-                selectedSquads.Add(s);
+                Debug.Log($"[RTSSelection] Multi-select found champion: {s.name}");
+                SelectOnlyThisSquad(s);
+                return;
+            }
 
-                if (s.healthBar != null)
-                    s.healthBar.gameObject.SetActive(true);
+            s.SetSelected(true);
+            selectedSquads.Add(s);
 
-                // Show portrait dynamically
-                if (s.armyToken != null && s.armyToken.championPrefab != null)
-                    PortraitHelper.ShowForChampion(s.armyToken.championPrefab);
+            if (s.healthBar != null)
+                s.healthBar.gameObject.SetActive(true);
+
+            if (s.armyToken != null && s.armyToken.championPrefab != null)
+            {
+                Debug.Log($"[RTSSelection] Multi-select showing portrait for: {s.armyToken.championPrefab.name}");
+                PortraitHelper.ShowForChampion(s.armyToken.championPrefab);
             }
         }
     }
@@ -99,9 +122,11 @@ public class RTSSelectionManager : MonoBehaviour
         if (squad.healthBar != null)
             squad.healthBar.gameObject.SetActive(true);
 
-        // Show portrait dynamically
         if (squad.armyToken != null && squad.armyToken.championPrefab != null)
+        {
+            Debug.Log($"[RTSSelection] Single select showing portrait for: {squad.armyToken.championPrefab.name}");
             PortraitHelper.ShowForChampion(squad.armyToken.championPrefab);
+        }
     }
 
     public void ClearSelection()
@@ -115,7 +140,9 @@ public class RTSSelectionManager : MonoBehaviour
                     s.healthBar.gameObject.SetActive(false);
             }
         }
+
         selectedSquads.Clear();
+        Debug.Log("[RTSSelection] Clearing portrait");
         PortraitHelper.HidePortrait();
     }
 }

@@ -2,39 +2,37 @@
 using UnityEngine.UI;
 
 /// <summary>
-/// Creates a portrait preview of a champion/general prefab using a dedicated camera rendering to a RenderTexture,
-/// and displays it on a RawImage in the UI. The spawned preview instance is isolated (its gameplay scripts
-/// are disabled) and animator is driven to a specified idle state.
+/// Displays a champion/general prefab in a dedicated UI portrait using a RenderTexture.
 /// </summary>
 public class GeneralPortraitUI : MonoBehaviour
 {
     public static GeneralPortraitUI Instance { get; private set; }
 
     [Header("UI")]
-    public RawImage portraitImage;           
+    public RawImage portraitImage;
     public Vector2 renderTextureSize = new Vector2(512, 512);
 
     [Header("Portrait Scene")]
-    public Transform portraitRoot;           
-    public Camera portraitCamera;            
-    public Light portraitLight;               
+    public Transform portraitRoot;
+    public Camera portraitCamera;
+    public Light portraitLight;
 
     [Header("Layers")]
     public string portraitLayerName = "Portrait";
     private int portraitLayerMask;
 
     [Header("Animation")]
-    public string idleStateName = "Idle";    
+    public string idleStateName = "Idle";
 
     [Header("Model Offset")]
-    public Vector3 modelPositionOffset = Vector3.zero;  
-    public Vector3 modelRotationEuler = Vector3.zero;   
-    public Vector3 modelScale = Vector3.one;            
+    public Vector3 modelPositionOffset = Vector3.zero;
+    public Vector3 modelRotationEuler = Vector3.zero;
+    public Vector3 modelScale = Vector3.one;
 
     private RenderTexture rt;
     private GameObject currentInstance;
 
-    void Awake()
+    private void Awake()
     {
         if (Instance != null && Instance != this)
         {
@@ -43,57 +41,47 @@ public class GeneralPortraitUI : MonoBehaviour
         }
         Instance = this;
 
-        if (portraitCamera == null)
-            Debug.LogError("GeneralPortraitUI: portraitCamera not assigned.");
-
-        if (portraitRoot == null)
-            Debug.LogError("GeneralPortraitUI: portraitRoot not assigned.");
-
-        if (portraitImage == null)
-            Debug.LogError("GeneralPortraitUI: portraitImage (RawImage) not assigned.");
+        if (!portraitCamera) Debug.LogError("GeneralPortraitUI: portraitCamera not assigned.");
+        if (!portraitRoot) Debug.LogError("GeneralPortraitUI: portraitRoot not assigned.");
+        if (!portraitImage) Debug.LogError("GeneralPortraitUI: portraitImage not assigned.");
 
         portraitLayerMask = LayerMask.NameToLayer(portraitLayerName);
         if (portraitLayerMask == -1)
-            Debug.LogWarning($"GeneralPortraitUI: layer '{portraitLayerName}' not found. Please create it in Tags & Layers.");
+            Debug.LogWarning($"GeneralPortraitUI: layer '{portraitLayerName}' not found. Please create it.");
 
         CreateRenderTexture();
         Hide();
     }
 
-    void CreateRenderTexture()
+    private void CreateRenderTexture()
     {
         int w = Mathf.Max(16, (int)renderTextureSize.x);
         int h = Mathf.Max(16, (int)renderTextureSize.y);
 
-        if (rt == null || rt.width != w || rt.height != h)
-        {
-            if (rt != null) rt.Release();
-            rt = new RenderTexture(w, h, 16, RenderTextureFormat.ARGB32);
-            rt.Create();
-        }
+        if (rt != null) rt.Release();
+        rt = new RenderTexture(w, h, 16, RenderTextureFormat.ARGB32);
+        rt.Create();
 
         if (portraitCamera != null)
         {
             portraitCamera.targetTexture = rt;
             portraitCamera.cullingMask = 1 << portraitLayerMask;
         }
-        portraitImage.texture = rt;
+
+        if (portraitImage != null)
+            portraitImage.texture = rt;
     }
 
     public void Show(GameObject championPrefab)
     {
-        if (championPrefab == null)
+        if (!championPrefab)
         {
-            Debug.LogWarning("GeneralPortraitUI.Show called with null prefab.");
             Hide();
             return;
         }
 
         CreateRenderTexture();
-
-        if (currentInstance != null)
-            DestroyCurrentInstance();
-
+        DestroyCurrentInstance();
         currentInstance = Instantiate(championPrefab, portraitRoot);
         currentInstance.transform.localPosition = modelPositionOffset;
         currentInstance.transform.localEulerAngles = modelRotationEuler;
@@ -103,9 +91,10 @@ public class GeneralPortraitUI : MonoBehaviour
         DisableGameplayScripts(currentInstance);
         DisablePhysics(currentInstance);
 
-        if (portraitCamera != null)
-            portraitCamera.enabled = true;
+        if (portraitCamera) portraitCamera.enabled = true;
+        if (portraitLight) portraitLight.enabled = true;
 
+       
         Animator animator = currentInstance.GetComponentInChildren<Animator>();
         if (animator != null)
         {
@@ -114,20 +103,18 @@ public class GeneralPortraitUI : MonoBehaviour
                 animator.Play(idleStateName);
         }
 
-        portraitImage.enabled = true;
-        if (portraitRoot != null) portraitRoot.gameObject.SetActive(true);
+        if (portraitRoot) portraitRoot.gameObject.SetActive(true);
+        if (portraitImage) portraitImage.enabled = true;
     }
 
     public void Hide()
     {
-        portraitImage.enabled = false;
+        if (portraitImage) portraitImage.enabled = false;
+        if (portraitCamera) portraitCamera.enabled = false;
+        if (portraitLight) portraitLight.enabled = false;
+        if (portraitRoot) portraitRoot.gameObject.SetActive(false);
+
         DestroyCurrentInstance();
-
-        if (portraitRoot != null)
-            portraitRoot.gameObject.SetActive(false);
-
-        if (portraitCamera != null)
-            portraitCamera.enabled = false;
     }
 
     private void DestroyCurrentInstance()
@@ -142,46 +129,27 @@ public class GeneralPortraitUI : MonoBehaviour
     private void SetLayerRecursively(GameObject go, string layerName)
     {
         int layer = LayerMask.NameToLayer(layerName);
-        if (layer == -1)
-        {
-            Debug.LogWarning($"GeneralPortraitUI: layer '{layerName}' not found.");
-            return;
-        }
+        if (layer == -1) return;
 
-        var transforms = go.GetComponentsInChildren<Transform>(true);
-        foreach (var t in transforms)
+        foreach (var t in go.GetComponentsInChildren<Transform>(true))
             t.gameObject.layer = layer;
     }
 
     private void DisableGameplayScripts(GameObject go)
     {
-        var monos = go.GetComponentsInChildren<MonoBehaviour>(true);
-        foreach (var m in monos)
-        {
-            if (m == null) continue;
-            if (m is Animator) continue;
-            m.enabled = false;
-        }
+        foreach (var m in go.GetComponentsInChildren<MonoBehaviour>(true))
+            if (!(m is Animator)) m.enabled = false;
     }
 
     private void DisablePhysics(GameObject go)
     {
-        var rbs = go.GetComponentsInChildren<Rigidbody>(true);
-        foreach (var rb in rbs)
-            rb.isKinematic = true;
-
-        var cols = go.GetComponentsInChildren<Collider>(true);
-        foreach (var c in cols)
-            c.enabled = false;
+        foreach (var rb in go.GetComponentsInChildren<Rigidbody>(true)) rb.isKinematic = true;
+        foreach (var c in go.GetComponentsInChildren<Collider>(true)) c.enabled = false;
     }
 
-    void OnDestroy()
+    private void OnDestroy()
     {
-        if (rt != null)
-        {
-            rt.Release();
-            rt = null;
-        }
+        if (rt != null) rt.Release();
         DestroyCurrentInstance();
     }
 }

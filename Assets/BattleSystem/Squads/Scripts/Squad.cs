@@ -7,6 +7,10 @@ public class Squad : MonoBehaviour
     [Header("Team Info")]
     public int teamID = -1;
 
+    [Header("Champion")]
+    [Tooltip("If true, this squad represents a single Champion/General unit")]
+    public bool isChampion = false;
+
     [Header("Squad Info")]
     public int squadID;
     public string owner;
@@ -31,11 +35,12 @@ public class Squad : MonoBehaviour
     public SquadHealthBar healthBar;
 
     [Header("Parent Army")]
-    public ArmyToken armyToken; // <-- added reference to ArmyToken
+    public ArmyToken armyToken; 
 
     void Awake()
     {
-        if (soldiers == null) soldiers = new List<Transform>();
+        if (soldiers == null)
+            soldiers = new List<Transform>();
     }
 
     public void InitializeSquad()
@@ -43,18 +48,31 @@ public class Squad : MonoBehaviour
         foreach (Transform soldier in soldiers)
         {
             if (soldier == null) continue;
+
             UnitHealth uh = soldier.GetComponent<UnitHealth>();
             if (uh != null)
                 uh.OnHealthChanged += OnUnitHealthChanged;
+
+            UnitMovement mover = soldier.GetComponent<UnitMovement>();
+            if (mover != null && isChampion)
+            {
+                mover.boostForChampion = true; 
+            }
         }
+
+   
+        if (isChampion)
+            squadBaseSpeed *= 1.3f;
 
         RecalculateMaxHealth();
         RecalculateCurrentHealth();
     }
 
-    // ------------------------------------------------------------
-    // HEALTH CALCULATION
-    // ------------------------------------------------------------
+    private void OnUnitHealthChanged(UnitHealth unit)
+    {
+        RecalculateCurrentHealth();
+    }
+
     public void RecalculateMaxHealth()
     {
         totalMaxHealth = 0f;
@@ -85,31 +103,23 @@ public class Squad : MonoBehaviour
             healthBar.SetHealth(totalCurrentHealth);
     }
 
-    private void OnUnitHealthChanged(UnitHealth unit)
-    {
-        RecalculateCurrentHealth();
-    }
-
-    // ------------------------------------------------------------
-    // SELECTION
-    // ------------------------------------------------------------
     public void SetSelected(bool selected)
     {
         isSelected = selected;
+
         if (healthBar != null)
             healthBar.gameObject.SetActive(selected);
+
         foreach (var soldier in soldiers)
         {
             if (soldier == null) continue;
+
             var selection = soldier.GetComponent<UnitSelection>();
             if (selection != null)
                 selection.SetSelected(selected);
         }
     }
 
-    // ------------------------------------------------------------
-    // SQUAD CENTER
-    // ------------------------------------------------------------
     public Vector3 GetSquadCenter()
     {
         if (soldiers == null || soldiers.Count == 0)
@@ -117,25 +127,21 @@ public class Squad : MonoBehaviour
 
         Vector3 sum = Vector3.zero;
         int count = 0;
+
         foreach (Transform soldier in soldiers)
         {
-            if (soldier != null)
+            if (soldier == null) continue;
+            UnitHealth u = soldier.GetComponent<UnitHealth>();
+            if (u != null && !u.IsDead)
             {
-                UnitHealth u = soldier.GetComponent<UnitHealth>();
-                if (u != null && !u.IsDead)
-                {
-                    sum += soldier.position;
-                    count++;
-                }
+                sum += soldier.position;
+                count++;
             }
         }
 
         return count > 0 ? sum / count : transform.position;
     }
 
-    // ------------------------------------------------------------
-    // SQUAD MOVEMENT
-    // ------------------------------------------------------------
     public void MoveSquad(Vector3 destination)
     {
         if (soldiers == null || soldiers.Count == 0)
@@ -162,7 +168,10 @@ public class Squad : MonoBehaviour
 
             UnitMovement mover = soldier.GetComponent<UnitMovement>();
             if (mover != null)
-                mover.SetDestination(targetPos);
+            {
+                float speed = squadBaseSpeed;
+                mover.SetMovementTarget(targetPos, speed);
+            }
         }
     }
 }

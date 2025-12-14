@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 /// <summary>
 /// Spawns squads and champions or restores them if a saved BattlefieldState exists.
-/// Fully supports the new ArmyToken system and Total War–style squad combat.
 /// </summary>
 public class SquadSpawner : MonoBehaviour
 {
@@ -37,7 +36,7 @@ public class SquadSpawner : MonoBehaviour
         }
 
         hasSpawned = true;
-
+        
         Canvas[] canvases = FindObjectsOfType<Canvas>();
         foreach (var c in canvases)
         {
@@ -85,13 +84,9 @@ public class SquadSpawner : MonoBehaviour
 
     private Vector3 GetCenterOfPositions(List<Vector3> positions)
     {
-        if (positions == null || positions.Count == 0)
-            return Vector3.zero;
-
+        if (positions == null || positions.Count == 0) return Vector3.zero;
         Vector3 sum = Vector3.zero;
-        foreach (var pos in positions)
-            sum += pos;
-
+        foreach (var pos in positions) sum += pos;
         return sum / positions.Count;
     }
 
@@ -115,8 +110,6 @@ public class SquadSpawner : MonoBehaviour
         {
             SpawnSquad(spawnPoint.position, unit, owner, teamID, unit.count);
         }
-
-        // Spawn Champion instead of General
         SpawnChampion(token, spawnPoint, owner, teamID);
     }
 
@@ -124,23 +117,71 @@ public class SquadSpawner : MonoBehaviour
     {
         Vector3 champPos = spawnPoint.position + Vector3.forward * 2f;
         GameObject champPrefabToUse = token.championPrefab != null ? token.championPrefab : championPrefab;
+        GameObject champSquadObj = new GameObject($"{owner}_Champion_Squad");
+        champSquadObj.transform.position = champPos;
+        Squad champSquad = champSquadObj.AddComponent<Squad>();
+
+        champSquad.teamID = teamID;
+        champSquad.owner = owner;
+        champSquad.unitType = "Champion";
+        champSquad.isChampion = true;
+        champSquad.squadID = Random.Range(1000, 9999);
+        champSquad.soldiers = new List<Transform>();
+        champSquad.formationWidth = 1;
+        champSquad.spacing = 0f;
+
+        // ======== ASSIGN ARMY TOKEN ========
+        champSquad.armyToken = token;
+        Debug.Log($"[SquadSpawner] Assigned armyToken to {owner}_Champion_Squad");
+
+        Rigidbody rb = champSquadObj.AddComponent<Rigidbody>();
+        rb.isKinematic = true;
+        rb.useGravity = false;
+
+        SphereCollider detection = champSquadObj.AddComponent<SphereCollider>();
+        detection.isTrigger = true;
+        detection.radius = 25f;
+
+        SquadCombatController ctrl = champSquadObj.AddComponent<SquadCombatController>();
+        ctrl.squad = champSquad;
 
         GameObject champObj = Instantiate(champPrefabToUse, champPos, Quaternion.identity);
+        champObj.transform.SetParent(champSquadObj.transform);
         champObj.tag = teamID == 0 ? "PlayerUnit" : "EnemyUnit";
 
-        SetLayerRecursive(champObj, teamID == 0 ? LayerMask.NameToLayer("PlayerSoldier") : LayerMask.NameToLayer("EnemySoldier"));
+        int layerToAssign = teamID == 0 ? LayerMask.NameToLayer("PlayerSoldier") : LayerMask.NameToLayer("EnemySoldier");
+        SetLayerRecursive(champSquadObj, layerToAssign);
 
-        // Initialize Champion component
+        champSquad.soldiers.Add(champObj.transform);
+
         Champion champComp = champObj.GetComponent<Champion>();
         if (champComp != null)
             champComp.InitializeChampion(token.championName, token.championLevel, teamID == 0);
 
         var movement = champObj.GetComponent<Player3PMovement>();
         if (movement != null)
+        {
             movement.isPlayerControlled = (teamID == 0);
+            movement.moveSpeed = 3.5f; 
+        }
 
-        if (teamID == 0) PlayerChampion = champObj;
-        else EnemyChampion = champObj;
+        if (squadHealthBarPrefab != null)
+        {
+            Transform parent = worldSpaceCanvas != null ? worldSpaceCanvas.transform : null;
+            GameObject hb = parent != null ? Instantiate(squadHealthBarPrefab, parent) : Instantiate(squadHealthBarPrefab);
+            SquadHealthBar hbComp = hb.GetComponent<SquadHealthBar>();
+            if (hbComp != null)
+            {
+                hbComp.squad = champSquad;
+                champSquad.healthBar = hbComp;
+                hb.transform.position = champSquad.GetSquadCenter() + Vector3.up * 2f;
+            }
+        }
+
+        if (teamID == 0) PlayerChampion = champSquadObj;
+        else EnemyChampion = champSquadObj;
+
+        champSquad.InitializeSquad();
     }
 
     private void SpawnSquad(Vector3 position, ArmyUnit unit, string owner, int teamID, int count)
@@ -156,13 +197,11 @@ public class SquadSpawner : MonoBehaviour
         squadObj.transform.position = position;
 
         string tagToAssign = (teamID == 0) ? "PlayerUnit" : "EnemyUnit";
-        int layerToAssign = (teamID == 0) ? LayerMask.NameToLayer("PlayerSoldier")
-                                          : LayerMask.NameToLayer("EnemySoldier");
+        int layerToAssign = (teamID == 0) ? LayerMask.NameToLayer("PlayerSoldier") : LayerMask.NameToLayer("EnemySoldier");
 
         squadObj.tag = tagToAssign;
         squadObj.layer = layerToAssign;
 
-        // --- COMPONENTS ---
         Squad squad = squadObj.AddComponent<Squad>();
 
         Rigidbody rb = squadObj.AddComponent<Rigidbody>();
@@ -176,14 +215,12 @@ public class SquadSpawner : MonoBehaviour
         SquadCombatController ctrl = squadObj.AddComponent<SquadCombatController>();
         ctrl.squad = squad;
 
-        // --- SQUAD DATA ---
         squad.teamID = teamID;
         squad.owner = owner;
         squad.unitType = unit.type;
         squad.squadID = Random.Range(1000, 9999);
         squad.soldiers = new List<Transform>();
 
-        // --- SPAWN SOLDIERS ---
         for (int i = 0; i < Mathf.Max(1, count); i++)
         {
             Vector3 offset = position + new Vector3(i * 1.5f, 0, 0);
@@ -205,8 +242,8 @@ public class SquadSpawner : MonoBehaviour
 
         if (squadHealthBarPrefab != null)
         {
-            Transform parent = (worldSpaceCanvas != null) ? worldSpaceCanvas.transform : null;
-            GameObject hb = (parent != null) ? Instantiate(squadHealthBarPrefab, parent) : Instantiate(squadHealthBarPrefab);
+            Transform parent = worldSpaceCanvas != null ? worldSpaceCanvas.transform : null;
+            GameObject hb = parent != null ? Instantiate(squadHealthBarPrefab, parent) : Instantiate(squadHealthBarPrefab);
 
             SquadHealthBar hbComp = hb.GetComponent<SquadHealthBar>();
             if (hbComp != null)
@@ -226,93 +263,135 @@ public class SquadSpawner : MonoBehaviour
 
     private void RestoreBattlefield(BattlefieldState state)
     {
-        if (state.squads == null) return;
-
-        foreach (var ss in state.squads)
+        if (state.squads != null)
         {
-            GameObject prefab = GetPrefabForType(ss.unitType);
-            if (prefab == null) continue;
-
-            GameObject squadObj = new GameObject($"{ss.owner}_Squad_{ss.squadID}_{ss.unitType}");
-            Squad squad = squadObj.AddComponent<Squad>();
-
-            squadObj.transform.position = GetCenterOfPositions(ss.soldierPositions);
-
-            Rigidbody rb = squadObj.AddComponent<Rigidbody>();
-            rb.isKinematic = true;
-            rb.useGravity = false;
-
-            SphereCollider detection = squadObj.AddComponent<SphereCollider>();
-            detection.isTrigger = true;
-            detection.radius = 20f;
-
-            SquadCombatController ctrl = squadObj.AddComponent<SquadCombatController>();
-            ctrl.squad = squad;
-
-            squad.teamID = (ss.owner == "Player") ? 0 : 1;
-            squad.owner = ss.owner;
-            squad.unitType = ss.unitType;
-            squad.squadID = ss.squadID;
-            squad.soldiers = new List<Transform>();
-
-            int layerToAssign = (squad.teamID == 0) ? LayerMask.NameToLayer("PlayerSoldier") : LayerMask.NameToLayer("EnemySoldier");
-            string tagToAssign = (squad.teamID == 0) ? "PlayerUnit" : "EnemyUnit";
-
-            foreach (var pos in ss.soldierPositions)
+            foreach (var ss in state.squads)
             {
-                GameObject soldier = Instantiate(prefab, pos, Quaternion.identity);
-                soldier.transform.SetParent(squadObj.transform);
+                GameObject prefab = GetPrefabForType(ss.unitType);
+                if (prefab == null) continue;
 
-                var unitComp = soldier.GetComponent<Unit>();
-                if (unitComp != null) unitComp.teamID = squad.teamID;
+                GameObject squadObj = new GameObject($"{ss.owner}_Squad_{ss.squadID}_{ss.unitType}");
+                Squad squad = squadObj.AddComponent<Squad>();
 
-                soldier.tag = tagToAssign;
-                SetLayerRecursive(soldier, layerToAssign);
+                squadObj.transform.position = GetCenterOfPositions(ss.soldierPositions);
 
-                UnitCombat uc = soldier.GetComponent<UnitCombat>();
-                if (uc != null) uc.squadRoot = squad;
+                Rigidbody rb = squadObj.AddComponent<Rigidbody>();
+                rb.isKinematic = true;
+                rb.useGravity = false;
 
-                squad.soldiers.Add(soldier.transform);
-            }
+                SphereCollider detection = squadObj.AddComponent<SphereCollider>();
+                detection.isTrigger = true;
+                detection.radius = 20f;
 
-            if (squadHealthBarPrefab != null)
-            {
-                Transform parent = (worldSpaceCanvas != null) ? worldSpaceCanvas.transform : null;
-                GameObject hb = (parent != null) ? Instantiate(squadHealthBarPrefab, parent) : Instantiate(squadHealthBarPrefab);
-                SquadHealthBar hbComp = hb.GetComponent<SquadHealthBar>();
-                if (hbComp != null)
+                SquadCombatController ctrl = squadObj.AddComponent<SquadCombatController>();
+                ctrl.squad = squad;
+
+                squad.teamID = (ss.owner == "Player") ? 0 : 1;
+                squad.owner = ss.owner;
+                squad.unitType = ss.unitType;
+                squad.squadID = ss.squadID;
+                squad.soldiers = new List<Transform>();
+
+                int layerToAssign = (squad.teamID == 0) ? LayerMask.NameToLayer("PlayerSoldier") : LayerMask.NameToLayer("EnemySoldier");
+                string tagToAssign = (squad.teamID == 0) ? "PlayerUnit" : "EnemyUnit";
+
+                foreach (var pos in ss.soldierPositions)
                 {
-                    hbComp.squad = squad;
-                    squad.healthBar = hbComp;
-                    hb.transform.position = squad.GetSquadCenter() + Vector3.up * 2f;
+                    GameObject soldier = Instantiate(prefab, pos, Quaternion.identity);
+                    soldier.transform.SetParent(squadObj.transform);
+
+                    var unitComp = soldier.GetComponent<Unit>();
+                    if (unitComp != null) unitComp.teamID = squad.teamID;
+
+                    soldier.tag = tagToAssign;
+                    SetLayerRecursive(soldier, layerToAssign);
+
+                    UnitCombat uc = soldier.GetComponent<UnitCombat>();
+                    if (uc != null) uc.squadRoot = squad;
+
+                    squad.soldiers.Add(soldier.transform);
                 }
+
+                if (squadHealthBarPrefab != null)
+                {
+                    Transform parent = worldSpaceCanvas != null ? worldSpaceCanvas.transform : null;
+                    GameObject hb = parent != null ? Instantiate(squadHealthBarPrefab, parent) : Instantiate(squadHealthBarPrefab);
+                    SquadHealthBar hbComp = hb.GetComponent<SquadHealthBar>();
+                    if (hbComp != null)
+                    {
+                        hbComp.squad = squad;
+                        squad.healthBar = hbComp;
+                        hb.transform.position = squad.GetSquadCenter() + Vector3.up * 2f;
+                    }
+                }
+
+                squad.InitializeSquad();
             }
-
-            squad.InitializeSquad();
         }
-
-        // Restore Champions
+        
         if (state.playerChampionPosition.HasValue)
+            CreateChampionSquad(state.playerChampionPosition.Value, state.playerChampionRotation ?? Quaternion.identity, "Player", 0);
+        if (state.enemyChampionPosition.HasValue)
+            CreateChampionSquad(state.enemyChampionPosition.Value, state.enemyChampionRotation ?? Quaternion.identity, "Enemy", 1);
+    }
+
+    private void CreateChampionSquad(Vector3 pos, Quaternion rot, string owner, int teamID)
+    {
+        GameObject champSquadObj = new GameObject($"{owner}_Champion_Squad");
+        champSquadObj.transform.position = pos;
+        champSquadObj.transform.rotation = rot;
+
+        Squad champSquad = champSquadObj.AddComponent<Squad>();
+        champSquad.teamID = teamID;
+        champSquad.owner = owner;
+        champSquad.unitType = "Champion";
+        champSquad.isChampion = true;
+        champSquad.soldiers = new List<Transform>();
+        champSquad.formationWidth = 1;
+        champSquad.spacing = 0f;
+
+        // ======== ASSIGN ARMY TOKEN ========
+        ArmyToken token = (teamID == 0) ? BattleManager.Instance.GetPlayerToken() : BattleManager.Instance.GetEnemyToken();
+        champSquad.armyToken = token;
+        Debug.Log($"[SquadSpawner] Restored armyToken for {owner}_Champion_Squad");
+
+        Rigidbody rb = champSquadObj.AddComponent<Rigidbody>();
+        rb.isKinematic = true;
+        rb.useGravity = false;
+
+        SphereCollider detection = champSquadObj.AddComponent<SphereCollider>();
+        detection.isTrigger = true;
+        detection.radius = 25f;
+
+        SquadCombatController ctrl = champSquadObj.AddComponent<SquadCombatController>();
+        ctrl.squad = champSquad;
+
+        GameObject champObj = Instantiate(championPrefab, pos, rot);
+        champObj.transform.SetParent(champSquadObj.transform);
+        champObj.tag = teamID == 0 ? "PlayerUnit" : "EnemyUnit";
+
+        int layerToAssign = teamID == 0 ? LayerMask.NameToLayer("PlayerSoldier") : LayerMask.NameToLayer("EnemySoldier");
+        SetLayerRecursive(champSquadObj, layerToAssign);
+
+        champSquad.soldiers.Add(champObj.transform);
+
+        if (squadHealthBarPrefab != null)
         {
-            PlayerChampion = Instantiate(
-                championPrefab,
-                state.playerChampionPosition.Value,
-                state.playerChampionRotation ?? Quaternion.identity
-            );
-            PlayerChampion.tag = "PlayerUnit";
-            SetLayerRecursive(PlayerChampion, LayerMask.NameToLayer("PlayerSoldier"));
+            Transform parent = worldSpaceCanvas != null ? worldSpaceCanvas.transform : null;
+            GameObject hb = parent != null ? Instantiate(squadHealthBarPrefab, parent) : Instantiate(squadHealthBarPrefab);
+            SquadHealthBar hbComp = hb.GetComponent<SquadHealthBar>();
+            if (hbComp != null)
+            {
+                hbComp.squad = champSquad;
+                champSquad.healthBar = hbComp;
+                hb.transform.position = champSquad.GetSquadCenter() + Vector3.up * 2f;
+            }
         }
 
-        if (state.enemyChampionPosition.HasValue)
-        {
-            EnemyChampion = Instantiate(
-                championPrefab,
-                state.enemyChampionPosition.Value,
-                state.enemyChampionRotation ?? Quaternion.identity
-            );
-            EnemyChampion.tag = "EnemyUnit";
-            SetLayerRecursive(EnemyChampion, LayerMask.NameToLayer("EnemySoldier"));
-        }
+        if (teamID == 0) PlayerChampion = champSquadObj;
+        else EnemyChampion = champSquadObj;
+
+        champSquad.InitializeSquad();
     }
 
     private void SetLayerRecursive(GameObject obj, int layer)

@@ -1625,6 +1625,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3209918059107484484, guid: e7116fde634e81948a8e7692a884a00f,
         type: 3}
+      propertyPath: championPrefab
+      value: 
+      objectReference: {fileID: 919132149155446097, guid: 92438e9a753d82649885538bc700e024,
+        type: 3}
+    - target: {fileID: 3209918059107484484, guid: e7116fde634e81948a8e7692a884a00f,
+        type: 3}
       propertyPath: neutralColor.b
       value: 0.0141509175
       objectReference: {fileID: 0}
@@ -2254,6 +2260,12 @@ PrefabInstance:
       propertyPath: generalPrefab
       value: 
       objectReference: {fileID: 7351035983372923416, guid: 741b57a88951430428acbcb0fe4efaca,
+        type: 3}
+    - target: {fileID: 3209918059107484484, guid: 257bc1339e8f5bf479bb4856d2606a45,
+        type: 3}
+      propertyPath: championPrefab
+      value: 
+      objectReference: {fileID: 919132149155446097, guid: 92438e9a753d82649885538bc700e024,
         type: 3}
     - target: {fileID: 3209918059107484484, guid: 257bc1339e8f5bf479bb4856d2606a45,
         type: 3}

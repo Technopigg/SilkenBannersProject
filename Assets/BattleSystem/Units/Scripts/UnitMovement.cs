@@ -13,6 +13,9 @@ public class UnitMovement : MonoBehaviour
     [Header("Animator")]
     public Animator animator;
 
+    [Header("Champion Boost")]
+    public bool boostForChampion = false; 
+
     public float MoveSpeed => baseSpeed;
 
     void Awake()
@@ -20,10 +23,10 @@ public class UnitMovement : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         var stats = GetComponent<UnitStats>();
         if (stats != null) baseSpeed = stats.moveSpeed;
-
+        
         agent.speed = baseSpeed;
-        agent.angularSpeed = 120f;
-        agent.acceleration = 8f;
+        agent.angularSpeed = boostForChampion ? 400f : 120f;
+        agent.acceleration = boostForChampion ? 16f : 8f;
         agent.autoBraking = true;
 
         if (animator == null)
@@ -60,7 +63,6 @@ public class UnitMovement : MonoBehaviour
 
         animator.SetFloat("Speed", speed);
     }
-
 
     public void SetMovementTarget(Vector3 destination, float speed)
     {
