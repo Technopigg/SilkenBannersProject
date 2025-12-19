@@ -74,37 +74,72 @@ public class GeneralPortraitUI : MonoBehaviour
 
     public void Show(GameObject championPrefab)
     {
+        Debug.Log("[PortraitUI] Show() CALLED");
+
         if (!championPrefab)
         {
+            Debug.LogWarning("[PortraitUI] championPrefab is NULL");
             Hide();
             return;
         }
 
+        Debug.Log($"[PortraitUI] Prefab received: {championPrefab.name}");
+
         CreateRenderTexture();
         DestroyCurrentInstance();
+
         currentInstance = Instantiate(championPrefab, portraitRoot);
+
+        Debug.Log("[PortraitUI] Prefab instantiated");
+
+        var renderers = currentInstance.GetComponentsInChildren<Renderer>(true);
+        Debug.Log($"[PortraitUI] Renderer count on instance: {renderers.Length}");
+
         currentInstance.transform.localPosition = modelPositionOffset;
         currentInstance.transform.localEulerAngles = modelRotationEuler;
         currentInstance.transform.localScale = modelScale;
 
         SetLayerRecursively(currentInstance, portraitLayerName);
-        DisableGameplayScripts(currentInstance);
-        DisablePhysics(currentInstance);
 
-        if (portraitCamera) portraitCamera.enabled = true;
-        if (portraitLight) portraitLight.enabled = true;
+        // 🔴 TEMPORARILY DISABLED FOR DEBUGGING
+        // DisableGameplayScripts(currentInstance);
+        // DisablePhysics(currentInstance);
 
-       
+        if (portraitCamera)
+        {
+            portraitCamera.enabled = true;
+            Debug.Log("[PortraitUI] Portrait camera ENABLED");
+        }
+
+        if (portraitLight)
+        {
+            portraitLight.enabled = true;
+            Debug.Log("[PortraitUI] Portrait light ENABLED");
+        }
+
         Animator animator = currentInstance.GetComponentInChildren<Animator>();
         if (animator != null)
         {
             animator.updateMode = AnimatorUpdateMode.UnscaledTime;
-            if (!string.IsNullOrEmpty(idleStateName))
-                animator.Play(idleStateName);
+            animator.Play(idleStateName);
+            Debug.Log("[PortraitUI] Animator found and idle played");
+        }
+        else
+        {
+            Debug.LogWarning("[PortraitUI] NO Animator found on prefab");
         }
 
-        if (portraitRoot) portraitRoot.gameObject.SetActive(true);
-        if (portraitImage) portraitImage.enabled = true;
+        if (portraitRoot)
+        {
+            portraitRoot.gameObject.SetActive(true);
+            Debug.Log("[PortraitUI] PortraitRoot SET ACTIVE");
+        }
+
+        if (portraitImage)
+        {
+            portraitImage.enabled = true;
+            Debug.Log("[PortraitUI] Portrait RawImage ENABLED");
+        }
     }
 
     public void Hide()

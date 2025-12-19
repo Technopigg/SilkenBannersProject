@@ -1058,7 +1058,7 @@ GameObject:
   - component: {fileID: 1100254602}
   - component: {fileID: 1100254604}
   - component: {fileID: 1100254603}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: PortraitLight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1221,13 +1221,13 @@ GameObject:
   - component: {fileID: 1112604804}
   - component: {fileID: 1112604803}
   - component: {fileID: 1112604802}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: PortraitCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1112604801
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1338,7 +1338,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 128
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -1626,13 +1626,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1633359639}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: PortraitRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1633359639
 RectTransform:
   m_ObjectHideFlags: 0
